@@ -1,22 +1,22 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse, Line
-
 import sys
 import datetime
+from kivy.utils import platform
+
 
 class LogInput:
-    def __init__(self, timestemp, x, y, id, uid, down, move, up):
+    def __init__(self, timestemp, x, y, id, down, move, up):
         self.timestemp = timestemp
         self.x = x
         self.y = y
         self.id = id
-        self.uid = uid
         self.down = down
         self.move = move
         self.up = up
     def __str__(self) -> str:
-        return "-{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}-".format(self.timestemp, self.x, self.y, self.id, self.uid, self.down, self.move, self.up)
+        return "-{0}, {1}, {2}, {3}, {4}, {5}, {6}-".format(self.timestemp, self.x, self.y, self.id, self.down, self.move, self.up)
 
 
 if len(sys.argv) != 2:
@@ -29,17 +29,20 @@ chunks = []
 with open(file_name, "r") as f:
     lines = f.readlines()
     cur_chunk = []
-    for line in lines:     
+    first = True
+    for line in lines:
+        if first:
+            first = False
+            continue   
         line_features = line.split(',')
         timestamp = datetime.datetime.fromtimestamp(float(line_features[0]))
         x = int(line_features[1])
         y = int(line_features[2])
         id = int(line_features[3])
-        uid = int(line_features[4])
-        down = int(line_features[5])
-        move = int(line_features[6])
-        up = int(line_features[7])
-        log_input = LogInput(timestamp, x, y, id, uid, down, move, up)
+        down = int(line_features[4])
+        move = int(line_features[5])
+        up = int(line_features[6])
+        log_input = LogInput(timestamp, x, y, id, down, move, up)
         if inputs.get(log_input.id) is not None:
             inputs[log_input.id].append(log_input)
         else:
@@ -92,6 +95,7 @@ class InputsDrawer(Widget):
             Ellipse(pos=(input_log.x - d /2, input_log.y -d / 2), size= (d, d))
 class DrawerApp(App):
     def build(self):
+        print(platform)
         return InputsDrawer()
 
 DrawerApp().run()
