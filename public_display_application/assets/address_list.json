@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Gebäude S-A",
+        "address": "Schützenbahn 70, 45127 Essen",
+        "lat": 51.46185774127926,
+        "lon": 7.016795463446846
+    },
+    {
+        "name": "Zugang Gebäude S-E",
+        "address": "Gerlingstraße, 45127 Essen",
+        "lat": 51.4616108636538,
+        "lon": 7.017812365840285
+    },
+    {
+        "name": "Zugang Gebäude S-M",
+        "address": "Waldthausenstraße 25, 45127 Essen",
+        "lat": 51.46194569051877,
+        "lon": 7.017097570847087
+    },
+    {
+        "name": "Zugang Gebäude S-H",
+        "address": "Schützenbahn 70, 45127 Essen",
+        "lat": 51.46147646698994,
+        "lon": 7.01622444361597
+    },
+    {
+        "name": "ZIM",
+        "address": "Schützenbahn 70, 45127 Essen",
+        "lat": 51.46144983776239,
+        "lon": 7.016164498274743
+    },
+    {
+        "name": "Chemiedidaktik der Universität Duisburg-Essen",
+        "address": "Schützenbahn 70, 45127 Essen",
+        "lat": 51.461322804608876,
+        "lon": 7.0171355735759935
+    },
+    {
+        "name": "paluno - The Ruhr Institute for Software Technology",
+        "address": "Gerlingstraße 16, 45127 Essen",
+        "lat": 51.4609371989414,
+        "lon": 7.016466243799596
+    },
+    {
+        "name": "Audimax R14",
+        "address": "Rheinischer Pl. 5, 45127 Essen",
+        "lat": 51.46233153311767,
+        "lon": 7.011124738478928
+    },
+    {
+        "name": "Zugang Gebäude S-L",
+        "address": "Mittwegstraße 9, 45127 Essen",
+        "lat": 51.461907558448246,
+        "lon": 7.01781035516378
+    },
+    {
+        "name": "USC Universitäts-Sportclub Essen",
+        "address": "Waldthausenstraße 25, 45127 Essen",
+        "lat": 51.46191825832364,
+        "lon": 7.0172697857855315
+    }
+]

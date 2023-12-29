@@ -93,9 +93,9 @@ class InputsDrawer(Widget):
             Color(0,1,0)
             d = 4.
             Ellipse(pos=(input_log.x - d /2, input_log.y -d / 2), size= (d, d))
+
 class DrawerApp(App):
     def build(self):
-        print(platform)
         return InputsDrawer()
 
 DrawerApp().run()
