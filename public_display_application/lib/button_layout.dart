@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
+import 'package:public_display_application/contents/map_content.dart';
 import 'package:public_display_application/contents/mensa_content.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/contents/weather_content.dart';
+import 'package:public_display_application/models/address_item.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 import 'package:public_display_application/models/weather_item.dart';
@@ -92,7 +95,11 @@ class ButtonLayoutState extends State<ButtonLayout> {
                   SmoothPageIndicator(
                     controller: _controller,
                     count: 4,
-                    onDotClicked: (index) => _controller.jumpToPage(index),
+                    onDotClicked: (index) => _controller.animateToPage(
+                      index,
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.decelerate,
+                    ),
                   ),
                 ],
               )
@@ -115,6 +122,10 @@ class ButtonLayoutState extends State<ButtonLayout> {
                 TransportContent(data: data),
               if (selectedElement == Elements.weather)
                 WeatherContent(data: data),
+              if (selectedElement == Elements.map)
+                MapContent(
+                  data: data,
+                ),
               const SizedBox(
                 height: 20,
               ),
@@ -142,14 +153,19 @@ class ButtonLayoutState extends State<ButtonLayout> {
       case 0:
         print("Mensa");
         await getMensaData();
+        break;
       case 1:
         print("Transport");
         await getDataViehoferPlatz();
+        break;
       case 2:
         print("Map");
+        await getMapData();
+        break;
       case 3:
         print("Weather");
         await getWeatherInfo();
+        break;
       default:
         print("WTF?");
     }
@@ -353,5 +369,19 @@ class ButtonLayoutState extends State<ButtonLayout> {
     });
   }
 
-  Future loadMapdata() async {}
+  Future getMapData() async {
+    String fileData = await DefaultAssetBundle.of(context)
+        .loadString("assets/address_list.json");
+    final jsonResult = jsonDecode(fileData);
+    List<AddressItem> addressList = [];
+    for (final json_i in jsonResult) {
+      AddressItem item = AddressItem.fromJson(json_i);
+      addressList.add(item);
+    }
+    setState(() {
+      selectedElement = Elements.map;
+      data = addressList;
+      contentString = "Map";
+    });
+  }
 }

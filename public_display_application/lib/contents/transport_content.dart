@@ -14,31 +14,40 @@ class TransportContent extends StatefulWidget {
 }
 
 class TransportContentState extends State<TransportContent> {
+  final _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: widget.data.length,
-        itemExtent: 100,
-        itemBuilder: (context, index) {
-          TransportLineItem item = widget.data[index];
-          return ListTile(
-            leading: TransportTimes(
-              item: item,
-            ),
-            title: Row(
-              children: [
-                TransportIcon(type: item.transportType),
-                const SizedBox(
-                  width: 7,
-                ),
-                Text("${item.number}"),
-              ],
-            ),
-            subtitle: Text(item.direction),
-            trailing: Text(item.platformName),
-          );
-        },
+      child: Scrollbar(
+        thumbVisibility: true,
+        controller: _controller,
+        child: ListView.separated(
+          controller: _controller,
+          itemCount: widget.data.length,
+          separatorBuilder: (context, index) => const Divider(
+            color: Colors.black,
+            thickness: 0.7,
+          ),
+          itemBuilder: (context, index) {
+            TransportLineItem item = widget.data[index];
+            return ListTile(
+              leading: TransportTimes(
+                item: item,
+              ),
+              title: Row(
+                children: [
+                  TransportIcon(type: item.transportType),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  Text("${item.number}"),
+                ],
+              ),
+              subtitle: Text(item.direction),
+              trailing: Text(item.platformName),
+            );
+          },
+        ),
       ),
     );
   }

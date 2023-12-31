@@ -45,7 +45,7 @@ class _MensaContentState extends State<MensaContent> {
             child: Row(
               children: [
                 DropdownButton<String>(
-                  hint: Text('Select Category'),
+                  hint: const Text('Select Category'),
                   value: selectedCategory,
                   onChanged: (value) {
                     setState(() {

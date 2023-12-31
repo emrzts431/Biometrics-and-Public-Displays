@@ -20,9 +20,6 @@ class CurrentWeatherWidget extends StatelessWidget {
                 weatherItem.icon,
                 scale: 0.4,
               ),
-              const SizedBox(
-                height: 5,
-              ),
               Text(
                 weatherItem.text,
               )
