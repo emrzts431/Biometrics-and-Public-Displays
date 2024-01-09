@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       scale: 15,
                     ),
                     const Text(
-                      'This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegass',
+                      'This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
