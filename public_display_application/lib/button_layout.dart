@@ -116,7 +116,10 @@ class ButtonLayoutState extends State<ButtonLayout> {
                 const SizedBox(
                   height: 20,
                 ),
-              if (selectedElement == Elements.mensa) MensaContent(data: data),
+              if (selectedElement == Elements.mensa)
+                MensaContent(
+                  data: data,
+                ),
               if (selectedElement == Elements.transport)
                 TransportContent(data: data),
               if (selectedElement == Elements.weather)
@@ -205,17 +208,23 @@ class ButtonLayoutState extends State<ButtonLayout> {
     url = Uri.parse(api_url);
     final response_data = await http.get(url);
     final document = XmlDocument.parse(response_data.body);
-    final items_iterable = document.findAllElements('item').toList();
-    for (final item in items_iterable) {
-      SpeisePlanItem si = setUpItem(item);
-      if (si.title != "geschlossen") {
-        speisePlanList.add(setUpItem(item));
+    final tags_iterable = document.findAllElements('tag').toList();
+    Map<int, List<SpeisePlanItem>> localData = {};
+    for (final tag in tags_iterable) {
+      int curKey = int.parse(tag.attributes.first.value);
+      localData[curKey] = [];
+      final tagItems = tag.findAllElements('item').toList();
+      for (final item in tagItems) {
+        SpeisePlanItem si = setUpItem(item);
+        if (si.title != "geschlossen") {
+          localData[curKey]!.add(setUpItem(item));
+        }
       }
     }
     Navigator.pop(
         context); //TODO: Handle this using locator or navigation service
     setState(() {
-      data = speisePlanList;
+      data = localData;
       selectedElement = Elements.mensa;
       contentString = "Mensa Speiseplan";
     });
@@ -245,28 +254,70 @@ class ButtonLayoutState extends State<ButtonLayout> {
           item.kennz_allergen = desElement.innerText;
         case "preis1":
           item.preis1 = double.parse(
-              desElement.innerText == "null" || desElement.innerText.isEmpty
-                  ? "0.0"
-                  : desElement.innerText);
+            desElement.innerText == "null" || desElement.innerText.isEmpty
+                ? "0.0"
+                : desElement.innerText.replaceFirst(
+                    ',',
+                    '.',
+                  ),
+          );
         case "preis2":
           item.preis2 = double.parse(
-              desElement.innerText == "null" || desElement.innerText.isEmpty
-                  ? "0.0"
-                  : desElement.innerText);
+            desElement.innerText == "null" || desElement.innerText.isEmpty
+                ? "0.0"
+                : desElement.innerText.replaceFirst(
+                    ',',
+                    '.',
+                  ),
+          );
         case "preis3":
           item.preis3 = double.parse(
-              desElement.innerText == "null" || desElement.innerText.isEmpty
-                  ? "0.0"
-                  : desElement.innerText);
+            desElement.innerText == "null" || desElement.innerText.isEmpty
+                ? "0.0"
+                : desElement.innerText.replaceFirst(
+                    ',',
+                    '.',
+                  ),
+          );
         case "aktion":
           item.aktion = desElement.innerText;
         case "nutriscore":
           item.nutriscore = desElement.innerText;
         case "foto":
           item.nutriscore = desElement.innerText;
+        case "naehrwerte":
+          item.nutritionScores =
+              setUpNutritionScores(desElement.childElements.first);
       }
     }
     return item;
+  }
+
+  NutritionScores setUpNutritionScores(XmlElement portion) {
+    NutritionScores scores = NutritionScores();
+    for (final value in portion.descendantElements) {
+      switch (value.localName) {
+        case "kj":
+          scores.kj = double.parse(value.innerText);
+        case "kcal":
+          scores.kcal = double.parse(value.innerText);
+        case "eiweiss":
+          scores.protein = double.parse(value.innerText);
+        case "fett":
+          scores.fat = double.parse(value.innerText);
+        case "gesfett":
+          scores.transfat = double.parse(value.innerText);
+        case "zucker":
+          scores.sugar = double.parse(value.innerText);
+        case "ballaststoffe":
+          scores.ballastoffe = double.parse(value.innerText);
+        case "salz":
+          scores.salz = double.parse(value.innerText);
+        case "kh":
+          scores.carbonhydrate = double.parse(value.innerText);
+      }
+    }
+    return scores;
   }
 
   Future getDataViehoferPlatz() async {

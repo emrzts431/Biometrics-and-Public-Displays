@@ -18,6 +18,7 @@ class SpeisePlanItem {
   String? aktion;
   String? nutriscore;
   String? foto;
+  NutritionScores? nutritionScores;
   SpeisePlanItem({
     this.title,
     this.title_en,
@@ -34,6 +35,7 @@ class SpeisePlanItem {
     this.aktion,
     this.nutriscore,
     this.foto,
+    this.nutritionScores,
   });
 
   factory SpeisePlanItem.fromJson(Map<String, dynamic> json) =>
@@ -47,4 +49,28 @@ class SpeisePlanItem {
     SpeisePlan Item | title: $title
     ''';
   }
+}
+
+class NutritionScores {
+  double? kj;
+  double? kcal;
+  double? protein;
+  double? fat;
+  double? transfat;
+  double? sugar;
+  double? ballastoffe;
+  double? salz;
+  double? carbonhydrate;
+
+  NutritionScores({
+    this.kj,
+    this.kcal,
+    this.protein,
+    this.fat,
+    this.transfat,
+    this.sugar,
+    this.ballastoffe,
+    this.salz,
+    this.carbonhydrate,
+  });
 }
