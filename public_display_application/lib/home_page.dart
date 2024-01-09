@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
             ),
             children: [
               const SizedBox(
-                height: 150,
+                height: 80,
               ),
               Container(
                 decoration: const BoxDecoration(
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     height: 700,
                     width: 570,
                     child: ButtonLayout(
-                      version: 1,
+                      version: 2,
                     ),
                   ),
                 ),
