@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     height: 700,
                     width: 570,
                     child: ButtonLayout(
-                      version: 2,
+                      version: 1,
                     ),
                   ),
                 ),

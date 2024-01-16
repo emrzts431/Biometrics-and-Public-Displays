@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var folder = await getApplicationDocumentsDirectory();
   File file = File(
-      "${folder.path}/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.csv");
+      "${folder.path}/TouchLogs/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.csv");
   await file.writeAsString("timestamp,x,y,pointer,down,move,up\n");
   runApp(MyApp(
     file: file,
