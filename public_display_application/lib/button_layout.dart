@@ -33,7 +33,6 @@ class ButtonLayout extends StatefulWidget {
 
 class ButtonLayoutState extends State<ButtonLayout> {
   String? contentString = null;
-  dom.Element? doc;
   Elements selectedElement = Elements.none;
   var data;
   final _controller = PageController();
