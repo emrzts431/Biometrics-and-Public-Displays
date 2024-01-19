@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
+import 'package:provider/provider.dart';
 import 'package:public_display_application/contents/map_content.dart';
 import 'package:public_display_application/contents/mensa_content.dart';
 import 'package:public_display_application/contents/transport_content.dart';
@@ -11,6 +12,8 @@ import 'package:public_display_application/models/address_item.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 import 'package:public_display_application/models/weather_item.dart';
+import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
+import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:xml/xml.dart';
 
@@ -36,6 +39,15 @@ class ButtonLayoutState extends State<ButtonLayout> {
   Elements selectedElement = Elements.none;
   var data;
   final _controller = PageController();
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<SessionViewModel>().openContentScreen();
+      context.read<UserViewModel>().setHomePageContext(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return selectedElement == Elements.none
@@ -283,7 +295,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
         case "nutriscore":
           item.nutriscore = desElement.innerText;
         case "foto":
-          item.nutriscore = desElement.innerText;
+          item.foto = desElement.innerText;
         case "naehrwerte":
           item.nutritionScores =
               setUpNutritionScores(desElement.childElements.first);
