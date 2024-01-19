@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:public_display_application/enums.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
+import 'package:public_display_application/viewmodels/userviewmodel.dart';
+import 'package:public_display_application/widgets/mensa/filters_widget.dart';
 
 class MensaContent extends StatefulWidget {
   Map<int, List<SpeisePlanItem>> data;
@@ -37,6 +41,11 @@ class _MensaContentState extends State<MensaContent> {
   @override
   void initState() {
     timestamps = widget.data.keys.toList();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context
+          .read<UserViewModel>()
+          .getPreference(PreferenceTypes.mensa, context);
+    });
     super.initState();
   }
 
@@ -46,6 +55,7 @@ class _MensaContentState extends State<MensaContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          FiltersWidget(),
           dateWidget(),
           Expanded(
               child: ListView.builder(

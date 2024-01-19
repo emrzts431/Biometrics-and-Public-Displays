@@ -42,6 +42,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<SessionViewModel>().startRestartPeriodicChecks(context);
       context.read<SessionViewModel>().openContentScreen();
       context.read<UserViewModel>().setHomePageContext(context);
     });
@@ -70,6 +71,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
                       buttonName(index),
                       style: const TextStyle(
                         color: Colors.black,
+                        fontSize: 24,
                       ),
                     ),
                   );
@@ -93,6 +95,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
                             buttonName(index),
                             style: const TextStyle(
                               color: Colors.black,
+                              fontSize: 20,
                             ),
                           ),
                         );

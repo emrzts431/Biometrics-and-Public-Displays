@@ -5,6 +5,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:public_display_application/dialogs/sure_to_end_session.dart';
 import 'package:public_display_application/log_file.dart';
 import 'package:public_display_application/pages/button_layout.dart';
 import 'package:public_display_application/pages/no_session_zone.dart';
@@ -38,7 +39,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<SessionViewModel>().periodicChecks(context);
     super.initState();
   }
 
@@ -49,6 +49,17 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           widget.title,
         ),
+        actions: [
+          context.watch<UserViewModel>().user != null
+              ? ElevatedButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => SureToEndSessionDialog(),
+                  ),
+                  child: const Text("Session beenden"),
+                )
+              : const SizedBox.shrink()
+        ],
       ),
       body: Listener(
           onPointerDown: (e) async {

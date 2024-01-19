@@ -11,6 +11,13 @@ class NoSessionZone extends StatefulWidget {
 
 class NoSessionZoneState extends State<NoSessionZone> {
   @override
+  void initState() {
+    // TODO: implement initState
+    context.read<SessionViewModel>().startRestartPeriodicChecks(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (context.watch<SessionViewModel>().coffeScreen) {
       return FreeCoffeePage();

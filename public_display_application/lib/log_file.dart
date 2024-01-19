@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/models/preferences/preference.dart';
 import 'package:public_display_application/models/user.dart';
 import 'package:public_display_application/navigation_service.dart';
 import 'package:public_display_application/snackbar_holder.dart';
@@ -44,6 +45,9 @@ class LogFile extends InheritedWidget {
       } else {
         return null;
       }
+    } on StateError catch (e) {
+      print(e);
+      return null;
     } on Exception catch (e) {
       print(e);
       return null;
@@ -87,9 +91,81 @@ class LogFile extends InheritedWidget {
     }
   }
 
-  //TODO: Get preferences
+  Future<Preference?> getPreference(
+      PreferenceTypes preferenceType, int userid) async {
+    try {
+      // 0: mensa, 1: weather, 2: transport, 3: map
+      final result = await db.getAll(
+        'Select value from Preference where userid = ? and type = ?',
+        [
+          userid,
+          preferenceType.index,
+        ],
+      );
+      if (result.isNotEmpty) {
+        switch (preferenceType.index) {
+          case 0:
+            Preference mensaPreference =
+                Preference(type: PreferenceTypes.mensa);
+            for (final item in result) {
+              mensaPreference.values.add(item['value']);
+            }
+            return mensaPreference;
+          case 1:
+            Preference transportPreference =
+                Preference(type: PreferenceTypes.transport);
+            for (final item in result) {
+              transportPreference.values.add(item['value']);
+            }
+            return transportPreference;
+          case 2:
+            Preference weatherPreference =
+                Preference(type: PreferenceTypes.weather);
+            for (final item in result) {
+              weatherPreference.values.add(item['value']);
+            }
+            return weatherPreference;
+          case 3:
+            Preference mapPreference = Preference(type: PreferenceTypes.map);
+            for (final item in result) {
+              mapPreference.values.add(item['value']);
+            }
+            return mapPreference;
+          default:
+            return null;
+        }
+      } else {
+        return null;
+      }
+    } on StateError catch (e) {
+      print(e);
+      return null;
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
-  //TODO: Insert preferences
+  Future<bool> insertPreference(
+      PreferenceTypes type, int userid, String value) async {
+    try {
+      await db.writeTransaction(
+        (tx) async => await tx.execute(
+          "Insert Into Preference (type, userid, value) Values (?, ?, ?)",
+          [
+            type.index,
+            userid,
+            value,
+          ],
+        ),
+      );
+      return true;
+    } on Exception catch (e) {
+      print(e);
+
+      return false;
+    }
+  }
 
   @override
   bool updateShouldNotify(LogFile oldWidget) {

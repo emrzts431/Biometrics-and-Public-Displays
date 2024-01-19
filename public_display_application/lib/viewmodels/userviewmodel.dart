@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
 import 'package:public_display_application/log_file.dart';
+import 'package:public_display_application/models/preferences/preference.dart';
 import 'package:public_display_application/models/user.dart';
 import 'package:public_display_application/navigation_service.dart';
 import 'package:public_display_application/snackbar_holder.dart';
@@ -13,6 +15,18 @@ class UserViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   BuildContext? _homePageContext;
+
+  Preference? _mensaPreference;
+  Preference? get mensaPreference => _mensaPreference;
+
+  Preference? _transportPreference;
+  Preference? get transportPreference => _transportPreference;
+
+  Preference? _weatherPreference;
+  Preference? get weatherPreference => _weatherPreference;
+
+  Preference? _mapPreference;
+  Preference? get mapPreference => _mapPreference;
 
   void setHomePageContext(BuildContext context) => _homePageContext = context;
 
@@ -31,7 +45,7 @@ class UserViewModel extends ChangeNotifier {
         )) {
           _user = localUser;
           SnackbarHolder.showSuccessSnackbar(
-              'Session wurde erfolgreich startet. Herzlich Wilkommen ${_user!.surname}!',
+              'Session wurde erfolgreich gestartet. Herzlich Wilkommen ${_user!.surname}!',
               context);
         } else {
           SnackbarHolder.showFailureSnackbar(
@@ -50,6 +64,7 @@ class UserViewModel extends ChangeNotifier {
 
   Future register(
       String surname, int age, Genders gender, BuildContext context) async {
+    //check if the user exists first
     _isLoading = true;
     notifyListeners();
     bool registered =
@@ -66,7 +81,41 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  //TODO: GetContentPreferences
+  Future getPreference(PreferenceTypes type, BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
+    switch (type.index) {
+      case 0:
+        print('getting mensa preferences');
+        _mensaPreference =
+            await LogFile.of(context).getPreference(type, _user!.userid!);
+        print(_mensaPreference);
+        break;
+      case 1:
+        _transportPreference =
+            await LogFile.of(context).getPreference(type, _user!.userid!);
+        break;
+      case 2:
+        _weatherPreference =
+            await LogFile.of(context).getPreference(type, _user!.userid!);
+        break;
+      case 3:
+        _mapPreference =
+            await LogFile.of(context).getPreference(type, _user!.userid!);
+        break;
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future setPreference(
+      PreferenceTypes type, String value, BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
+    await LogFile.of(context).insertPreference(type, _user!.userid!, value);
+    await getPreference(type, context);
+    notifyListeners();
+  }
 
   Future signOut() async {
     try {
