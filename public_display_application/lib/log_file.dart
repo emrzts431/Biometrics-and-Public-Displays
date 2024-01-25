@@ -167,6 +167,37 @@ class LogFile extends InheritedWidget {
     }
   }
 
+  Future<bool> removePreference(
+      PreferenceTypes type, int userid, String value) async {
+    try {
+      await db.writeTransaction((tx) async => await tx.execute(
+            'Delete From Preference where type = ? and userid = ? and value = ?',
+            [
+              type.index,
+              userid,
+              value,
+            ],
+          ));
+      return true;
+    } on Exception catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> removeAllPreferencesOfType(
+      PreferenceTypes type, int userid) async {
+    try {
+      await db.writeTransaction((tx) async => await tx.execute(
+          'Delete from Preference where type = ? and userid = ?',
+          [type.index, userid]));
+      return true;
+    } on Exception catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   @override
   bool updateShouldNotify(LogFile oldWidget) {
     return oldWidget.logFile != logFile || oldWidget.db != db;

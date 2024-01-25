@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
-import 'package:public_display_application/widgets/mensa/filters_widget.dart';
+import 'package:public_display_application/widgets/mensa/mensa_filters_widget.dart';
 
 class MensaContent extends StatefulWidget {
   Map<int, List<SpeisePlanItem>> data;
@@ -55,51 +55,112 @@ class _MensaContentState extends State<MensaContent> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FiltersWidget(),
+          MensaFiltersWidget(),
           dateWidget(),
-          Expanded(
-              child: ListView.builder(
-            itemCount: widget.data[timestamps[day]]!.length,
-            itemBuilder: (context, index) {
-              SpeisePlanItem item = widget.data[timestamps[day]]![index];
-              return ListTile(
-                leading: setUpItemIcon(item.kennz_icons!),
-                onTap: () => essenDialog(item),
-                title: Text(item.title!),
-                trailing: Container(
-                  width: 100,
-                  child: Row(
-                    children: [
-                      Text(
-                        "${item.preis1!}€",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+          Consumer<UserViewModel>(
+            builder: (context, userViewModel, child) {
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: widget.data[timestamps[day]]!.length,
+                  itemBuilder: (context, index) {
+                    SpeisePlanItem item = widget.data[timestamps[day]]![index];
+                    if (userViewModel.mensaPreference != null &&
+                        userViewModel.mensaPreference!.values.isNotEmpty) {
+                      final itemIconsList = item.kennz_icons!.split(',');
+                      if (userViewModel.mensaPreference!.values
+                          .any((element) => itemIconsList.contains(element))) {
+                        return ListTile(
+                          leading: setUpItemIcon(item.kennz_icons!),
+                          onTap: () => essenDialog(item),
+                          title: Text(item.title!),
+                          trailing: Container(
+                            width: 100,
+                            child: Column(
+                              children: [
+                                const Icon(Icons.touch_app),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${item.preis1!}€",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "${item.preis2!}€",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "${item.preis3!}€",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    } else {
+                      return ListTile(
+                        leading: setUpItemIcon(item.kennz_icons!),
+                        onTap: () => essenDialog(item),
+                        title: Text(item.title!),
+                        trailing: Container(
+                          width: 100,
+                          child: Column(
+                            children: [
+                              const Icon(Icons.touch_app),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${item.preis1!}€",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "${item.preis2!}€",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "${item.preis3!}€",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "${item.preis2!}€",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "${item.preis3!}€",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ),
+                      );
+                    }
+                  },
                 ),
               );
             },
-          ))
+          ),
         ],
       ),
     );
@@ -121,11 +182,15 @@ class _MensaContentState extends State<MensaContent> {
           }),
           icon: const Icon(
             Icons.arrow_left,
+            size: 30,
           ),
         ),
         Text(
-          "${weekdayString(date.weekday)}, ${date.day}.${date.month}.${date.year}",
-        ),
+            "${weekdayString(date.weekday)}, ${date.day}.${date.month}.${date.year}",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            )),
         IconButton(
           onPressed: () => setState(() {
             if (day < 6) {
@@ -135,6 +200,7 @@ class _MensaContentState extends State<MensaContent> {
           }),
           icon: const Icon(
             Icons.arrow_right,
+            size: 30,
           ),
         ),
       ],
@@ -444,4 +510,12 @@ class _MensaContentState extends State<MensaContent> {
         return const Color.fromARGB(200, 0, 0, 0);
     }
   }
+
+  // Widget setUpFilterListener(String filter, SpeisePlanItem item){
+
+  // }
+
+  // Widget setUpFilterListenerNot(String filter, SpeisePlanItem item){
+
+  // }
 }

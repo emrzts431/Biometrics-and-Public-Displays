@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'speiseplan_item.g.dart';
 
-@JsonSerializable()
 class SpeisePlanItem {
   String? title;
   String? title_en;
@@ -37,11 +35,6 @@ class SpeisePlanItem {
     this.foto,
     this.nutritionScores,
   });
-
-  factory SpeisePlanItem.fromJson(Map<String, dynamic> json) =>
-      _$SpeisePlanItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SpeisePlanItemToJson(this);
 
   @override
   String toString() {

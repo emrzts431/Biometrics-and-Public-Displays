@@ -21,6 +21,7 @@ class UserViewModel extends ChangeNotifier {
 
   Preference? _transportPreference;
   Preference? get transportPreference => _transportPreference;
+  bool updateTransportLines = false;
 
   Preference? _weatherPreference;
   Preference? get weatherPreference => _weatherPreference;
@@ -52,8 +53,12 @@ class UserViewModel extends ChangeNotifier {
               'Fehler beim Session starten', context);
         }
         _isLoading = false;
-        notifyListeners();
+      } else {
+        _isLoading = false;
+        _user = null;
+        SnackbarHolder.showFailureSnackbar('Nutzer existiert nicht', context);
       }
+      notifyListeners();
     } on Exception catch (e) {
       print(e);
       _isLoading = false;
@@ -92,11 +97,11 @@ class UserViewModel extends ChangeNotifier {
         print(_mensaPreference);
         break;
       case 1:
-        _transportPreference =
+        _weatherPreference =
             await LogFile.of(context).getPreference(type, _user!.userid!);
         break;
       case 2:
-        _weatherPreference =
+        _transportPreference =
             await LogFile.of(context).getPreference(type, _user!.userid!);
         break;
       case 3:
@@ -115,6 +120,42 @@ class UserViewModel extends ChangeNotifier {
     await LogFile.of(context).insertPreference(type, _user!.userid!, value);
     await getPreference(type, context);
     notifyListeners();
+  }
+
+  Future removePreference(
+      PreferenceTypes type, String value, BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
+    bool result =
+        await LogFile.of(context).removePreference(type, _user!.userid!, value);
+    if (result) {
+      await getPreference(type, context);
+      _isLoading = false;
+      notifyListeners();
+    } else {
+      SnackbarHolder.showFailureSnackbar(
+          'Irgendwas ist schiefgelaufen', context);
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future removeAllPreferencesOfType(
+      PreferenceTypes type, BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
+    bool result = await LogFile.of(context)
+        .removeAllPreferencesOfType(type, _user!.userid!);
+    if (result) {
+      await getPreference(type, context);
+      _isLoading = false;
+      notifyListeners();
+    } else {
+      SnackbarHolder.showFailureSnackbar(
+          'Irgendwas ist schiefgelaufen', context);
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future signOut() async {

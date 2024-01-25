@@ -152,6 +152,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
                 onPressed: () => setState(() {
                   selectedElement = Elements.none;
                   data = null;
+                  context.read<UserViewModel>().updateTransportLines = false;
                 }),
                 child: const Text(
                   "Zurückgehen",
@@ -340,8 +341,23 @@ class ButtonLayoutState extends State<ButtonLayout> {
         builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
-    const departuresUrlString = "https://ifa.ruhrbahn.de/departure/20009619";
-    final departuresUrl = Uri.parse(departuresUrlString);
+    final transportInfoListViehofer = await getDepartureList('20009619');
+    final transportInfoListRheinischer = await getDepartureList('20009712');
+    Map<String, List<TransportLineItem>> localData = {
+      'V': transportInfoListViehofer,
+      'R': transportInfoListRheinischer
+    };
+    Navigator.pop(context); //TODO: Fix this with locator or Navigation Service
+    setState(() {
+      data = localData;
+      selectedElement = Elements.transport;
+      contentString = "Transportation";
+    });
+  }
+
+  Future<List<TransportLineItem>> getDepartureList(String stopid) async {
+    String departureUrlString = "https://ifa.ruhrbahn.de/departure/$stopid";
+    final departuresUrl = Uri.parse(departureUrlString);
     final response = await http.get(departuresUrl);
     final departureListJson = jsonDecode(response.body);
     final departureList = departureListJson['data']['departureList'];
@@ -379,12 +395,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
       }
       transportInfoList.add(transportLineItem);
     }
-    Navigator.pop(context); //TODO: Fix this with locator or Navigation Service
-    setState(() {
-      data = transportInfoList;
-      selectedElement = Elements.transport;
-      contentString = "Viehoferplatz Transport Liste";
-    });
+    return transportInfoList;
   }
 
   Future getWeatherInfo() async {

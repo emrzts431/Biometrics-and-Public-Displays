@@ -80,3 +80,4 @@ flutter:
   assets:
     - assets/address_list.json
     - assets/images/
+    - assets/map_images/

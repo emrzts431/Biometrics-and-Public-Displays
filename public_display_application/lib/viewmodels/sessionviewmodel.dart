@@ -19,6 +19,7 @@ class SessionViewModel extends ChangeNotifier {
   bool get coffeScreen => _coffeScreen;
 
   Timer? periodicCheckTimer;
+  bool _dialogOpen = false;
 
   void updateLastTouch() {
     _lastTouch = DateTime.now();
@@ -30,12 +31,51 @@ class SessionViewModel extends ChangeNotifier {
 
   void periodicChecks(BuildContext context) {
     periodicCheckTimer =
-        Timer.periodic(const Duration(seconds: 30), (timer) async {
+        Timer.periodic(const Duration(seconds: 1), (timer) async {
       try {
         if (_lastTouch != null) {
           if (_contentScreen) {
             //If a valid user session exists
-            if (DateTime.now().difference(_lastTouch!).inMinutes > 1) {
+            if (DateTime.now().difference(_lastTouch!).inSeconds >= 30) {
+              if (!_dialogOpen) {
+                _dialogOpen = true;
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => Dialog(
+                      child: Container(
+                    height: 250,
+                    width: 400,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Bist du immer noch da ?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _dialogOpen = false;
+                            },
+                            child: const Text('Ja'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+                );
+              }
+            }
+            if (DateTime.now().difference(_lastTouch!).inSeconds >= 60) {
+              Navigator.of(context).pop();
               print("Should delete session");
               await context.read<UserViewModel>().signOut();
               _lastTouch = null;
