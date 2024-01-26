@@ -84,7 +84,7 @@ class SessionViewModel extends ChangeNotifier {
             }
           } else if (_loginScreen) {
             //If no valid session exists but user interacted with the screen
-            if (DateTime.now().difference(_lastTouch!).inMinutes > 1) {
+            if (DateTime.now().difference(_lastTouch!).inSeconds > 30) {
               print('Should go back to coffee screen');
               openCoffeeScreen();
               notifyListeners();
