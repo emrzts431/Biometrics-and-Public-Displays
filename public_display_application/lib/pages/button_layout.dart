@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
+import 'package:provider/provider.dart';
 import 'package:public_display_application/contents/map_content.dart';
 import 'package:public_display_application/contents/mensa_content.dart';
 import 'package:public_display_application/contents/transport_content.dart';
@@ -11,6 +12,8 @@ import 'package:public_display_application/models/address_item.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 import 'package:public_display_application/models/weather_item.dart';
+import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
+import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:xml/xml.dart';
 
@@ -33,10 +36,19 @@ class ButtonLayout extends StatefulWidget {
 
 class ButtonLayoutState extends State<ButtonLayout> {
   String? contentString = null;
-  dom.Element? doc;
   Elements selectedElement = Elements.none;
   var data;
   final _controller = PageController();
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<SessionViewModel>().startRestartPeriodicChecks(context);
+      context.read<SessionViewModel>().openContentScreen();
+      context.read<UserViewModel>().setHomePageContext(context);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return selectedElement == Elements.none
@@ -59,6 +71,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
                       buttonName(index),
                       style: const TextStyle(
                         color: Colors.black,
+                        fontSize: 24,
                       ),
                     ),
                   );
@@ -82,6 +95,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
                             buttonName(index),
                             style: const TextStyle(
                               color: Colors.black,
+                              fontSize: 20,
                             ),
                           ),
                         );
@@ -138,6 +152,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
                 onPressed: () => setState(() {
                   selectedElement = Elements.none;
                   data = null;
+                  context.read<UserViewModel>().updateTransportLines = false;
                 }),
                 child: const Text(
                   "Zurückgehen",
@@ -284,7 +299,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
         case "nutriscore":
           item.nutriscore = desElement.innerText;
         case "foto":
-          item.nutriscore = desElement.innerText;
+          item.foto = desElement.innerText;
         case "naehrwerte":
           item.nutritionScores =
               setUpNutritionScores(desElement.childElements.first);
@@ -326,8 +341,23 @@ class ButtonLayoutState extends State<ButtonLayout> {
         builder: (context) => const Center(
               child: CircularProgressIndicator(),
             ));
-    const departuresUrlString = "https://ifa.ruhrbahn.de/departure/20009619";
-    final departuresUrl = Uri.parse(departuresUrlString);
+    final transportInfoListViehofer = await getDepartureList('20009619');
+    final transportInfoListRheinischer = await getDepartureList('20009712');
+    Map<String, List<TransportLineItem>> localData = {
+      'V': transportInfoListViehofer,
+      'R': transportInfoListRheinischer
+    };
+    Navigator.pop(context); //TODO: Fix this with locator or Navigation Service
+    setState(() {
+      data = localData;
+      selectedElement = Elements.transport;
+      contentString = "Transportation";
+    });
+  }
+
+  Future<List<TransportLineItem>> getDepartureList(String stopid) async {
+    String departureUrlString = "https://ifa.ruhrbahn.de/departure/$stopid";
+    final departuresUrl = Uri.parse(departureUrlString);
     final response = await http.get(departuresUrl);
     final departureListJson = jsonDecode(response.body);
     final departureList = departureListJson['data']['departureList'];
@@ -365,12 +395,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
       }
       transportInfoList.add(transportLineItem);
     }
-    Navigator.pop(context); //TODO: Fix this with locator or Navigation Service
-    setState(() {
-      data = transportInfoList;
-      selectedElement = Elements.transport;
-      contentString = "Viehoferplatz Transport Liste";
-    });
+    return transportInfoList;
   }
 
   Future getWeatherInfo() async {

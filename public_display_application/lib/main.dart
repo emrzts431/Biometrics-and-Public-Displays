@@ -1,31 +1,76 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:public_display_application/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:public_display_application/pages/home_page.dart';
 import 'package:public_display_application/log_file.dart';
+import 'package:public_display_application/navigation_service.dart';
+import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
+import 'package:public_display_application/viewmodels/userviewmodel.dart';
+import 'package:sqlite_async/sqlite_async.dart';
+
+final migrations = SqliteMigrations()
+  ..add(SqliteMigration(1, (tx) async {
+    await tx.execute(
+        'CREATE TABLE Users(userid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, age INTEGER, surname VARCHAR(50), gender INTEGER);');
+    await tx.execute(
+        'CREATE TABLE Preference(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, type INTEGER, userid INTEGER, value VARCHAR(300), FOREIGN KEY (userid) REFERENCES Users(userid));');
+    await tx.execute(
+        'CREATE TABLE Session(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, type INTEGER, userid INTEGER, time INTEGER, FOREIGN KEY (userid) REFERENCES Users(userid));');
+  }));
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var folder = await getApplicationDocumentsDirectory();
+  final db = SqliteDatabase(path: '${folder.path}/pd.db');
+  migrations.migrate(db);
   File file = File(
-      "${folder.path}/TouchLogs/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.csv");
-  await file.writeAsString("timestamp,x,y,pointer,down,move,up\n");
-  runApp(MyApp(
-    file: file,
-  ));
+      "${folder.path}/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.csv");
+  await file.writeAsString("timestamp,x,y,pointer,down,move,up,contentid\n");
+  runZonedGuarded(
+      () => runApp(
+            MultiProvider(
+              providers: [
+                ChangeNotifierProvider<UserViewModel>(
+                  create: (_) => UserViewModel(),
+                ),
+                ChangeNotifierProvider<SessionViewModel>(
+                  create: (_) => SessionViewModel(),
+                ),
+              ],
+              child: MyApp(
+                db: db,
+                file: file,
+              ),
+            ),
+          ), (error, stack) {
+    print(error);
+    print(stack);
+  });
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key, required this.file});
+class MyApp extends StatefulWidget {
+  MyApp({super.key, required this.file, required this.db});
   File file;
+  SqliteDatabase db;
+
   // This widget is the root of your application.
   @override
+  createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
+    final NavigationService navigationService = NavigationService();
     return LogFile(
-      logFile: file,
+      db: widget.db,
+      logFile: widget.file,
       mychild: MaterialApp(
         title: 'Public Display',
+        navigatorKey: navigationService.navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,

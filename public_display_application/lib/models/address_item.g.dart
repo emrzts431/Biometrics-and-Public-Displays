@@ -11,6 +11,7 @@ AddressItem _$AddressItemFromJson(Map<String, dynamic> json) => AddressItem(
       lat: (json['lat'] as num).toDouble(),
       lon: (json['lon'] as num).toDouble(),
       name: json['name'] as String,
+      img: json['img'] as String,
     );
 
 Map<String, dynamic> _$AddressItemToJson(AddressItem instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$AddressItemToJson(AddressItem instance) =>
       'address': instance.address,
       'lat': instance.lat,
       'lon': instance.lon,
+      'img': instance.img,
     };

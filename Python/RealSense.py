@@ -56,7 +56,7 @@ try:
 
 
         np.savez(camerafilename + f'_{str(datetime.datetime.now().timestamp())}.npz', depth = depth_image, color = color_image)
-        i+=1
+
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 

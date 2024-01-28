@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:public_display_application/dialogs/sure_to_end_session.dart';
 import 'package:public_display_application/log_file.dart';
-import 'package:public_display_application/button_layout.dart';
+import 'package:public_display_application/pages/button_layout.dart';
+import 'package:public_display_application/pages/no_session_zone.dart';
+import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
+import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key, required this.title});
@@ -31,16 +36,10 @@ class _HomePageState extends State<HomePage> {
   String UP = "0,0,1";
   int version = 2;
 
-  void logInput(int x, int y, int pointer, String type) {
-    String logString =
-        "${DateTime.now().microsecondsSinceEpoch},$x,$y,$pointer,$type\n";
-
-    print(LogFile.of(context).logFile);
-    print(logString);
-    LogFile.of(context).logFile.writeAsString(
-          logString,
-          mode: FileMode.append,
-        );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -50,25 +49,37 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           widget.title,
         ),
+        actions: [
+          context.watch<UserViewModel>().user != null
+              ? ElevatedButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => SureToEndSessionDialog(),
+                  ),
+                  child: const Text("Session beenden"),
+                )
+              : const SizedBox.shrink()
+        ],
       ),
       body: Listener(
           onPointerDown: (e) async {
             int x = e.position.dx.round();
             int y = (e.position.dy).round();
 
-            logInput(x, y, e.pointer, DOWN);
+            LogFile.of(context).logInput(x, y, e.pointer, DOWN, -1);
+            context.read<SessionViewModel>().updateLastTouch();
           },
           onPointerMove: (e) async {
             int x = e.position.dx.round();
             int y = (e.position.dy).round();
 
-            logInput(x, y, e.pointer, MOVE);
+            LogFile.of(context).logInput(x, y, e.pointer, MOVE, -1);
           },
           onPointerUp: (e) async {
             int x = e.position.dx.round();
             int y = (e.position.dy).round();
 
-            logInput(x, y, e.pointer, UP);
+            LogFile.of(context).logInput(x, y, e.pointer, UP, -1);
           },
           child: FooterView(
             flex: 10,
@@ -107,9 +118,11 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     height: 700,
                     width: 570,
-                    child: ButtonLayout(
-                      version: 1,
-                    ),
+                    child: context.watch<UserViewModel>().user != null
+                        ? ButtonLayout(
+                            version: 1,
+                          )
+                        : NoSessionZone(),
                   ),
                 ),
               ),

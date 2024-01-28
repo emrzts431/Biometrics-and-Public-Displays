@@ -7,12 +7,14 @@ class AddressItem {
   String address;
   double lat;
   double lon;
+  String img;
 
   AddressItem({
     required this.address,
     required this.lat,
     required this.lon,
     required this.name,
+    required this.img,
   });
 
   factory AddressItem.fromJson(Map<String, dynamic> json) =>
