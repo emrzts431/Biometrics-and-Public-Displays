@@ -30,6 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+    
   path_provider: ^2.1.1
   http: ^1.2.0
   html: ^0.15.4
@@ -47,7 +51,7 @@ dependencies:
   #database
   sqlite_async: ^0.6.0
   sqlite3_flutter_libs: ^0.5.19+1
-  
+
   provider: ^6.1.1
   virtual_keyboard_multi_language: ^1.0.3
   animated_text_kit: ^4.2.2
@@ -64,11 +68,9 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   json_serializable: ^6.7.1
   build_runner: ^2.4.7
-  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -82,3 +84,5 @@ flutter:
     - assets/address_list.json
     - assets/images/
     - assets/map_images/
+flutter_intl:
+  enabled: true

@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/pages/home_page.dart';
 import 'package:public_display_application/log_file.dart';
 import 'package:public_display_application/navigation_service.dart';
@@ -69,6 +71,13 @@ class MyAppState extends State<MyApp> {
       db: widget.db,
       logFile: widget.file,
       mychild: MaterialApp(
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
         title: 'Public Display',
         navigatorKey: navigationService.navigatorKey,
         theme: ThemeData(

@@ -4,17 +4,44 @@ import numpy as np
 import cv2
 import datetime
 import os
+import asyncio
+
+
+
+array_list = []
+
+
 
 # Configure depth and color streams
 now = datetime.datetime.now().__str__().replace(' ', '').replace(':', "_").replace('.','_').replace('-', '_')
 camerafilename = rf"C:\Users\erme4\Documents\CameraLogs\{now}\frame"
 cameradoc =  rf"C:\Users\erme4\Documents\CameraLogs\{now}"
+
+
+"""Idea Storing depth frames
+
+Step-1: Create a temporary store file and save every 500 frames on it. 
+Step-2: after the number of files reaches 500, read these files, compress them and dump them into the original folder
+"""
+
+
 if not os.path.exists(cameradoc):
     os.mkdir(cameradoc)
 
 pipeline = rs.pipeline()
 config = rs.config()
 
+async def save_image(depth_array, color_array, lock):
+    async with lock:
+        print("started corotuine")
+        array_list.append(depth_array)
+        array_list.append(color_array)
+        print("added images to array")
+        if len(array_list) == 1000:
+            print("Dumping arrays...")
+            np.savez_compressed(camerafilename + f'_{str(datetime.datetime.now().timestamp())}.npz', *array_list)
+            array_list.clear()
+        
 # Get device product line for setting a supporting resolution
 pipeline_wrapper = rs.pipeline_wrapper(pipeline)
 pipeline_profile = config.resolve(pipeline_wrapper)
@@ -39,8 +66,8 @@ else:
 
 # Start streaming
 pipeline.start(config)
-i = 0
 try:
+    i = 0
     while True:
 
         # Wait for a coherent pair of frames: depth and color
@@ -51,12 +78,15 @@ try:
             continue
 
         # Convert images to numpy arrays
-        depth_image = np.asanyarray(depth_frame.get_data())
+        depth_image = np.asanyarray(depth_frame.get_data())#2D matrix
         color_image = np.asanyarray(color_frame.get_data())
 
-
-        np.savez(camerafilename + f'_{str(datetime.datetime.now().timestamp())}.npz', depth = depth_image, color = color_image)
-
+        #task = asyncio.create_task(save_image(depth_image, color_image, lock))
+        now = datetime.datetime.now().timestamp()
+        #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
+       
+        cv2.imwrite(camerafilename + f'_{str(now)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 9] )
+        cv2.imwrite(camerafilename + f'_{str(now)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
@@ -76,5 +106,6 @@ try:
         cv2.waitKey(1)
 
 finally:
+    #await 
     # Stop streaming
     pipeline.stop()

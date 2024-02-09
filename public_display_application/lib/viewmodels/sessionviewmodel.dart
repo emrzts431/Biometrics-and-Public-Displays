@@ -62,8 +62,9 @@ class SessionViewModel extends ChangeNotifier {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              updateLastTouch();
                               _dialogOpen = false;
+                              Navigator.of(context).pop();
                             },
                             child: const Text('Ja'),
                           ),
