@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:public_display_application/enums.dart';
 import 'package:public_display_application/models/preferences/preference.dart';
 import 'package:public_display_application/models/user.dart';
-import 'package:public_display_application/navigation_service.dart';
-import 'package:public_display_application/snackbar_holder.dart';
 import 'package:sqlite_async/sqlite_async.dart';
 
 class LogFile extends InheritedWidget {
@@ -18,13 +16,14 @@ class LogFile extends InheritedWidget {
   static LogFile of(BuildContext context) =>
       context.getInheritedWidgetOfExactType<LogFile>() as LogFile;
 
-  void logInput(int x, int y, int pointer, String type, int contentid) {
+  void logInput(int x, int y, int pointer, String type, int contentid) async {
+    List<String> typeVals = type.split(',');
     String logString =
-        "${DateTime.now().microsecondsSinceEpoch},$x,$y,$pointer,$type\n";
+        "${DateTime.now().microsecondsSinceEpoch}\t$x\t$y\t$pointer\t${typeVals[0]}\t${typeVals[1]}\t${typeVals[2]}\n";
 
     print(logFile);
     print(logString);
-    logFile.writeAsString(
+    await logFile.writeAsString(
       logString,
       mode: FileMode.append,
     );

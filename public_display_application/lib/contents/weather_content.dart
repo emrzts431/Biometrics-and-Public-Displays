@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/weather_item.dart';
 import 'package:public_display_application/widgets/weather/current_weather_widget.dart';
 
@@ -25,7 +26,7 @@ class WeatherContentState extends State<WeatherContent> {
             height: 20,
           ),
           Text(
-            "Wettervorhersage ${widget.data.first.time.day}.${widget.data.first.time.month}.${widget.data.first.time.year}",
+            "${S.of(context).weatherForecast} ${widget.data.first.time.day}.${widget.data.first.time.month}.${widget.data.first.time.year}",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 19,

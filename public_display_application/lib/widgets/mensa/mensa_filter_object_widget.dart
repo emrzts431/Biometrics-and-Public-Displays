@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
 class MensaFilterObject extends StatelessWidget {
@@ -24,7 +25,7 @@ class MensaFilterObject extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(setUpFilterName()),
+          Text(setUpFilterName(context)),
           IconButton(
             onPressed: () async {
               await context
@@ -38,24 +39,24 @@ class MensaFilterObject extends StatelessWidget {
     );
   }
 
-  String setUpFilterName() {
+  String setUpFilterName(BuildContext context) {
     switch (filter) {
       case 'S':
-        return 'mit Schweinfleisch';
+        return S.of(context).withPork;
       case 'R':
-        return 'mit Rindfleisch';
+        return S.of(context).withBeef;
       case 'VEG':
-        return 'Vegan';
+        return S.of(context).vegan;
       case 'A':
-        return 'mit Alkohol';
+        return S.of(context).withAlcohol;
       case 'G':
-        return 'mit Geflügel';
+        return S.of(context).withPoultry;
       case 'F':
-        return 'mit Fisch';
+        return S.of(context).withFish;
       case 'V':
-        return 'Vegetarisch';
+        return S.of(context).vegetarien;
       default:
-        return 'unknown';
+        return S.of(context).unknown;
     }
   }
 }

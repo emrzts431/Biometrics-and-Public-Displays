@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/log_file.dart';
 import 'package:public_display_application/models/preferences/preference.dart';
 import 'package:public_display_application/models/user.dart';
@@ -46,24 +47,24 @@ class UserViewModel extends ChangeNotifier {
         )) {
           _user = localUser;
           SnackbarHolder.showSuccessSnackbar(
-              'Session wurde erfolgreich gestartet. Herzlich Wilkommen ${_user!.surname}!',
+              '${S.current.sessionSuccessfullyStarted} ${_user!.surname}!',
               context);
         } else {
           SnackbarHolder.showFailureSnackbar(
-              'Fehler beim Session starten', context);
+              S.current.errorAtSessionStart, context);
         }
         _isLoading = false;
       } else {
         _isLoading = false;
         _user = null;
-        SnackbarHolder.showFailureSnackbar('Nutzer existiert nicht', context);
+        SnackbarHolder.showFailureSnackbar(S.current.userDoesntExist, context);
       }
       notifyListeners();
     } on Exception catch (e) {
       print(e);
       _isLoading = false;
       _user = null;
-      SnackbarHolder.showFailureSnackbar('Nutzer existiert nicht', context);
+      SnackbarHolder.showFailureSnackbar(S.current.userDoesntExist, context);
     }
   }
 
@@ -78,7 +79,7 @@ class UserViewModel extends ChangeNotifier {
       try {
         await login(age, surname, gender, context);
       } on Exception catch (e) {
-        SnackbarHolder.showFailureSnackbar('Fehler beim registrieren', context);
+        SnackbarHolder.showFailureSnackbar(S.current.errorAtRegister, context);
         print(e);
         _isLoading = false;
         notifyListeners();
@@ -91,7 +92,6 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
     switch (type.index) {
       case 0:
-        print('getting mensa preferences');
         _mensaPreference =
             await LogFile.of(context).getPreference(type, _user!.userid!);
         print(_mensaPreference);
@@ -133,8 +133,7 @@ class UserViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } else {
-      SnackbarHolder.showFailureSnackbar(
-          'Irgendwas ist schiefgelaufen', context);
+      SnackbarHolder.showFailureSnackbar(S.current.somethingWentWrong, context);
       _isLoading = false;
       notifyListeners();
     }
@@ -151,8 +150,7 @@ class UserViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } else {
-      SnackbarHolder.showFailureSnackbar(
-          'Irgendwas ist schiefgelaufen', context);
+      SnackbarHolder.showFailureSnackbar(S.current.somethingWentWrong, context);
       _isLoading = false;
       notifyListeners();
     }
@@ -169,14 +167,14 @@ class UserViewModel extends ChangeNotifier {
             user!.userid!,
             DateTime.now().microsecondsSinceEpoch)) {
           SnackbarHolder.showSuccessSnackbar(
-              'Session wurde erfolgreich beendet', _homePageContext!);
+              S.current.sessionEndedSuccessfully, _homePageContext!);
           _user = null;
           _isLoading = false;
           _homePageContext = null;
           notifyListeners();
         } else {
           SnackbarHolder.showFailureSnackbar(
-              'Fehler beim Session Enden', _homePageContext!);
+              S.current.errorAtSessionEnd, _homePageContext!);
           _user = null;
           _isLoading = false;
           _homePageContext = null;

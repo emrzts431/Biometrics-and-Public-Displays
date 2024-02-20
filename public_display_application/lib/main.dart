@@ -29,8 +29,9 @@ void main() async {
   final db = SqliteDatabase(path: '${folder.path}/pd.db');
   migrations.migrate(db);
   File file = File(
-      "${folder.path}/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.csv");
-  await file.writeAsString("timestamp,x,y,pointer,down,move,up,contentid\n");
+      "${folder.path}/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.tsv");
+  await file
+      .writeAsString("timestamp\tx\ty\tpointer\tdown\tmove\tup\tcontentid\n");
   runZonedGuarded(
       () => runApp(
             MultiProvider(
@@ -77,16 +78,14 @@ class MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: S.delegate.supportedLocales,
+        supportedLocales: const <Locale>[Locale('de', 'DE')],
         title: 'Public Display',
         navigatorKey: navigationService.navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,
         ),
-        home: HomePage(
-          title: 'Public Display Home Page',
-        ),
+        home: HomePage(title: "Public Display"),
       ),
     );
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:provider/provider.dart';
-import 'package:public_display_application/navigation_service.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
 class SessionViewModel extends ChangeNotifier {
@@ -50,9 +49,9 @@ class SessionViewModel extends ChangeNotifier {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Bist du immer noch da ?',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).areYouStillThere,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
@@ -66,7 +65,7 @@ class SessionViewModel extends ChangeNotifier {
                               _dialogOpen = false;
                               Navigator.of(context).pop();
                             },
-                            child: const Text('Ja'),
+                            child: Text(S.of(context).yes),
                           ),
                         ],
                       ),
@@ -77,7 +76,7 @@ class SessionViewModel extends ChangeNotifier {
             }
             if (DateTime.now().difference(_lastTouch!).inSeconds >= 60) {
               Navigator.of(context).pop();
-              print("Should delete session");
+
               await context.read<UserViewModel>().signOut();
               _lastTouch = null;
               openCoffeeScreen();
@@ -86,7 +85,6 @@ class SessionViewModel extends ChangeNotifier {
           } else if (_loginScreen) {
             //If no valid session exists but user interacted with the screen
             if (DateTime.now().difference(_lastTouch!).inSeconds > 30) {
-              print('Should go back to coffee screen');
               openCoffeeScreen();
               notifyListeners();
             }

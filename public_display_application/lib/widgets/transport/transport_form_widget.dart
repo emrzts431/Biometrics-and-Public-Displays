@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/navigation_service.dart';
 import 'package:public_display_application/snackbar_holder.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
@@ -61,8 +62,8 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
       child: Column(
         children: [
           Text(
-            'Deine Präferenzen',
-            style: TextStyle(
+            S.of(context).yourPreferences,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 17,
             ),
@@ -70,7 +71,7 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
           const SizedBox(
             height: 30,
           ),
-          Text('Lieblingslinien Viehoferplatz'),
+          Text('${S.of(context).favoriteLines} Viehoferplatz'),
           Container(
             height: 200,
             width: 300,
@@ -120,7 +121,7 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
           const SizedBox(
             height: 30,
           ),
-          Text('Lieblingslinien Rheinischerplatz'),
+          Text('${S.of(context).favoriteLines} Rheinischerplatz'),
           Container(
             height: 200,
             width: 300,
@@ -176,8 +177,9 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
               if (rheinischerPlatzSelectedLines.isEmpty ||
                   viehoferPlatzSelectedLines.isEmpty) {
                 SnackbarHolder.showFailureSnackbar(
-                    'Bitte gebe fuer beide Haltestellen deine lieblings Linien ein!',
-                    context);
+                  S.of(context).pleaseGiveALineForBothStops,
+                  context,
+                );
               } else {
                 await context.read<UserViewModel>().removeAllPreferencesOfType(
                     PreferenceTypes.transport, context);
@@ -192,7 +194,7 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
                 context.read<UserViewModel>().updateTransportLines = false;
               }
             },
-            child: const Text('Speichern'),
+            child: Text(S.of(context).save),
           ),
         ],
       ),

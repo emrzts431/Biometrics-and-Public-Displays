@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:public_display_application/generated/l10n.dart';
 
 class FreeCoffeePage extends StatelessWidget {
   @override
@@ -17,7 +18,7 @@ class FreeCoffeePage extends StatelessWidget {
         ),
         AnimatedTextKit(
           animatedTexts: [
-            WavyAnimatedText('GRATIS KAFFEE',
+            WavyAnimatedText(S.of(context).freeCoffee,
                 textStyle: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -32,7 +33,7 @@ class FreeCoffeePage extends StatelessWidget {
         AnimatedTextKit(
           animatedTexts: [
             WavyAnimatedText(
-              '!!KLICKE JETZT!!',
+              '!!${S.of(context).clickNow}!!',
               textStyle: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,

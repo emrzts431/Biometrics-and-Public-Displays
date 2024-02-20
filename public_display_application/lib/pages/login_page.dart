@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/snackbar_holder.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
@@ -24,10 +25,10 @@ class LoginPageState extends State<LoginPage> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "Hast du das Public Display schon benutzt ?",
+          Text(
+            S.of(context).haveYouEverUsedThisPublicDisplay,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30),
+            style: const TextStyle(fontSize: 30),
           ),
           const SizedBox(
             height: 100,
@@ -37,14 +38,14 @@ class LoginPageState extends State<LoginPage> {
             children: [
               ElevatedButton(
                 onPressed: () => setState(() => returningUser = true),
-                child: Text("Ja"),
+                child: Text(S.of(context).yes),
               ),
               const SizedBox(
                 width: 80,
               ),
               ElevatedButton(
                 onPressed: () => setState(() => returningUser = false),
-                child: const Text("Nein"),
+                child: Text(S.of(context).no),
               ),
             ],
           )
@@ -75,8 +76,9 @@ class LoginPageState extends State<LoginPage> {
           maxLength: 2,
           controller: _ageInputController,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-              hintText: "Dein alter", hintStyle: TextStyle(fontSize: 25)),
+          decoration: InputDecoration(
+              hintText: S.of(context).yourAge,
+              hintStyle: const TextStyle(fontSize: 25)),
         ),
         TextField(
           onTap: () => setState(() {
@@ -90,13 +92,13 @@ class LoginPageState extends State<LoginPage> {
           maxLength: 3,
           controller: _lastnameInputController,
           keyboardType: TextInputType.text,
-          decoration: const InputDecoration(
-            hintText: "Erste 3 Buschtaben deiner Nachname",
-            hintStyle: TextStyle(fontSize: 25),
+          decoration: InputDecoration(
+            hintText: S.of(context).threeInitialsYourName,
+            hintStyle: const TextStyle(fontSize: 25),
           ),
         ),
         DropdownButton<String>(
-          hint: const Text("Wähle dein Geschlecht aus"),
+          hint: Text(S.of(context).chooseYourGender),
           value: selectedGender,
           icon: const Icon(Icons.arrow_drop_down),
           iconSize: 24,
@@ -107,7 +109,7 @@ class LoginPageState extends State<LoginPage> {
               selectedGender = newValue;
             });
           },
-          items: <String>['Männlich', 'Weiblich']
+          items: <String>[S.of(context).male, S.of(context).female]
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -123,20 +125,20 @@ class LoginPageState extends State<LoginPage> {
             if (_ageInputController.text.isEmpty ||
                 _lastnameInputController.text.isEmpty) {
               SnackbarHolder.showFailureSnackbar(
-                  "Bitte alle nötige Informationen eingeben", context);
+                  S.of(context).giveAllNecessaryInfo, context);
             } else {
               await context.read<UserViewModel>().login(
                     int.parse(_ageInputController.text),
                     _lastnameInputController.text,
-                    selectedGender! == 'Männlich'
+                    selectedGender! == S.of(context).male
                         ? Genders.male
                         : Genders.female,
                     context,
                   );
             }
           },
-          child: const Text(
-            "GO!",
+          child: Text(
+            S.of(context).login,
           ),
         ),
         const SizedBox(
@@ -155,7 +157,7 @@ class LoginPageState extends State<LoginPage> {
               openKeyboard = false;
             },
           ),
-          child: const Text('Zurück'),
+          child: Text(S.of(context).goBack),
         ),
         if (context.watch<UserViewModel>().isLoading)
           const Center(
@@ -181,8 +183,9 @@ class LoginPageState extends State<LoginPage> {
           maxLength: 2,
           controller: _ageInputController,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-              hintText: "Dein alter", hintStyle: TextStyle(fontSize: 25)),
+          decoration: InputDecoration(
+              hintText: S.of(context).yourAge,
+              hintStyle: const TextStyle(fontSize: 25)),
         ),
         TextField(
           onTap: () => setState(() {
@@ -196,13 +199,13 @@ class LoginPageState extends State<LoginPage> {
           maxLength: 3,
           controller: _lastnameInputController,
           keyboardType: TextInputType.text,
-          decoration: const InputDecoration(
-            hintText: "Erste 3 Buschtaben deiner Nachname",
-            hintStyle: TextStyle(fontSize: 25),
+          decoration: InputDecoration(
+            hintText: S.of(context).threeInitialsYourName,
+            hintStyle: const TextStyle(fontSize: 25),
           ),
         ),
         DropdownButton<String>(
-          hint: const Text("Wähle dein Geschlecht aus"),
+          hint: Text(S.of(context).chooseYourGender),
           value: selectedGender,
           icon: const Icon(Icons.arrow_drop_down),
           iconSize: 24,
@@ -213,7 +216,7 @@ class LoginPageState extends State<LoginPage> {
               selectedGender = newValue;
             });
           },
-          items: <String>['Männlich', 'Weiblich']
+          items: <String>[S.of(context).male, S.of(context).female]
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -230,20 +233,20 @@ class LoginPageState extends State<LoginPage> {
                 _lastnameInputController.text.isEmpty ||
                 selectedGender == null) {
               SnackbarHolder.showFailureSnackbar(
-                  "Bitte alle nötige Informationen eingeben", context);
+                  S.of(context).giveAllNecessaryInfo, context);
             } else {
               await context.read<UserViewModel>().register(
                     _lastnameInputController.text,
                     int.parse(_ageInputController.text),
-                    selectedGender! == 'Männlich'
+                    selectedGender! == S.of(context).male
                         ? Genders.male
                         : Genders.female,
                     context,
                   );
             }
           },
-          child: const Text(
-            "Registrieren!",
+          child: Text(
+            S.of(context).register,
           ),
         ),
         const SizedBox(
@@ -263,7 +266,7 @@ class LoginPageState extends State<LoginPage> {
               openKeyboard = false;
             },
           ),
-          child: const Text('Zurück'),
+          child: Text(S.of(context).goBack),
         ),
         if (context.watch<UserViewModel>().isLoading)
           const Center(

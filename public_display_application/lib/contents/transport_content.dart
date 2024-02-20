@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:public_display_application/widgets/transport/transport_form_widget.dart';
@@ -26,6 +27,7 @@ class TransportContentState extends State<TransportContent> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      print(context.read<UserViewModel>().user!.userid);
       context
           .read<UserViewModel>()
           .getPreference(PreferenceTypes.transport, context);
@@ -88,7 +90,7 @@ class TransportContentState extends State<TransportContent> {
                     ElevatedButton(
                       onPressed: () => setState(
                           () => userViewModel.updateTransportLines = true),
-                      child: const Text('Liniepräferenz Ändern'),
+                      child: Text(S.of(context).changeLinePreference),
                     ),
                     const SizedBox(
                       height: 15,
@@ -140,7 +142,7 @@ class TransportContentState extends State<TransportContent> {
                     ElevatedButton(
                       onPressed: () => setState(
                           () => userViewModel.updateTransportLines = true),
-                      child: const Text('Liniepräferenz Ändern'),
+                      child: Text(S.of(context).changeLinePreference),
                     ),
                     const SizedBox(
                       height: 15,
@@ -165,7 +167,7 @@ class TransportContentState extends State<TransportContent> {
                                     const SizedBox(
                                       width: 7,
                                     ),
-                                    Text("${item.number}"),
+                                    Text(item.number),
                                   ],
                                 ),
                                 subtitle: Text(item.direction),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:public_display_application/navigation_service.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
@@ -16,10 +16,10 @@ class SureToEndSessionDialog extends StatelessWidget {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Sicher, dass du dein Session enden willst ? Du kannst dein freie Kaffe nicht haben, wenn du jetzt endest!',
+            Text(
+              S.of(context).areYouStillThere,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 100,
@@ -30,9 +30,9 @@ class SureToEndSessionDialog extends StatelessWidget {
                 await context.read<UserViewModel>().signOut();
                 Navigator.pop(context);
               },
-              child: const Text(
-                'Session beenden',
-                style: TextStyle(fontSize: 20),
+              child: Text(
+                S.of(context).endSession,
+                style: const TextStyle(fontSize: 20),
               ),
             )
           ],

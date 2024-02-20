@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:public_display_application/widgets/mensa/mensa_filters_widget.dart';
@@ -210,21 +211,21 @@ class _MensaContentState extends State<MensaContent> {
   String weekdayString(int day) {
     switch (day) {
       case 1:
-        return "Montag";
+        return S.of(context).monday;
       case 2:
-        return "Dienstag";
+        return S.of(context).tuesday;
       case 3:
-        return "Mittwoch";
+        return S.of(context).wednesday;
       case 4:
-        return "Donnerstag";
+        return S.of(context).thursday;
       case 5:
-        return "Freitag";
+        return S.of(context).friday;
       case 6:
-        return "Samstag";
+        return S.of(context).saturday;
       case 7:
-        return "Sonntag";
+        return S.of(context).sonday;
       default:
-        return "Unknown";
+        return S.of(context).unknown;
     }
   }
 
@@ -334,90 +335,91 @@ class _MensaContentState extends State<MensaContent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Column(
+          Column(
             children: [
               Text(
-                "Nähr­werte",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                S.of(context).nutriVals,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
-              Text(
+              const Text(
                 "Kilojoule",
                 style: TextStyle(fontSize: 14),
               ),
               Text(
-                "Kilokalorien",
-                style: TextStyle(fontSize: 14),
+                S.of(context).kiloCals,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "Fett",
-                style: TextStyle(fontSize: 14),
+                S.of(context).fat,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "gesättigt",
-                style: TextStyle(fontSize: 14),
+                S.of(context).saturated,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "Kohlen­hydrate",
-                style: TextStyle(fontSize: 14),
+                S.of(context).carbs,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "Zucker",
-                style: TextStyle(fontSize: 14),
+                S.of(context).sugar,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "Ballast­stoffe",
-                style: TextStyle(fontSize: 14),
+                S.of(context).fiber,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "Eiweiß",
-                style: TextStyle(fontSize: 14),
+                S.of(context).protein,
+                style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "Salz",
-                style: TextStyle(fontSize: 14),
+                S.of(context).salt,
+                style: const TextStyle(fontSize: 14),
               ),
             ],
           ),
           Column(
             children: [
-              const Text(
-                "Pro Portion",
+              Text(
+                "${S.of(context).per} Portion",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
               Text(
-                "${item.nutritionScores?.kj ?? "Unknown"} kJ",
+                "${item.nutritionScores?.kj ?? S.of(context).unknown} kJ",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.kcal ?? "Unknown"} kcal",
+                "${item.nutritionScores?.kcal ?? S.of(context).unknown} kcal",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.fat ?? "Unknown"} g",
+                "${item.nutritionScores?.fat ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.transfat ?? "Unknown"} g",
+                "${item.nutritionScores?.transfat ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.carbonhydrate ?? "Unknown"} g",
+                "${item.nutritionScores?.carbonhydrate ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.sugar ?? "Unknown"} g",
+                "${item.nutritionScores?.sugar ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.ballastoffe ?? "Unknown"} g",
+                "${item.nutritionScores?.ballastoffe ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.protein ?? "Unkown"} g",
+                "${item.nutritionScores?.protein ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                "${item.nutritionScores?.salz ?? "Unknown"} g",
+                "${item.nutritionScores?.salz ?? S.of(context).unknown} g",
                 style: const TextStyle(fontSize: 14),
               ),
             ],
@@ -436,7 +438,7 @@ class _MensaContentState extends State<MensaContent> {
                 height: 50,
                 width: 50,
                 child: Text(
-                  item.nutriscore ?? "Unknown",
+                  item.nutriscore ?? S.of(context).unknown,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -458,35 +460,35 @@ class _MensaContentState extends State<MensaContent> {
         children: [
           Column(
             children: [
-              const Text(
-                "Studenten",
-                style: TextStyle(
+              Text(
+                S.of(context).students,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('${item.preis1 ?? "Unknown"}€')
+              Text('${item.preis1 ?? S.of(context).unknown}€')
             ],
           ),
           Column(
             children: [
-              const Text(
-                "Bedienende",
-                style: TextStyle(
+              Text(
+                S.of(context).staff,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('${item.preis2 ?? "Unknown"}€')
+              Text('${item.preis2 ?? S.of(context).unknown}€')
             ],
           ),
           Column(
             children: [
-              const Text(
-                "Gäste",
-                style: TextStyle(
+              Text(
+                S.of(context).guests,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('${item.preis3 ?? "Unknown"}€')
+              Text('${item.preis3 ?? S.of(context).unknown}€')
             ],
           )
         ],

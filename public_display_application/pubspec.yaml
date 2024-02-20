@@ -47,6 +47,8 @@ dependencies:
   flutter_widget_from_html: ^0.14.10+1
   flutter_svg: ^2.0.9
   footer: ^0.0.4
+  #webview_windows: ^0.4.0
+  desktop_webview_window: ^0.2.3
 
   #database
   sqlite_async: ^0.6.0

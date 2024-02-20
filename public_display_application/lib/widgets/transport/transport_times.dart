@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 
 class TransportTimes extends StatelessWidget {
@@ -39,8 +40,8 @@ class TransportTimes extends StatelessWidget {
           ),
           Text(
             item.realtimeTripStatus == TransportStatus.tripCancelled
-                ? "Cancelled"
-                : "Unknown Problem",
+                ? S.of(context).canceled
+                : "${S.of(context).unknown} Problem",
           ),
         ],
       );

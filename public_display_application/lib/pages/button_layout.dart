@@ -8,6 +8,7 @@ import 'package:public_display_application/contents/map_content.dart';
 import 'package:public_display_application/contents/mensa_content.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/contents/weather_content.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/address_item.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/models/transportline_item.dart';
@@ -154,9 +155,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
                   data = null;
                   context.read<UserViewModel>().updateTransportLines = false;
                 }),
-                child: const Text(
-                  "Zurückgehen",
-                  style: TextStyle(
+                child: Text(
+                  S.of(context).goBack,
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
@@ -168,19 +169,15 @@ class ButtonLayoutState extends State<ButtonLayout> {
   void buttonFunctionality(int index) async {
     switch (index) {
       case 0:
-        print("Mensa");
         await getMensaData();
         break;
       case 1:
-        print("Transport");
         await getDataViehoferPlatz();
         break;
       case 2:
-        print("Map");
         await getMapData();
         break;
       case 3:
-        print("Weather");
         await getWeatherInfo();
         break;
       default:
@@ -191,13 +188,13 @@ class ButtonLayoutState extends State<ButtonLayout> {
   String buttonName(int index) {
     switch (index) {
       case 0:
-        return "Mensa";
+        return S.of(context).canteen;
       case 1:
-        return "Transport";
+        return S.of(context).transport;
       case 2:
-        return "Map";
+        return S.of(context).map;
       case 3:
-        return "Wetter";
+        return S.of(context).weather;
       default:
         return "Unknown";
     }
@@ -241,7 +238,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
     setState(() {
       data = localData;
       selectedElement = Elements.mensa;
-      contentString = "Mensa Speiseplan";
+      contentString = S.of(context).canteenMenu;
     });
   }
 
@@ -351,7 +348,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
     setState(() {
       data = localData;
       selectedElement = Elements.transport;
-      contentString = "Transportation";
+      contentString = S.of(context).transportation;
     });
   }
 
@@ -440,7 +437,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
     setState(() {
       selectedElement = Elements.weather;
       data = weatherItemList;
-      contentString = "Essen Wetter";
+      contentString = "Essen ${S.of(context).weather}";
     });
   }
 
@@ -456,7 +453,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
     setState(() {
       selectedElement = Elements.map;
       data = addressList;
-      contentString = "Map";
+      contentString = S.of(context).map;
     });
   }
 }

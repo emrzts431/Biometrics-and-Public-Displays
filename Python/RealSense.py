@@ -85,7 +85,7 @@ try:
         now = datetime.datetime.now().timestamp()
         #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
        
-        cv2.imwrite(camerafilename + f'_{str(now)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 9] )
+        #cv2.imwrite(camerafilename + f'_{str(now)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 9] )
         cv2.imwrite(camerafilename + f'_{str(now)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)

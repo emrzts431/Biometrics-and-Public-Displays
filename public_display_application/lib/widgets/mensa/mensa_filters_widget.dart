@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:public_display_application/widgets/mensa/mensa_filter_object_widget.dart';
 
@@ -46,9 +47,9 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Was ist dein Diet?',
-                              style: TextStyle(
+                            Text(
+                              S.of(context).whatIsYourDiet,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -57,33 +58,28 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                               child: ListView(
                                 children: [
                                   ListTile(
-                                    title: const Text('mit Schweinfleisch'),
+                                    title: Text(S.of(context).withPork),
                                     onTap: () async {
-                                      print('pork');
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
                                                   .contains('S') ==
                                               false) {
-                                        print('setting up pork');
                                         await userViewModel.setPreference(
                                             PreferenceTypes.mensa,
                                             'S',
                                             context);
-                                      } else {
-                                        //remove preference
                                       }
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('Vegan'),
+                                    title: Text(S.of(context).vegan),
                                     onTap: () async {
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
                                                   .contains('VEG') ==
                                               false) {
-                                        print('setting up vegan');
                                         await userViewModel.setPreference(
                                             PreferenceTypes.mensa,
                                             'VEG',
@@ -92,7 +88,7 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('mit Alkohol'),
+                                    title: Text(S.of(context).withAlcohol),
                                     onTap: () async {
                                       if (userViewModel.mensaPreference ==
                                               null ||
@@ -107,15 +103,13 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('mit Rindfleisch'),
+                                    title: Text(S.of(context).withBeef),
                                     onTap: () async {
-                                      print('rind');
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
                                                   .contains('R') ==
                                               false) {
-                                        print('setting up rind');
                                         await userViewModel.setPreference(
                                             PreferenceTypes.mensa,
                                             'R',
@@ -124,15 +118,13 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('mit Geflügel'),
+                                    title: Text(S.of(context).withPoultry),
                                     onTap: () async {
-                                      print('geflügel');
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
                                                   .contains('G') ==
                                               false) {
-                                        print('setting up geflügel');
                                         await userViewModel.setPreference(
                                             PreferenceTypes.mensa,
                                             'G',
@@ -141,15 +133,13 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('mit Fisch'),
+                                    title: Text(S.of(context).withFish),
                                     onTap: () async {
-                                      print('Fisch');
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
                                                   .contains('F') ==
                                               false) {
-                                        print('setting up Fisch');
                                         await userViewModel.setPreference(
                                             PreferenceTypes.mensa,
                                             'F',
@@ -158,15 +148,13 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('Vegetarisch'),
+                                    title: Text(S.of(context).vegetarien),
                                     onTap: () async {
-                                      print('Vegetarisch');
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
                                                   .contains('V') ==
                                               false) {
-                                        print('setting up Vegetarisch');
                                         await userViewModel.setPreference(
                                             PreferenceTypes.mensa,
                                             'V',
