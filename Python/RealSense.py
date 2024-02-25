@@ -7,14 +7,15 @@ import os
 import asyncio
 
 
-
 array_list = []
 
 
 
 # Configure depth and color streams
 now = datetime.datetime.now().__str__().replace(' ', '').replace(':', "_").replace('.','_').replace('-', '_')
-camerafilename = rf"C:\Users\erme4\Documents\CameraLogs\{now}\frame"
+
+camerafilename_depth = rf"C:\Users\erme4\Documents\CameraLogs\{now}\depth\frame"
+camerefilename_color = rf"C:\Users\erme4\Documents\CameraLogs\{now}\color\frame"
 cameradoc =  rf"C:\Users\erme4\Documents\CameraLogs\{now}"
 
 
@@ -27,20 +28,12 @@ Step-2: after the number of files reaches 500, read these files, compress them a
 
 if not os.path.exists(cameradoc):
     os.mkdir(cameradoc)
+    os.mkdir(rf"{cameradoc}\depth")
+    os.mkdir(rf"{cameradoc}\color")
+    
 
 pipeline = rs.pipeline()
 config = rs.config()
-
-async def save_image(depth_array, color_array, lock):
-    async with lock:
-        print("started corotuine")
-        array_list.append(depth_array)
-        array_list.append(color_array)
-        print("added images to array")
-        if len(array_list) == 1000:
-            print("Dumping arrays...")
-            np.savez_compressed(camerafilename + f'_{str(datetime.datetime.now().timestamp())}.npz', *array_list)
-            array_list.clear()
         
 # Get device product line for setting a supporting resolution
 pipeline_wrapper = rs.pipeline_wrapper(pipeline)
@@ -85,8 +78,8 @@ try:
         now = datetime.datetime.now().timestamp()
         #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
        
-        #cv2.imwrite(camerafilename + f'_{str(now)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 9] )
-        cv2.imwrite(camerafilename + f'_{str(now)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
+        cv2.imwrite(camerafilename_depth + f'_{str(now)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 5] )
+        cv2.imwrite(camerefilename_color + f'_{str(now)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
         depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
