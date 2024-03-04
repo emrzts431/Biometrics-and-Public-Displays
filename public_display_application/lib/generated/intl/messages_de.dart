@@ -23,73 +23,73 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "areYouStillThere":
-            MessageLookupByLibrary.simpleMessage("Bist du immer noch da ?"),
+            MessageLookupByLibrary.simpleMessage("Sind Sie noch da?"),
         "canceled": MessageLookupByLibrary.simpleMessage("Abgelehnt"),
         "canteen": MessageLookupByLibrary.simpleMessage("Mensa"),
-        "canteenMenu": MessageLookupByLibrary.simpleMessage("Canteen Menu"),
+        "canteenMenu":
+            MessageLookupByLibrary.simpleMessage("Mensa Speisekarte"),
         "carbs": MessageLookupByLibrary.simpleMessage("Kohlen­hydrate"),
         "changeLinePreference":
-            MessageLookupByLibrary.simpleMessage("Liniepräferenz Ändern"),
+            MessageLookupByLibrary.simpleMessage("Linienpräferenz ändern"),
         "chooseABuilding":
-            MessageLookupByLibrary.simpleMessage("Ein Geabäude auswählen"),
+            MessageLookupByLibrary.simpleMessage("Gebäude auswählen"),
         "chooseYourGender":
-            MessageLookupByLibrary.simpleMessage("Wähle dein Geschlecht aus"),
-        "clickNow": MessageLookupByLibrary.simpleMessage("KLICKE JETZT"),
-        "endSession": MessageLookupByLibrary.simpleMessage("Session beenden"),
+            MessageLookupByLibrary.simpleMessage("Ihr Geschlecht"),
+        "clickNow": MessageLookupByLibrary.simpleMessage("JETZT KLICKEN"),
+        "endSession": MessageLookupByLibrary.simpleMessage("Nutzung beenden"),
         "errorAtRegister":
-            MessageLookupByLibrary.simpleMessage("Fehler beim registrieren"),
-        "errorAtSessionEnd":
-            MessageLookupByLibrary.simpleMessage("Fehler beim Session Enden"),
+            MessageLookupByLibrary.simpleMessage("Fehler beim Registrieren"),
+        "errorAtSessionEnd": MessageLookupByLibrary.simpleMessage(
+            "Fehler beim Ende der Session"),
         "errorAtSessionStart":
             MessageLookupByLibrary.simpleMessage("Fehler beim Session starten"),
         "fat": MessageLookupByLibrary.simpleMessage("Fett"),
-        "favoriteLines":
-            MessageLookupByLibrary.simpleMessage("Lieblingslinien"),
+        "favoriteLines": MessageLookupByLibrary.simpleMessage("Ihre Linien"),
         "female": MessageLookupByLibrary.simpleMessage("Weiblich"),
         "fiber": MessageLookupByLibrary.simpleMessage("Ballast­stoffe"),
         "freeCoffee": MessageLookupByLibrary.simpleMessage("GRATIS KAFFEE"),
         "friday": MessageLookupByLibrary.simpleMessage("Freitag"),
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
-            "Bitte alle nötige Informationen eingeben"),
+            "Bitte alle nötigen Informationen eingeben"),
         "goBack": MessageLookupByLibrary.simpleMessage("Zurückgehen"),
         "guests": MessageLookupByLibrary.simpleMessage("Gäste"),
         "haveYouEverUsedThisPublicDisplay":
             MessageLookupByLibrary.simpleMessage(
-                "Hast du das Public Display schon benutzt ?"),
-        "kiloCals": MessageLookupByLibrary.simpleMessage("Kilocalories"),
+                "Haben Sie das Public Display schon einmal benutzt?"),
+        "kiloCals": MessageLookupByLibrary.simpleMessage("Kilocalorien"),
         "login": MessageLookupByLibrary.simpleMessage("Einloggen"),
         "male": MessageLookupByLibrary.simpleMessage("Männlich"),
-        "map": MessageLookupByLibrary.simpleMessage("Map"),
+        "map": MessageLookupByLibrary.simpleMessage("Karte"),
         "monday": MessageLookupByLibrary.simpleMessage("Montag"),
         "no": MessageLookupByLibrary.simpleMessage("Nein"),
         "nutriVals": MessageLookupByLibrary.simpleMessage("Nähr­werte"),
         "per": MessageLookupByLibrary.simpleMessage("Pro"),
         "pleaseGiveALineForBothStops": MessageLookupByLibrary.simpleMessage(
-            "Bitte gebe fuer beide Haltestellen deine lieblings Linien ein!"),
+            "Bitte geben Sie für beide Haltestellen Ihre Linien ein!"),
         "protein": MessageLookupByLibrary.simpleMessage("Eiweiß"),
         "publicDisplayTitle":
-            MessageLookupByLibrary.simpleMessage("Pulic Display Haputseite"),
+            MessageLookupByLibrary.simpleMessage("Pulic Display Startseite"),
         "register": MessageLookupByLibrary.simpleMessage("Registrieren"),
         "salt": MessageLookupByLibrary.simpleMessage("Salz"),
         "saturated": MessageLookupByLibrary.simpleMessage("gesättigt"),
         "saturday": MessageLookupByLibrary.simpleMessage("Samstag"),
         "save": MessageLookupByLibrary.simpleMessage("Speichern"),
         "sessionEndedSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "Session wurde erfolgreich beendet"),
+            "Nutzung (Session) wurde erfolgreich beendet"),
         "sessionSuccessfullyStarted": MessageLookupByLibrary.simpleMessage(
-            "Session wurde erfolgreich gestartet. Herzlich Wilkommen"),
+            "Nutzung (Session) wurde erfolgreich gestartet. Herzlich Wilkommen."),
         "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
             "Irgendwas ist schiefgelaufen"),
         "sonday": MessageLookupByLibrary.simpleMessage("Sonntag"),
-        "staff": MessageLookupByLibrary.simpleMessage("Bedienende"),
-        "students": MessageLookupByLibrary.simpleMessage("Studenten"),
+        "staff": MessageLookupByLibrary.simpleMessage("Bedienstete"),
+        "students": MessageLookupByLibrary.simpleMessage("Studierende"),
         "sugar": MessageLookupByLibrary.simpleMessage("Zucker"),
         "sureToEndSession": MessageLookupByLibrary.simpleMessage(
-            "Sicher, dass du dein Session enden willst ? Du kannst dein freie Kaffe nicht haben, wenn du jetzt endest!"),
+            "Sicher, dass Sie Ihre Session verfrüht beenden wollen?"),
         "threeInitialsYourName": MessageLookupByLibrary.simpleMessage(
-            "Erste drei Buschtaben deiner Name"),
+            "Erste drei Buchstaben Ihres Nachnamamens"),
         "thursday": MessageLookupByLibrary.simpleMessage("Donnerstag"),
-        "transport": MessageLookupByLibrary.simpleMessage("Transport"),
+        "transport": MessageLookupByLibrary.simpleMessage("ÖPNV"),
         "transportation":
             MessageLookupByLibrary.simpleMessage("Transportation"),
         "tuesday": MessageLookupByLibrary.simpleMessage("Dienstag"),
@@ -103,15 +103,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wettervorhersage"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Mittwoch"),
         "whatIsYourDiet":
-            MessageLookupByLibrary.simpleMessage("Was ist dein Diet?"),
+            MessageLookupByLibrary.simpleMessage("Wie ist Ihre Ernährung?"),
         "withAlcohol": MessageLookupByLibrary.simpleMessage("mit Alkohol"),
         "withBeef": MessageLookupByLibrary.simpleMessage("mit Rindfleisch"),
         "withFish": MessageLookupByLibrary.simpleMessage("mit Fisch"),
-        "withPork": MessageLookupByLibrary.simpleMessage("mit Schweinfleisch"),
+        "withPork": MessageLookupByLibrary.simpleMessage("mit Schweinefleisch"),
         "withPoultry": MessageLookupByLibrary.simpleMessage("mit Geflügel"),
+        "workConducted": MessageLookupByLibrary.simpleMessage(
+            "Diese Arbeit wird vom HCI-Team unter der Leitung von Prof. Dr. Stefan Schneegaß durchgeführt"),
         "yes": MessageLookupByLibrary.simpleMessage("Ja"),
-        "yourAge": MessageLookupByLibrary.simpleMessage("Dein alter"),
+        "yourAge": MessageLookupByLibrary.simpleMessage("Ihr Alter"),
         "yourPreferences":
-            MessageLookupByLibrary.simpleMessage("Deine Präferenzen")
+            MessageLookupByLibrary.simpleMessage("Ihre Präferenzen")
       };
 }

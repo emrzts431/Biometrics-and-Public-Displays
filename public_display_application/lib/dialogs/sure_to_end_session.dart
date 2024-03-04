@@ -17,7 +17,7 @@ class SureToEndSessionDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              S.of(context).areYouStillThere,
+              S.of(context).sureToEndSession,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),

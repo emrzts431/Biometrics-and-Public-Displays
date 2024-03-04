@@ -70,7 +70,8 @@
     "errorAtSessionEnd": "Fehler beim Ende der Session",
     "areYouStillThere": "Sind Sie noch da?",
     "sureToEndSession": "Sicher, dass Sie Ihre Session verfrüht beenden wollen?",
- 
+    "workConducted": "Diese Arbeit wird vom HCI-Team unter der Leitung von Prof. Dr. Stefan Schneegaß durchgeführt",
+
     "save" : "Speichern",
     "unknown" : "unbekannt",
     "yes": "Ja",

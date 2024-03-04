@@ -171,6 +171,10 @@ class UserViewModel extends ChangeNotifier {
           _user = null;
           _isLoading = false;
           _homePageContext = null;
+          _mensaPreference = null;
+          _weatherPreference = null;
+          _mapPreference = null;
+          _transportPreference = null;
           notifyListeners();
         } else {
           SnackbarHolder.showFailureSnackbar(
@@ -178,6 +182,10 @@ class UserViewModel extends ChangeNotifier {
           _user = null;
           _isLoading = false;
           _homePageContext = null;
+          _mensaPreference = null;
+          _weatherPreference = null;
+          _mapPreference = null;
+          _transportPreference = null;
           notifyListeners();
         }
       }

@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "friday": MessageLookupByLibrary.simpleMessage("Friday"),
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
             "Please give all necessary Information"),
-        "goBack": MessageLookupByLibrary.simpleMessage("Zurückgehen"),
+        "goBack": MessageLookupByLibrary.simpleMessage("Back"),
         "guests": MessageLookupByLibrary.simpleMessage("Guests"),
         "haveYouEverUsedThisPublicDisplay":
             MessageLookupByLibrary.simpleMessage(
@@ -108,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "withFish": MessageLookupByLibrary.simpleMessage("with Fish"),
         "withPork": MessageLookupByLibrary.simpleMessage("with Pork"),
         "withPoultry": MessageLookupByLibrary.simpleMessage("with Poultry"),
+        "workConducted": MessageLookupByLibrary.simpleMessage(
+            "This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "yourAge": MessageLookupByLibrary.simpleMessage("Your age"),
         "yourPreferences":

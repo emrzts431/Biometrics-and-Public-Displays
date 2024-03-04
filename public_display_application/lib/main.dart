@@ -78,7 +78,11 @@ class MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const <Locale>[Locale('de', 'DE')],
+        supportedLocales: const <Locale>[
+          Locale('de', 'DE'),
+          Locale('en', 'EN')
+        ],
+        locale: const Locale('de', 'DE'),
         title: 'Public Display',
         navigatorKey: navigationService.navigatorKey,
         theme: ThemeData(

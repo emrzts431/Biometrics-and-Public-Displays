@@ -120,27 +120,33 @@ class LoginPageState extends State<LoginPage> {
         const SizedBox(
           height: 20,
         ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_ageInputController.text.isEmpty ||
-                _lastnameInputController.text.isEmpty) {
-              SnackbarHolder.showFailureSnackbar(
-                  S.of(context).giveAllNecessaryInfo, context);
-            } else {
-              await context.read<UserViewModel>().login(
-                    int.parse(_ageInputController.text),
-                    _lastnameInputController.text,
-                    selectedGender! == S.of(context).male
-                        ? Genders.male
-                        : Genders.female,
-                    context,
-                  );
-            }
-          },
-          child: Text(
-            S.of(context).login,
+        if (context.watch<UserViewModel>().isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
           ),
-        ),
+        if (!context.watch<UserViewModel>().isLoading)
+          ElevatedButton(
+            onPressed: () async {
+              if (_ageInputController.text.isEmpty ||
+                  _lastnameInputController.text.isEmpty ||
+                  selectedGender == null) {
+                SnackbarHolder.showFailureSnackbar(
+                    S.of(context).giveAllNecessaryInfo, context);
+              } else {
+                await context.read<UserViewModel>().login(
+                      int.parse(_ageInputController.text),
+                      _lastnameInputController.text,
+                      selectedGender! == S.of(context).male
+                          ? Genders.male
+                          : Genders.female,
+                      context,
+                    );
+              }
+            },
+            child: Text(
+              S.of(context).login,
+            ),
+          ),
         const SizedBox(
           height: 50,
         ),
@@ -159,10 +165,6 @@ class LoginPageState extends State<LoginPage> {
           ),
           child: Text(S.of(context).goBack),
         ),
-        if (context.watch<UserViewModel>().isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          )
       ],
     );
   }
@@ -227,28 +229,33 @@ class LoginPageState extends State<LoginPage> {
         const SizedBox(
           height: 20,
         ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_ageInputController.text.isEmpty ||
-                _lastnameInputController.text.isEmpty ||
-                selectedGender == null) {
-              SnackbarHolder.showFailureSnackbar(
-                  S.of(context).giveAllNecessaryInfo, context);
-            } else {
-              await context.read<UserViewModel>().register(
-                    _lastnameInputController.text,
-                    int.parse(_ageInputController.text),
-                    selectedGender! == S.of(context).male
-                        ? Genders.male
-                        : Genders.female,
-                    context,
-                  );
-            }
-          },
-          child: Text(
-            S.of(context).register,
+        if (context.watch<UserViewModel>().isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
           ),
-        ),
+        if (!context.watch<UserViewModel>().isLoading)
+          ElevatedButton(
+            onPressed: () async {
+              if (_ageInputController.text.isEmpty ||
+                  _lastnameInputController.text.isEmpty ||
+                  selectedGender == null) {
+                SnackbarHolder.showFailureSnackbar(
+                    S.of(context).giveAllNecessaryInfo, context);
+              } else {
+                await context.read<UserViewModel>().register(
+                      _lastnameInputController.text,
+                      int.parse(_ageInputController.text),
+                      selectedGender! == S.of(context).male
+                          ? Genders.male
+                          : Genders.female,
+                      context,
+                    );
+              }
+            },
+            child: Text(
+              S.of(context).register,
+            ),
+          ),
         const SizedBox(
           height: 50,
         ),

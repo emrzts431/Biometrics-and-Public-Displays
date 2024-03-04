@@ -680,6 +680,16 @@ class S {
     );
   }
 
+  /// `This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß`
+  String get workConducted {
+    return Intl.message(
+      'This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß',
+      name: 'workConducted',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Save`
   String get save {
     return Intl.message(
@@ -720,10 +730,10 @@ class S {
     );
   }
 
-  /// `Zurückgehen`
+  /// `Back`
   String get goBack {
     return Intl.message(
-      'Zurückgehen',
+      'Back',
       name: 'goBack',
       desc: '',
       args: [],

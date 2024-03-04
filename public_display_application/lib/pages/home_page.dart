@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:path_provider/path_provider.dart';
@@ -36,10 +37,11 @@ class _HomePageState extends State<HomePage> {
   String MOVE = "0,1,0";
   String UP = "0,0,1";
   int version = 2;
-
+  List<String> languages = ['de', 'en'];
+  String? selectedLanguage;
   @override
   void initState() {
-    // TODO: implement initState
+    selectedLanguage = languages[0];
     super.initState();
   }
 
@@ -59,7 +61,26 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Text(S.of(context).endSession),
                 )
-              : const SizedBox.shrink()
+              : const SizedBox.shrink(),
+          DropdownButton<String>(
+            items: languages
+                .map<DropdownMenuItem<String>>(
+                  (e) => DropdownMenuItem<String>(
+                    value: e,
+                    child: Text(e),
+                  ),
+                )
+                .toList(),
+            value: selectedLanguage,
+            onChanged: (value) async {
+              if (value == 'en') {
+                await S.load(const Locale('en', 'EN'));
+              } else {
+                await S.load(const Locale('de', 'DE'));
+              }
+              setState(() => selectedLanguage = value);
+            },
+          ),
         ],
       ),
       body: Listener(
@@ -96,9 +117,9 @@ class _HomePageState extends State<HomePage> {
                       'assets/images/uniicon.jpg',
                       scale: 15,
                     ),
-                    const Text(
-                      'This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß',
-                      style: TextStyle(
+                    Text(
+                      S.of(context).workConducted,
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),

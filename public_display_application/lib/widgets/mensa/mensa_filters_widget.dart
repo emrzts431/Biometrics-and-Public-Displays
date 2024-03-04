@@ -14,7 +14,6 @@ class MensaFiltersWidget extends StatefulWidget {
 class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, child) {
         return Container(
