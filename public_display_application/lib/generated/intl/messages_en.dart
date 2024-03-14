@@ -109,7 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "withPork": MessageLookupByLibrary.simpleMessage("with Pork"),
         "withPoultry": MessageLookupByLibrary.simpleMessage("with Poultry"),
         "workConducted": MessageLookupByLibrary.simpleMessage(
-            "This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß"),
+            "This work is conducted by the HCI Team supervised by Prof. Dr. Stefan Schneegaß"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "yourAge": MessageLookupByLibrary.simpleMessage("Your age"),
         "yourPreferences":

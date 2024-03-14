@@ -4,37 +4,28 @@ import numpy as np
 import cv2
 import datetime
 import os
-import asyncio
+import msvcrt
+import sys
 
+def getch():
+  """Gets a character from the keyboard without echoing it."""
+  import termios
+  import tty
+  fd = sys.stdin.fileno()
+  old_settings = termios.tcgetattr(fd)
+  try:
+    tty.setraw(fd)
+    ch = sys.stdin.read(1)
+  finally:
+    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+  return ch
 
-array_list = []
+camerafilename_depth = None
+camerafilename_color = None
 
-
-
-# Configure depth and color streams
-now = datetime.datetime.now().__str__().replace(' ', '').replace(':', "_").replace('.','_').replace('-', '_')
-
-camerafilename_depth = rf"C:\Users\erme4\Documents\CameraLogs\{now}\depth\frame"
-camerefilename_color = rf"C:\Users\erme4\Documents\CameraLogs\{now}\color\frame"
-cameradoc =  rf"C:\Users\erme4\Documents\CameraLogs\{now}"
-
-
-"""Idea Storing depth frames
-
-Step-1: Create a temporary store file and save every 500 frames on it. 
-Step-2: after the number of files reaches 500, read these files, compress them and dump them into the original folder
-"""
-
-
-if not os.path.exists(cameradoc):
-    os.mkdir(cameradoc)
-    os.mkdir(rf"{cameradoc}\depth")
-    os.mkdir(rf"{cameradoc}\color")
-    
-
+#region Configure depth and color streams
 pipeline = rs.pipeline()
 config = rs.config()
-        
 # Get device product line for setting a supporting resolution
 pipeline_wrapper = rs.pipeline_wrapper(pipeline)
 pipeline_profile = config.resolve(pipeline_wrapper)
@@ -50,6 +41,7 @@ if not found_rgb:
     print("The demo requires Depth camera with Color sensor")
     exit(0)
 
+
 config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 
 if device_product_line == 'L500':
@@ -57,48 +49,99 @@ if device_product_line == 'L500':
 else:
     config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 
-# Start streaming
-pipeline.start(config)
-try:
-    i = 0
-    while True:
+pause = False
+stop = False
+restart = False
+#endregion
 
-        # Wait for a coherent pair of frames: depth and color
-        frames = pipeline.wait_for_frames()
-        depth_frame = frames.get_depth_frame()
-        color_frame = frames.get_color_frame()
-        if not depth_frame or not color_frame:
-            continue
+#region Create necesarry folders
+def create_folders():
+    now = datetime.datetime.now().__str__().replace(' ', '').replace(':', "_").replace('.','_').replace('-', '_')
+    global camerafilename_depth
+    camerafilename_depth = rf"C:\Users\erme4\Documents\CameraLogs\{now}\depth\frame"
+    global camerafilename_color
+    camerafilename_color = rf"C:\Users\erme4\Documents\CameraLogs\{now}\color\frame"
+    cameradoc =  rf"C:\Users\erme4\Documents\CameraLogs\{now}"
 
-        # Convert images to numpy arrays
-        depth_image = np.asanyarray(depth_frame.get_data())#2D matrix
-        color_image = np.asanyarray(color_frame.get_data())
+    if not os.path.exists(cameradoc):
+        os.mkdir(cameradoc)
+        os.mkdir(rf"{cameradoc}\depth")
+        os.mkdir(rf"{cameradoc}\color")
 
-        #task = asyncio.create_task(save_image(depth_image, color_image, lock))
-        now = datetime.datetime.now().timestamp()
-        #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
-       
-        cv2.imwrite(camerafilename_depth + f'_{str(now)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 5] )
-        cv2.imwrite(camerefilename_color + f'_{str(now)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
-        # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-        depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+    #region save frame metadata
+#endregion
 
-        depth_colormap_dim = depth_colormap.shape
-        color_colormap_dim = color_image.shape
+#region Main Loop
+def start_record():
+    global stop
+    global restart
+    global pause
+    global pipeline
+    create_folders()
+    try:
+        pipeline.start(config)
+        i = 0
+        while True:
+            if msvcrt.kbhit():
+                key = msvcrt.getch()
+                if key == b'p':
+                    pause = not pause
+                    if pause:
+                        print("Stopped recording ||")
+                    else:
+                        print("Resumed recording >")
+                elif key == b'x':
+                    stop = True
+                    print("Shutting down program...")
+                elif key == b'r':
+                    restart = True
 
-        # If depth and color resolutions are different, resize color image to match depth image for display
-        if depth_colormap_dim != color_colormap_dim:
-            resized_color_image = cv2.resize(color_image, dsize=(depth_colormap_dim[1], depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
-            images = np.hstack((resized_color_image, depth_colormap))
-        else:
-            images = np.hstack((color_image, depth_colormap))
+            if not stop and not restart:
+                # Wait for a coherent pair of frames: depth and color
+                frames = pipeline.wait_for_frames()
+                depth_frame = frames.get_depth_frame()
+                color_frame = frames.get_color_frame()
+                if not depth_frame or not color_frame:
+                    continue
 
-        # Show images
-        cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-        cv2.imshow('RealSense', images)
-        cv2.waitKey(1)
+                # Convert images to numpy arrays
+                depth_image = np.asanyarray(depth_frame.get_data())#2D matrix
+                color_image = np.asanyarray(color_frame.get_data())
 
-finally:
-    #await 
-    # Stop streaming
-    pipeline.stop()
+                #task = asyncio.create_task(save_image(depth_image, color_image, lock))
+                now_frame = datetime.datetime.now().timestamp()
+                #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
+                if not pause:
+                    cv2.imwrite(camerafilename_depth + f'_{str(now_frame)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 5] )
+                    cv2.imwrite(camerafilename_color + f'_{str(now_frame)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
+                # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
+                depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+
+                depth_colormap_dim = depth_colormap.shape
+                color_colormap_dim = color_image.shape
+
+                # If depth and color resolutions are different, resize color image to match depth image for display
+                if depth_colormap_dim != color_colormap_dim:
+                    resized_color_image = cv2.resize(color_image, dsize=(depth_colormap_dim[1], depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
+                    images = np.hstack((resized_color_image, depth_colormap))
+                else:
+                    images = np.hstack((color_image, depth_colormap))
+
+                # Show images
+                cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+                cv2.imshow('RealSense', images)
+                cv2.waitKey(1)
+            else:
+                break
+    finally:
+        # Stop streaming
+        pipeline.stop()
+#endregion
+        
+while True:
+    if not stop:
+        if restart:
+            restart = False
+        start_record()
+    else:
+        break

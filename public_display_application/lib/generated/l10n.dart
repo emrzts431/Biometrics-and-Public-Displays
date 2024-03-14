@@ -680,10 +680,10 @@ class S {
     );
   }
 
-  /// `This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß`
+  /// `This work is conducted by the HCI Team supervised by Prof. Dr. Stefan Schneegaß`
   String get workConducted {
     return Intl.message(
-      'This work is conducted by the HCI Team, supervised by Prof. Dr. Stefan Schneegaß',
+      'This work is conducted by the HCI Team supervised by Prof. Dr. Stefan Schneegaß',
       name: 'workConducted',
       desc: '',
       args: [],

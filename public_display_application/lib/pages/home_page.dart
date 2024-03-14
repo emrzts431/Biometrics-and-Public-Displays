@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       S.of(context).workConducted,
                       style: const TextStyle(
-                        fontSize: 11,
+                        fontSize: 8,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
