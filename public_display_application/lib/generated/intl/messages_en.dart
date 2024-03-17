@@ -42,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "There was an error at session ending"),
         "errorAtSessionStart":
             MessageLookupByLibrary.simpleMessage("Error at session start"),
+        "exit": MessageLookupByLibrary.simpleMessage("Exit"),
         "fat": MessageLookupByLibrary.simpleMessage("Fat"),
         "favoriteLines": MessageLookupByLibrary.simpleMessage("Favorite Lines"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),

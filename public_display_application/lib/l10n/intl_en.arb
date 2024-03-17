@@ -79,5 +79,6 @@
     "unknown" : "unknown",
     "yes": "Yes",
     "no": "No",
-    "goBack": "Back"
+    "goBack": "Back",
+    "exit": "Exit"
 }

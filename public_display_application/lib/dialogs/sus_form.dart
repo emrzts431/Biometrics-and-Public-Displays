@@ -42,7 +42,14 @@ class SUSForm extends StatelessWidget {
                 S.of(context).gotoSusForm,
                 style: const TextStyle(fontSize: 20),
               ),
-            )
+            ),
+            const SizedBox(
+              height: 110,
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(S.of(context).exit),
+            ),
           ],
         )),
       ),

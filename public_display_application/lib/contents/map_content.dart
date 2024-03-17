@@ -7,6 +7,8 @@ import 'package:public_display_application/enums.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/address_item.dart';
 import 'package:http/http.dart' as http;
+import 'package:public_display_application/services/navigation_service.dart';
+import 'package:public_display_application/services/service_locator.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
 class MapContent extends StatefulWidget {
@@ -67,11 +69,18 @@ class MapContentState extends State<MapContent> {
                 hint: Text(S.of(context).chooseABuilding),
                 value: selectedItemName,
                 onChanged: (value) async {
-                  print(value);
+                  debugPrint(value);
                   await userViewModel.removeAllPreferencesOfType(
-                      PreferenceTypes.map, context);
+                      PreferenceTypes.map,
+                      locator<NavigationService>()
+                          .navigatorKey
+                          .currentContext!);
                   await userViewModel.setPreference(
-                      PreferenceTypes.map, value!, context);
+                      PreferenceTypes.map,
+                      value!,
+                      locator<NavigationService>()
+                          .navigatorKey
+                          .currentContext!);
                 },
               ),
               if (selectedAddress != null)

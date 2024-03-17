@@ -78,5 +78,6 @@
     "unknown" : "unbekannt",
     "yes": "Ja",
     "no": "Nein",
-    "goBack": "Zurückgehen"
+    "goBack": "Zurückgehen",
+    "exit": "Schließen"
 }
