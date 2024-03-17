@@ -690,6 +690,26 @@ class S {
     );
   }
 
+  /// `System Usability Scale (SUS)`
+  String get susForm {
+    return Intl.message(
+      'System Usability Scale (SUS)',
+      name: 'susForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to SUS form`
+  String get gotoSusForm {
+    return Intl.message(
+      'Go to SUS form',
+      name: 'gotoSusForm',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Save`
   String get save {
     return Intl.message(

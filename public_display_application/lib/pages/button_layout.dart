@@ -8,11 +8,14 @@ import 'package:public_display_application/contents/map_content.dart';
 import 'package:public_display_application/contents/mensa_content.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/contents/weather_content.dart';
+import 'package:public_display_application/dialogs/sus_form.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/address_item.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 import 'package:public_display_application/models/weather_item.dart';
+import 'package:public_display_application/services/navigation_service.dart';
+import 'package:public_display_application/services/service_locator.dart';
 import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -40,6 +43,8 @@ class ButtonLayoutState extends State<ButtonLayout> {
   Elements selectedElement = Elements.none;
   var data;
   final _controller = PageController();
+  List<bool> visitedContents = [false, false, false, false];
+
   @override
   void initState() {
     debugPrint("Currently at ButtonLayout");
@@ -155,6 +160,13 @@ class ButtonLayoutState extends State<ButtonLayout> {
                   selectedElement = Elements.none;
                   data = null;
                   context.read<UserViewModel>().updateTransportLines = false;
+                  if (!visitedContents.any((element) => element == false)) {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => SUSForm(),
+                    );
+                  }
                 }),
                 child: Text(
                   S.of(context).goBack,
@@ -234,9 +246,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
         }
       }
     }
-    Navigator.pop(
-        context); //TODO: Handle this using locator or navigation service
+    Navigator.pop(locator<NavigationService>().navigatorKey.currentContext!);
     setState(() {
+      visitedContents[0] = true;
       data = localData;
       selectedElement = Elements.mensa;
       contentString = S.of(context).canteenMenu;
@@ -345,8 +357,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
       'V': transportInfoListViehofer,
       'R': transportInfoListRheinischer
     };
-    Navigator.pop(context); //TODO: Fix this with locator or Navigation Service
+    Navigator.pop(locator<NavigationService>().navigatorKey.currentContext!);
     setState(() {
+      visitedContents[1] = true;
       data = localData;
       selectedElement = Elements.transport;
       contentString = S.of(context).transportation;
@@ -358,9 +371,10 @@ class ButtonLayoutState extends State<ButtonLayout> {
     final departuresUrl = Uri.parse(departureUrlString);
     final response = await http.get(departuresUrl);
     final departureListJson = jsonDecode(response.body);
-    final departureList = departureListJson['data']['departureList'];
+    final departureList =
+        departureListJson['data']['departureList'] as List<dynamic>?;
     List<TransportLineItem> transportInfoList = [];
-    for (final departure in departureList) {
+    for (final departure in departureList ?? []) {
       TransportLineItem transportLineItem = TransportLineItem(
         platformName: departure['platformName'],
         realtimeTripStatus: departure['realtimeTripStatus'] == "MONITORED"
@@ -434,8 +448,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
       );
       weatherItemList.add(item);
     }
-    Navigator.pop(context);
+    Navigator.pop(locator<NavigationService>().navigatorKey.currentContext!);
     setState(() {
+      visitedContents[2] = true;
       selectedElement = Elements.weather;
       data = weatherItemList;
       contentString = "Essen ${S.of(context).weather}";
@@ -452,6 +467,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
       addressList.add(item);
     }
     setState(() {
+      visitedContents[3] = true;
       selectedElement = Elements.map;
       data = addressList;
       contentString = S.of(context).map;

@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
             "Please give all necessary Information"),
         "goBack": MessageLookupByLibrary.simpleMessage("Back"),
+        "gotoSusForm": MessageLookupByLibrary.simpleMessage("Go to SUS form"),
         "guests": MessageLookupByLibrary.simpleMessage("Guests"),
         "haveYouEverUsedThisPublicDisplay":
             MessageLookupByLibrary.simpleMessage(
@@ -85,6 +86,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sugar": MessageLookupByLibrary.simpleMessage("Sugar"),
         "sureToEndSession": MessageLookupByLibrary.simpleMessage(
             "Are you sure to end your session? You will lose your chance to get a free coffee if you go now!"),
+        "susForm": MessageLookupByLibrary.simpleMessage(
+            "System Usability Scale (SUS)"),
         "threeInitialsYourName": MessageLookupByLibrary.simpleMessage(
             "First three initials of your name"),
         "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
