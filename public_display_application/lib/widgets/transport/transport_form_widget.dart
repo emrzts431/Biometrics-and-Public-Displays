@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/enums.dart';
 import 'package:public_display_application/generated/l10n.dart';
-import 'package:public_display_application/navigation_service.dart';
+import 'package:public_display_application/services/navigation_service.dart';
+import 'package:public_display_application/services/service_locator.dart';
 import 'package:public_display_application/snackbar_holder.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
@@ -57,7 +58,6 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Expanded(
       child: Column(
         children: [
@@ -181,17 +181,47 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
                   context,
                 );
               } else {
-                await context.read<UserViewModel>().removeAllPreferencesOfType(
-                    PreferenceTypes.transport, context);
-                for (final line in viehoferPlatzSelectedLines) {
-                  await context.read<UserViewModel>().setPreference(
-                      PreferenceTypes.transport, "{\"V\": \"$line\"}", context);
-                }
-                for (final line in rheinischerPlatzSelectedLines) {
-                  await context.read<UserViewModel>().setPreference(
-                      PreferenceTypes.transport, "{\"R\": \"$line\"}", context);
-                }
-                context.read<UserViewModel>().updateTransportLines = false;
+                await locator<NavigationService>()
+                    .navigatorKey
+                    .currentContext!
+                    .read<UserViewModel>()
+                    .removeAllPreferencesOfType(
+                        PreferenceTypes.transport,
+                        locator<NavigationService>()
+                            .navigatorKey
+                            .currentContext!)
+                    .then((value) async {
+                  for (final line in viehoferPlatzSelectedLines) {
+                    await locator<NavigationService>()
+                        .navigatorKey
+                        .currentContext!
+                        .read<UserViewModel>()
+                        .setPreference(
+                            PreferenceTypes.transport,
+                            "{\"V\": \"$line\"}",
+                            locator<NavigationService>()
+                                .navigatorKey
+                                .currentContext!);
+                  }
+                }).then((value) async {
+                  for (final line in rheinischerPlatzSelectedLines) {
+                    await locator<NavigationService>()
+                        .navigatorKey
+                        .currentContext!
+                        .read<UserViewModel>()
+                        .setPreference(
+                            PreferenceTypes.transport,
+                            "{\"R\": \"$line\"}",
+                            locator<NavigationService>()
+                                .navigatorKey
+                                .currentContext!);
+                  }
+                }).then((value) => locator<NavigationService>()
+                        .navigatorKey
+                        .currentContext!
+                        .read<UserViewModel>()
+                        .updateTransportLines = false);
+                ;
               }
             },
             child: Text(S.of(context).save),

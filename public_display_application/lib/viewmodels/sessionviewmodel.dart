@@ -8,7 +8,7 @@ class SessionViewModel extends ChangeNotifier {
   DateTime? _lastTouch;
   DateTime? get lastTouch => _lastTouch;
 
-  bool _contentScreen = true;
+  bool _contentScreen = false;
   bool get contentScreen => _contentScreen;
 
   bool _loginScreen = false;
@@ -75,15 +75,15 @@ class SessionViewModel extends ChangeNotifier {
               }
             }
             if (DateTime.now().difference(_lastTouch!).inSeconds >= 60) {
-              Navigator.of(context).pop();
-
+              //  Navigator.of(context).pop();
+              _dialogOpen = false;
               await context.read<UserViewModel>().signOut();
               _lastTouch = null;
               openCoffeeScreen();
               notifyListeners();
             }
           } else if (_loginScreen) {
-            //If no valid session exists but user interacted with the screen
+            //If no valid session exists and user hasn't interacted with the screen yet
             if (DateTime.now().difference(_lastTouch!).inSeconds > 30) {
               openCoffeeScreen();
               notifyListeners();

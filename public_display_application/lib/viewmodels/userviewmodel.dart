@@ -5,7 +5,7 @@ import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/log_file.dart';
 import 'package:public_display_application/models/preferences/preference.dart';
 import 'package:public_display_application/models/user.dart';
-import 'package:public_display_application/navigation_service.dart';
+import 'package:public_display_application/services/navigation_service.dart';
 import 'package:public_display_application/snackbar_holder.dart';
 
 class UserViewModel extends ChangeNotifier {
@@ -117,8 +117,20 @@ class UserViewModel extends ChangeNotifier {
       PreferenceTypes type, String value, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
-    await LogFile.of(context).insertPreference(type, _user!.userid!, value);
-    await getPreference(type, context);
+    await LogFile.of(context)
+        .insertPreference(type, _user!.userid!, value)
+        .then(
+      (value) async {
+        if (value) {
+          await getPreference(type, context);
+        } else {
+          SnackbarHolder.showFailureSnackbar(
+              S.current.somethingWentWrong, context);
+        }
+        _isLoading = false;
+      },
+    );
+
     notifyListeners();
   }
 
@@ -126,17 +138,16 @@ class UserViewModel extends ChangeNotifier {
       PreferenceTypes type, String value, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
-    bool result =
-        await LogFile.of(context).removePreference(type, _user!.userid!, value);
-    if (result) {
-      await getPreference(type, context);
+
+    await LogFile.of(context)
+        .removePreference(type, _user!.userid!, value)
+        .then((value) async {
+      if (value) {
+        await getPreference(type, context);
+      } else {}
       _isLoading = false;
       notifyListeners();
-    } else {
-      SnackbarHolder.showFailureSnackbar(S.current.somethingWentWrong, context);
-      _isLoading = false;
-      notifyListeners();
-    }
+    });
   }
 
   Future removeAllPreferencesOfType(
@@ -170,7 +181,7 @@ class UserViewModel extends ChangeNotifier {
               S.current.sessionEndedSuccessfully, _homePageContext!);
           _user = null;
           _isLoading = false;
-          _homePageContext = null;
+          //_homePageContext = null;
           _mensaPreference = null;
           _weatherPreference = null;
           _mapPreference = null;
@@ -181,7 +192,7 @@ class UserViewModel extends ChangeNotifier {
               S.current.errorAtSessionEnd, _homePageContext!);
           _user = null;
           _isLoading = false;
-          _homePageContext = null;
+          //_homePageContext = null;
           _mensaPreference = null;
           _weatherPreference = null;
           _mapPreference = null;

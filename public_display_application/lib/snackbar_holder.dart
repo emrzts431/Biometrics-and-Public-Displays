@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:public_display_application/navigation_service.dart';
 
 class SnackbarHolder {
   static void showSuccessSnackbar(String message, BuildContext context) {

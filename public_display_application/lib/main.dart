@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/pages/home_page.dart';
 import 'package:public_display_application/log_file.dart';
-import 'package:public_display_application/navigation_service.dart';
+import 'package:public_display_application/services/navigation_service.dart';
+import 'package:public_display_application/services/service_locator.dart';
 import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:sqlite_async/sqlite_async.dart';
@@ -31,6 +32,7 @@ void main() async {
   File file = File(
       "${folder.path}/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.tsv");
   await file.writeAsString("timestamp\tx\ty\tpointer\tdown\tmove\tup\n");
+  setupLocator();
   runZonedGuarded(
       () => runApp(
             MultiProvider(
@@ -83,7 +85,7 @@ class MyAppState extends State<MyApp> {
         ],
         locale: const Locale('de', 'DE'),
         title: 'Public Display',
-        navigatorKey: navigationService.navigatorKey,
+        navigatorKey: locator<NavigationService>().navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,

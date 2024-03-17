@@ -42,6 +42,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
   final _controller = PageController();
   @override
   void initState() {
+    debugPrint("Currently at ButtonLayout");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<SessionViewModel>().startRestartPeriodicChecks(context);
       context.read<SessionViewModel>().openContentScreen();
