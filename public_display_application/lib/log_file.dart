@@ -16,13 +16,12 @@ class LogFile extends InheritedWidget {
   static LogFile of(BuildContext context) =>
       context.getInheritedWidgetOfExactType<LogFile>() as LogFile;
 
-  void logInput(int x, int y, int pointer, String type, int contentid) async {
+  Future logInput(int x, int y, int pointer, String type) async {
     List<String> typeVals = type.split(',');
     String logString =
         "${DateTime.now().microsecondsSinceEpoch}\t$x\t$y\t$pointer\t${typeVals[0]}\t${typeVals[1]}\t${typeVals[2]}\n";
 
-    print(logFile);
-    print(logString);
+    debugPrint(logString);
     await logFile.writeAsString(
       logString,
       mode: FileMode.append,
