@@ -7,6 +7,8 @@ import os
 import msvcrt
 import sys
 
+print("test")
+
 documents_path = os.path.join(os.path.expanduser("~"), "Documents")
 if not os.path.exists(rf"{documents_path}\CameraLogs"):
     os.mkdir(rf"{documents_path}\CameraLogs")
