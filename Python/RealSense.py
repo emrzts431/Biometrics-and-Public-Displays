@@ -7,18 +7,9 @@ import os
 import msvcrt
 import sys
 
-def getch():
-  """Gets a character from the keyboard without echoing it."""
-  import termios
-  import tty
-  fd = sys.stdin.fileno()
-  old_settings = termios.tcgetattr(fd)
-  try:
-    tty.setraw(fd)
-    ch = sys.stdin.read(1)
-  finally:
-    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-  return ch
+documents_path = os.path.join(os.path.expanduser("~"), "Documents")
+if not os.path.exists(rf"{documents_path}\CameraLogs"):
+    os.mkdir(rf"{documents_path}\CameraLogs")
 
 camerafilename_depth = None
 camerafilename_color = None
@@ -49,7 +40,7 @@ if device_product_line == 'L500':
 else:
     config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 
-pause = False
+pause = True
 stop = False
 restart = False
 #endregion
@@ -58,17 +49,16 @@ restart = False
 def create_folders():
     now = datetime.datetime.now().__str__().replace(' ', '').replace(':', "_").replace('.','_').replace('-', '_')
     global camerafilename_depth
-    camerafilename_depth = rf"C:\Users\erme4\Documents\CameraLogs\{now}\depth\frame"
+    camerafilename_depth = rf"{documents_path}\CameraLogs\{now}\depth\frame"
     global camerafilename_color
-    camerafilename_color = rf"C:\Users\erme4\Documents\CameraLogs\{now}\color\frame"
-    cameradoc =  rf"C:\Users\erme4\Documents\CameraLogs\{now}"
+    camerafilename_color = rf"{documents_path}\CameraLogs\{now}\color\frame"
+    cameradoc =  rf"{documents_path}\CameraLogs\{now}"
 
     if not os.path.exists(cameradoc):
         os.mkdir(cameradoc)
         os.mkdir(rf"{cameradoc}\depth")
         os.mkdir(rf"{cameradoc}\color")
 
-    #region save frame metadata
 #endregion
 
 #region Main Loop
@@ -81,6 +71,7 @@ def start_record():
     try:
         pipeline.start(config)
         i = 0
+        print("Hasn't started recording...")
         while True:
             if msvcrt.kbhit():
                 key = msvcrt.getch()
@@ -142,6 +133,7 @@ while True:
     if not stop:
         if restart:
             restart = False
+            pause = True
         start_record()
     else:
         break
