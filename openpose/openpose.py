@@ -14,7 +14,11 @@ class Frame:
     def __init__(self, version:float, people) -> None:
         self.version = version
         self.people = people
-    
+
+documents_path = os.path.join(os.path.expanduser("~"), "Documents")
+desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+if not os.path.exists(rf"{desktop_path}\PDLogs"):
+    os.mkdir(rf"{desktop_path}\PDLogs")
 body_parts = [
     "Nose",
     "Neck",
@@ -46,10 +50,16 @@ body_parts = [
 
 #region important files
 openpose_program = r'bin\OpenPoseDemo.exe'
+
+image_folder_list = os.listdir(rf"{documents_path}\CameraLogs")
+image_folder_list.sort()
+image_folder_name = image_folder_list[-1]
+for f in image_folder_list:
+    print(f)
 image_folder_name = str(input("Enter the image folder name: "))
 print(f"loading images from {image_folder_name}")
-image_folder = rf'C:\Users\erme4\Documents\CameraLogs\{image_folder_name}'
-logs_write_folder = r'C:\Users\erme4\Desktop\PDLogs'
+image_folder = rf'{documents_path}\CameraLogs\{image_folder_name}'
+logs_write_folder = rf'{desktop_path}\PDLogs'
 num_folders = len(os.listdir(logs_write_folder))
 openpose_path = rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\openpose'
 if not os.path.exists(rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}'):
@@ -60,7 +70,7 @@ if not os.path.exists(rf'{logs_write_folder}\{0 if num_folders == 0 else num_fol
 
 subprocess.run([openpose_program, '--image_dir', rf'{image_folder}\color', '--net_resolution', '-1x128', '--write_json' , rf'{openpose_path}\json', '--write_images', rf'{openpose_path}\image'])
 #endregion
-logfile = r'C:\Users\erme4\Desktop\Test.tsv'
+logfile = rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\logs.tsv'
 with open(logfile, 'w') as f:
     f.write('timestamp\tperson_id\tnose\tneck\trshoulder\trelbow\trwrist\tlshoulder\tlelbow\tlwrist\tmidhip\trhip\trknee\trankle\tlhip\tlknee\tlankle\treye\tleye\trear\tlear\tlbigtoe\tlsmalltoe\tlheel\trbigtoe\trsmalltoe\trheel\tbackground\n')
 
