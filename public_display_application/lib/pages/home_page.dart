@@ -88,20 +88,20 @@ class _HomePageState extends State<HomePage> {
             int x = e.position.dx.round();
             int y = (e.position.dy).round();
 
-            LogFile.of(context).logInput(x, y, e.pointer, DOWN, -1);
             context.read<SessionViewModel>().updateLastTouch();
+            await LogFile.of(context).logInput(x, y, e.pointer, DOWN);
           },
           onPointerMove: (e) async {
             int x = e.position.dx.round();
             int y = (e.position.dy).round();
 
-            LogFile.of(context).logInput(x, y, e.pointer, MOVE, -1);
+            await LogFile.of(context).logInput(x, y, e.pointer, MOVE);
           },
           onPointerUp: (e) async {
             int x = e.position.dx.round();
             int y = (e.position.dy).round();
 
-            LogFile.of(context).logInput(x, y, e.pointer, UP, -1);
+            await LogFile.of(context).logInput(x, y, e.pointer, UP);
           },
           child: FooterView(
             flex: 10,
