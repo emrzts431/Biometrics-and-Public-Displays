@@ -68,16 +68,16 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  Future register(
-      String surname, int age, Genders gender, BuildContext context) async {
+  Future register(String name, String surname, int age, Genders gender,
+      BuildContext context) async {
     //check if the user exists first
     _isLoading = true;
     notifyListeners();
     bool registered =
-        await LogFile.of(context).insertUser(surname, age, gender);
+        await LogFile.of(context).insertUser(name, surname, age, gender);
     if (registered) {
       try {
-        await login(age, surname, gender, context);
+        await login(age, surname.substring(0, 3), gender, context);
       } on Exception catch (e) {
         SnackbarHolder.showFailureSnackbar(S.current.errorAtRegister, context);
         print(e);

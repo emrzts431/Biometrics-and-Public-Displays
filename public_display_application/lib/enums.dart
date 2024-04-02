@@ -1,5 +1,5 @@
 enum PreferenceTypes { mensa, weather, transport, map }
 
-enum SessionActionType { start, finish }
+enum SessionActionType { finish, start }
 
-enum Genders { male, female }
+enum Genders { male, female, nonbinary, nan }

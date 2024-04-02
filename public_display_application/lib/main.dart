@@ -17,7 +17,7 @@ import 'package:sqlite_async/sqlite_async.dart';
 final migrations = SqliteMigrations()
   ..add(SqliteMigration(1, (tx) async {
     await tx.execute(
-        'CREATE TABLE Users(userid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, age INTEGER, surname VARCHAR(50), gender INTEGER);');
+        'CREATE TABLE Users(userid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, age INTEGER, name VARCHAR(50), surname VARCHAR(50), gender INTEGER);');
     await tx.execute(
         'CREATE TABLE Preference(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, type INTEGER, userid INTEGER, value VARCHAR(300), FOREIGN KEY (userid) REFERENCES Users(userid));');
     await tx.execute(
@@ -27,6 +27,7 @@ final migrations = SqliteMigrations()
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var folder = await getApplicationDocumentsDirectory();
+  debugPrint(folder.path);
   final db = SqliteDatabase(path: '${folder.path}/pd.db');
   migrations.migrate(db);
   File file = File(

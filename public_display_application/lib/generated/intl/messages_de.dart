@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "favoriteLines": MessageLookupByLibrary.simpleMessage("Ihre Linien"),
         "female": MessageLookupByLibrary.simpleMessage("Weiblich"),
         "fiber": MessageLookupByLibrary.simpleMessage("Ballast­stoffe"),
+        "firstName": MessageLookupByLibrary.simpleMessage("Ihr Vorname"),
         "freeCoffee": MessageLookupByLibrary.simpleMessage("GRATIS KAFFEE"),
         "friday": MessageLookupByLibrary.simpleMessage("Freitag"),
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
@@ -60,15 +61,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Haben Sie das Public Display schon einmal benutzt?"),
         "kiloCals": MessageLookupByLibrary.simpleMessage("Kilocalorien"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Ihr Nachname"),
         "login": MessageLookupByLibrary.simpleMessage("Einloggen"),
         "male": MessageLookupByLibrary.simpleMessage("Männlich"),
         "map": MessageLookupByLibrary.simpleMessage("Karte"),
         "monday": MessageLookupByLibrary.simpleMessage("Montag"),
         "no": MessageLookupByLibrary.simpleMessage("Nein"),
+        "nonBinary": MessageLookupByLibrary.simpleMessage("Nicht Binär"),
         "nutriVals": MessageLookupByLibrary.simpleMessage("Nähr­werte"),
         "per": MessageLookupByLibrary.simpleMessage("Pro"),
         "pleaseGiveALineForBothStops": MessageLookupByLibrary.simpleMessage(
             "Bitte geben Sie für beide Haltestellen Ihre Linien ein!"),
+        "preferNotToSay":
+            MessageLookupByLibrary.simpleMessage("Will nicht sagen"),
         "protein": MessageLookupByLibrary.simpleMessage("Eiweiß"),
         "publicDisplayTitle":
             MessageLookupByLibrary.simpleMessage("Pulic Display Startseite"),

@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "favoriteLines": MessageLookupByLibrary.simpleMessage("Favorite Lines"),
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "fiber": MessageLookupByLibrary.simpleMessage("Fiber"),
+        "firstName": MessageLookupByLibrary.simpleMessage("Your first name"),
         "freeCoffee": MessageLookupByLibrary.simpleMessage("FREE COFFEE"),
         "friday": MessageLookupByLibrary.simpleMessage("Friday"),
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
@@ -58,15 +59,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Have your ever used this public display ?"),
         "kiloCals": MessageLookupByLibrary.simpleMessage("Kilocalories"),
+        "lastName": MessageLookupByLibrary.simpleMessage("Your last name"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "male": MessageLookupByLibrary.simpleMessage("Male"),
         "map": MessageLookupByLibrary.simpleMessage("Map"),
         "monday": MessageLookupByLibrary.simpleMessage("Monday"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
+        "nonBinary": MessageLookupByLibrary.simpleMessage("Non Binary"),
         "nutriVals": MessageLookupByLibrary.simpleMessage("Nutritional values"),
         "per": MessageLookupByLibrary.simpleMessage("Per"),
         "pleaseGiveALineForBothStops": MessageLookupByLibrary.simpleMessage(
             "Please give your favorite lines for both stops"),
+        "preferNotToSay":
+            MessageLookupByLibrary.simpleMessage("Prefer not to say"),
         "protein": MessageLookupByLibrary.simpleMessage("Protein"),
         "publicDisplayTitle":
             MessageLookupByLibrary.simpleMessage("Pulic Display Homepage"),

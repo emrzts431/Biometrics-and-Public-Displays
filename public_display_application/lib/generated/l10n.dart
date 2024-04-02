@@ -100,6 +100,26 @@ class S {
     );
   }
 
+  /// `Your first name`
+  String get firstName {
+    return Intl.message(
+      'Your first name',
+      name: 'firstName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your last name`
+  String get lastName {
+    return Intl.message(
+      'Your last name',
+      name: 'lastName',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Choose your gender`
   String get chooseYourGender {
     return Intl.message(
@@ -125,6 +145,26 @@ class S {
     return Intl.message(
       'Female',
       name: 'female',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Non Binary`
+  String get nonBinary {
+    return Intl.message(
+      'Non Binary',
+      name: 'nonBinary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prefer not to say`
+  String get preferNotToSay {
+    return Intl.message(
+      'Prefer not to say',
+      name: 'preferNotToSay',
       desc: '',
       args: [],
     );

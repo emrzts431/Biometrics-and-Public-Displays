@@ -9,7 +9,7 @@ import 'package:sqlite_async/sqlite_async.dart';
 class LogFile extends InheritedWidget {
   final File logFile;
   final SqliteDatabase db;
-  final List<String> inputList = [];
+  final List<String> _inputList = [];
   LogFile({required this.logFile, required this.db, required Widget mychild})
       : super(child: mychild);
 
@@ -20,15 +20,15 @@ class LogFile extends InheritedWidget {
     List<String> typeVals = type.split(',');
     String logString =
         "${DateTime.now().microsecondsSinceEpoch}\t$x\t$y\t$pointer\t${typeVals[0]}\t${typeVals[1]}\t${typeVals[2]}\n";
-    inputList.add(logString);
+    _inputList.add(logString);
     debugPrint(logString);
-    if (inputList.length > 100) {
+    if (_inputList.length > 100) {
       print("dumping");
       String finalString = "";
-      for (final line in inputList) {
+      for (final line in _inputList) {
         finalString += line;
       }
-      inputList.clear();
+      _inputList.clear();
       await logFile.writeAsString(
         finalString,
         mode: FileMode.append,
@@ -37,13 +37,13 @@ class LogFile extends InheritedWidget {
   }
 
   Future forceDumpInputs() async {
-    if (inputList.isNotEmpty) {
+    if (_inputList.isNotEmpty) {
       print("force dumping");
       String finalString = "";
-      for (final line in inputList) {
+      for (final line in _inputList) {
         finalString += line;
       }
-      inputList.clear();
+      _inputList.clear();
       await logFile.writeAsString(
         finalString,
         mode: FileMode.append,
@@ -56,7 +56,7 @@ class LogFile extends InheritedWidget {
   Future<User?> selectUser(String surname, int age, Genders gender) async {
     try {
       final result = await db.get(
-          "Select * from Users where surname = '$surname' and age = $age and gender = ${gender == Genders.male ? 1 : 0}");
+          "Select * from Users where substr(surname, 1, 3) = '$surname' and age = $age and gender = ${gender.index}");
       if (result.isNotEmpty) {
         //gender == 1 ? male : female
         return User(
@@ -77,12 +77,13 @@ class LogFile extends InheritedWidget {
     }
   }
 
-  Future<bool> insertUser(String surname, int age, Genders gender) async {
+  Future<bool> insertUser(
+      String name, String surname, int age, Genders gender) async {
     try {
       await db.writeTransaction(
         (tx) async => await tx.execute(
-          "Insert Into Users (age, surname, gender) Values (?,?,?)",
-          [age, surname, gender == Genders.male ? 1 : 0],
+          "Insert Into Users (age, name, surname, gender) Values (?,?,?,?)",
+          [age, name, surname, gender.index],
         ),
       );
       return true;
@@ -100,7 +101,7 @@ class LogFile extends InheritedWidget {
         (tx) async => await tx.execute(
           "Insert Into Session (type, userid, time) Values (?, ?, ?)",
           [
-            type == SessionActionType.start ? 1 : 0,
+            type.index,
             userid,
             time,
           ],

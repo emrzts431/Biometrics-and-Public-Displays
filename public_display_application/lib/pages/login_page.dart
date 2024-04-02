@@ -14,8 +14,10 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final _ageInputController = TextEditingController();
   final _lastnameInputController = TextEditingController();
-  String? selectedGender;
+  final _firstnameInputController = TextEditingController();
+  Genders? selectedGender;
   VirtualKeyboardType keyBoardType = VirtualKeyboardType.Numeric;
+  bool _firstName = false;
   bool openKeyboard = false;
 
   bool? returningUser;
@@ -97,25 +99,38 @@ class LoginPageState extends State<LoginPage> {
             hintStyle: const TextStyle(fontSize: 25),
           ),
         ),
-        DropdownButton<String>(
+        DropdownButton<Genders>(
           hint: Text(S.of(context).chooseYourGender),
           value: selectedGender,
           icon: const Icon(Icons.arrow_drop_down),
           iconSize: 24,
           elevation: 16,
           style: const TextStyle(color: Colors.black),
-          onChanged: (String? newValue) {
+          onChanged: (Genders? newValue) {
             setState(() {
               selectedGender = newValue;
             });
           },
-          items: <String>[S.of(context).male, S.of(context).female]
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          items: [
+            DropdownMenuItem<Genders>(
+              value: Genders.male,
+              child: Text(S.of(context).male),
+            ),
+            DropdownMenuItem<Genders>(
+              value: Genders.female,
+              child: Text(S.of(context).female),
+            ),
+            DropdownMenuItem<Genders>(
+              value: Genders.nonbinary,
+              child: Text(S.of(context).nonBinary),
+            ),
+            DropdownMenuItem<Genders>(
+              value: Genders.nan,
+              child: Text(
+                S.of(context).preferNotToSay,
+              ),
+            )
+          ],
         ),
         const SizedBox(
           height: 20,
@@ -136,9 +151,7 @@ class LoginPageState extends State<LoginPage> {
                 await context.read<UserViewModel>().login(
                       int.parse(_ageInputController.text),
                       _lastnameInputController.text,
-                      selectedGender! == S.of(context).male
-                          ? Genders.male
-                          : Genders.female,
+                      selectedGender!,
                       context,
                     );
               }
@@ -189,42 +202,86 @@ class LoginPageState extends State<LoginPage> {
               hintText: S.of(context).yourAge,
               hintStyle: const TextStyle(fontSize: 25)),
         ),
-        TextField(
-          onTap: () => setState(() {
-            keyBoardType = VirtualKeyboardType.Alphanumeric;
-            openKeyboard = true;
-          }),
-          onEditingComplete: () => setState(() {
-            openKeyboard = false;
-          }),
-          style: const TextStyle(fontSize: 25),
-          maxLength: 3,
-          controller: _lastnameInputController,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            hintText: S.of(context).threeInitialsYourName,
-            hintStyle: const TextStyle(fontSize: 25),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 250,
+              child: TextField(
+                onTap: () => setState(() {
+                  keyBoardType = VirtualKeyboardType.Alphanumeric;
+                  _firstName = false;
+                  openKeyboard = true;
+                }),
+                onEditingComplete: () => setState(() {
+                  openKeyboard = false;
+                }),
+                style: const TextStyle(fontSize: 25),
+                controller: _lastnameInputController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  hintText: S.of(context).lastName,
+                  hintStyle: const TextStyle(fontSize: 25),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            SizedBox(
+              width: 250,
+              child: TextField(
+                onTap: () => setState(() {
+                  keyBoardType = VirtualKeyboardType.Alphanumeric;
+                  _firstName = true;
+                  openKeyboard = true;
+                }),
+                onEditingComplete: () => setState(() {
+                  openKeyboard = false;
+                }),
+                style: const TextStyle(fontSize: 25),
+                controller: _firstnameInputController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  hintText: S.of(context).firstName,
+                  hintStyle: const TextStyle(fontSize: 25),
+                ),
+              ),
+            ),
+          ],
         ),
-        DropdownButton<String>(
+        DropdownButton<Genders>(
           hint: Text(S.of(context).chooseYourGender),
           value: selectedGender,
           icon: const Icon(Icons.arrow_drop_down),
           iconSize: 24,
           elevation: 16,
           style: const TextStyle(color: Colors.black),
-          onChanged: (String? newValue) {
+          onChanged: (Genders? newValue) {
             setState(() {
               selectedGender = newValue;
             });
           },
-          items: <String>[S.of(context).male, S.of(context).female]
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          items: [
+            DropdownMenuItem<Genders>(
+              value: Genders.male,
+              child: Text(S.of(context).male),
+            ),
+            DropdownMenuItem<Genders>(
+              value: Genders.female,
+              child: Text(S.of(context).female),
+            ),
+            DropdownMenuItem<Genders>(
+              value: Genders.nonbinary,
+              child: Text(S.of(context).nonBinary),
+            ),
+            DropdownMenuItem<Genders>(
+              value: Genders.nan,
+              child: Text(
+                S.of(context).preferNotToSay,
+              ),
+            )
+          ],
         ),
         const SizedBox(
           height: 20,
@@ -243,11 +300,10 @@ class LoginPageState extends State<LoginPage> {
                     S.of(context).giveAllNecessaryInfo, context);
               } else {
                 await context.read<UserViewModel>().register(
+                      _firstnameInputController.text,
                       _lastnameInputController.text,
                       int.parse(_ageInputController.text),
-                      selectedGender! == S.of(context).male
-                          ? Genders.male
-                          : Genders.female,
+                      selectedGender!,
                       context,
                     );
               }
@@ -305,12 +361,21 @@ class LoginPageState extends State<LoginPage> {
           }
         } else {
           if (key.action == VirtualKeyboardKeyAction.Backspace) {
-            if (_lastnameInputController.text.isNotEmpty) {
-              _lastnameInputController.text = _lastnameInputController.text
-                  .substring(0, _lastnameInputController.text.length - 1);
+            if (_firstName) {
+              if (_firstnameInputController.text.isNotEmpty) {
+                _firstnameInputController.text = _firstnameInputController.text
+                    .substring(0, _firstnameInputController.text.length - 1);
+              }
+            } else {
+              if (_lastnameInputController.text.isNotEmpty) {
+                _lastnameInputController.text = _lastnameInputController.text
+                    .substring(0, _lastnameInputController.text.length - 1);
+              }
             }
           } else {
-            if (_lastnameInputController.text.length < 3) {
+            if (_firstName) {
+              _firstnameInputController.text += key.text?.toUpperCase() ?? '';
+            } else {
               _lastnameInputController.text += key.text?.toUpperCase() ?? '';
             }
           }

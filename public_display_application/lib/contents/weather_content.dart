@@ -33,39 +33,57 @@ class WeatherContentState extends State<WeatherContent> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 60,
           ),
-          Expanded(
+          SizedBox(
+            width: 400,
+            height: 170,
             child: Scrollbar(
               thumbVisibility: true,
               controller: _controller,
-              child: ListView.separated(
-                controller: _controller,
-                separatorBuilder: (BuildContext context, int index) {
-                  if (index != 0) {
-                    return const Divider(color: Colors.black, thickness: 0.7);
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-                itemCount: widget.data.length,
-                itemBuilder: (context, index) {
-                  WeatherItem curItem = widget.data[index];
-                  if (index != 0) {
-                    return ListTile(
-                      leading: Image.network(curItem.icon),
-                      title: Text("${curItem.temperature}°C"),
-                      subtitle: Text(curItem.text),
-                      trailing: Text(
-                        setUpTimeString(
-                          curItem.time,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
+              child: SizedBox(
+                width: 400,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  controller: _controller,
+                  separatorBuilder: (BuildContext context, int index) {
+                    if (index != 0) {
+                      return const Divider(color: Colors.black, thickness: 0.7);
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                  itemCount: widget.data.length,
+                  itemBuilder: (context, index) {
+                    WeatherItem curItem = widget.data[index];
+                    if (index != 0) {
+                      if (curItem.time.compareTo(DateTime.now()) >= 0) {
+                        return SizedBox(
+                          width: 170,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.network(curItem.icon),
+                                Text("${curItem.temperature}°C"),
+                                Text(curItem.text),
+                                Text(
+                                  setUpTimeString(
+                                    curItem.time,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
               ),
             ),
           ),
