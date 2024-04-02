@@ -9,7 +9,7 @@ import 'package:sqlite_async/sqlite_async.dart';
 class LogFile extends InheritedWidget {
   final File logFile;
   final SqliteDatabase db;
-
+  final List<String> inputList = [];
   LogFile({required this.logFile, required this.db, required Widget mychild})
       : super(child: mychild);
 
@@ -20,12 +20,37 @@ class LogFile extends InheritedWidget {
     List<String> typeVals = type.split(',');
     String logString =
         "${DateTime.now().microsecondsSinceEpoch}\t$x\t$y\t$pointer\t${typeVals[0]}\t${typeVals[1]}\t${typeVals[2]}\n";
-
+    inputList.add(logString);
     debugPrint(logString);
-    await logFile.writeAsString(
-      logString,
-      mode: FileMode.append,
-    );
+    if (inputList.length > 100) {
+      print("dumping");
+      String finalString = "";
+      for (final line in inputList) {
+        finalString += line;
+      }
+      inputList.clear();
+      await logFile.writeAsString(
+        finalString,
+        mode: FileMode.append,
+      );
+    }
+  }
+
+  Future forceDumpInputs() async {
+    if (inputList.isNotEmpty) {
+      print("force dumping");
+      String finalString = "";
+      for (final line in inputList) {
+        finalString += line;
+      }
+      inputList.clear();
+      await logFile.writeAsString(
+        finalString,
+        mode: FileMode.append,
+      );
+    } else {
+      debugPrint("no inputs in list");
+    }
   }
 
   Future<User?> selectUser(String surname, int age, Genders gender) async {

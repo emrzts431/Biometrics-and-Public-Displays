@@ -85,72 +85,78 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Listener(
-          onPointerDown: (e) async {
-            int x = e.position.dx.round();
-            int y = (e.position.dy).round();
+        onPointerDown: (e) async {
+          // print(e.pressure);
+          int x = e.position.dx.round();
+          int y = (e.position.dy).round();
 
-            context.read<SessionViewModel>().updateLastTouch();
-            await LogFile.of(context).logInput(x, y, e.pointer, DOWN);
-          },
-          onPointerMove: (e) async {
-            int x = e.position.dx.round();
-            int y = (e.position.dy).round();
+          context.read<SessionViewModel>().updateLastTouch();
+          await LogFile.of(context).logInput(x, y, e.pointer, DOWN);
+        },
+        onPointerMove: (e) async {
+          // print(e.pressure);
+          // print(e.pressureMax);
+          // print(e.pressureMin);
+          int x = e.position.dx.round();
+          int y = (e.position.dy).round();
 
-            await LogFile.of(context).logInput(x, y, e.pointer, MOVE);
-          },
-          onPointerUp: (e) async {
-            int x = e.position.dx.round();
-            int y = (e.position.dy).round();
+          await LogFile.of(context).logInput(x, y, e.pointer, MOVE);
+        },
+        onPointerUp: (e) async {
+          // print(e.pressure);
+          int x = e.position.dx.round();
+          int y = (e.position.dy).round();
 
-            await LogFile.of(context).logInput(x, y, e.pointer, UP);
-          },
-          child: FooterView(
-            flex: 10,
-            footer: Footer(
-              alignment: Alignment.bottomCenter,
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Image.asset(
-                      'assets/images/uniicon.jpg',
-                      scale: 15,
+          await LogFile.of(context).logInput(x, y, e.pointer, UP);
+        },
+        child: FooterView(
+          flex: 10,
+          footer: Footer(
+            alignment: Alignment.bottomCenter,
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset(
+                    'assets/images/uniicon.jpg',
+                    scale: 15,
+                  ),
+                  Text(
+                    S.of(context).workConducted,
+                    style: const TextStyle(
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      S.of(context).workConducted,
-                      style: const TextStyle(
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          children: [
+            const SizedBox(
+              height: 80,
+            ),
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Center(
+                child: Container(
+                  height: 700,
+                  width: 570,
+                  child: context.watch<UserViewModel>().user != null
+                      ? ButtonLayout(
+                          version: 1,
+                        )
+                      : NoSessionZone(),
                 ),
               ),
             ),
-            children: [
-              const SizedBox(
-                height: 80,
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Center(
-                  child: Container(
-                    height: 700,
-                    width: 570,
-                    child: context.watch<UserViewModel>().user != null
-                        ? ButtonLayout(
-                            version: 1,
-                          )
-                        : NoSessionZone(),
-                  ),
-                ),
-              ),
-            ],
-          )),
+          ],
+        ),
+      ),
     );
   }
 }

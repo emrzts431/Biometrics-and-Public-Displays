@@ -172,6 +172,7 @@ class UserViewModel extends ChangeNotifier {
       if (user != null) {
         _isLoading = true;
         notifyListeners();
+
         //Log session stop
         if (await LogFile.of(_homePageContext!).insertSession(
             SessionActionType.finish,
@@ -186,6 +187,7 @@ class UserViewModel extends ChangeNotifier {
           _weatherPreference = null;
           _mapPreference = null;
           _transportPreference = null;
+          await LogFile.of(_homePageContext!).forceDumpInputs();
           notifyListeners();
         } else {
           SnackbarHolder.showFailureSnackbar(
