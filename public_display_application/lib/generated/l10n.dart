@@ -730,10 +730,10 @@ class S {
     );
   }
 
-  /// `System Usability Scale (SUS)`
+  /// `Post-Study Questionnaire`
   String get susForm {
     return Intl.message(
-      'System Usability Scale (SUS)',
+      'Post-Study Questionnaire',
       name: 'susForm',
       desc: '',
       args: [],

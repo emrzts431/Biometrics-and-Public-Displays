@@ -61,9 +61,10 @@ class LogFile extends InheritedWidget {
         //gender == 1 ? male : female
         return User(
           age: result['age'],
-          gender: result['gender'] == 1 ? true : false,
+          gender: result['gender'] as int,
           surname: result['surname'],
           userid: result['userid'],
+          name: result['name'],
         );
       } else {
         return null;
@@ -219,6 +220,25 @@ class LogFile extends InheritedWidget {
     } on Exception catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  Future<int> getNumberOfVisitsForUser(int userid) async {
+    try {
+      final result = await db.get(
+          'Select count(*) as ses from Session where userid = ? and type = 1',
+          [userid]);
+      if (result.isNotEmpty) {
+        return result['ses'];
+      } else {
+        return 0;
+      }
+    } on StateError catch (e) {
+      print(e);
+      return 0;
+    } on Error catch (e) {
+      print(e);
+      return 0;
     }
   }
 

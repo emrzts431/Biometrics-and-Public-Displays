@@ -9,8 +9,9 @@ class FreeCoffeePage extends StatelessWidget {
     return Column(
       children: [
         Image.network(
-          "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDdhcmxzeWtud2Rxa295anhyYmsyeDUzanJ6eXhmN3ZlZ3doZTE0MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/0ihPHfpiExxUr6vz7S/giphy.gif",
-          height: 500,
+          //"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDdhcmxzeWtud2Rxa295anhyYmsyeDUzanJ6eXhmN3ZlZ3doZTE0MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/0ihPHfpiExxUr6vz7S/giphy.gif",
+          "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          height: 520,
           fit: BoxFit.fill,
         ),
         const SizedBox(

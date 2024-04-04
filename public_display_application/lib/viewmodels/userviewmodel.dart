@@ -47,7 +47,7 @@ class UserViewModel extends ChangeNotifier {
         )) {
           _user = localUser;
           SnackbarHolder.showSuccessSnackbar(
-              '${S.current.sessionSuccessfullyStarted} ${_user!.surname}!',
+              '${S.current.sessionSuccessfullyStarted} ${_user!.name}!',
               context);
         } else {
           SnackbarHolder.showFailureSnackbar(
@@ -209,5 +209,9 @@ class UserViewModel extends ChangeNotifier {
       _homePageContext = null;
       notifyListeners();
     }
+  }
+
+  Future<int> getNumberOfVisits(BuildContext context) async {
+    return await LogFile.of(context).getNumberOfVisitsForUser(_user!.userid!);
   }
 }

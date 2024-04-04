@@ -32,6 +32,7 @@ class SUSForm extends StatelessWidget {
                 const createConfig = CreateConfiguration(openMaximized: true);
                 final webview =
                     await WebviewWindow.create(configuration: createConfig);
+
                 webview.launch(
                     "https://docs.google.com/forms/d/e/1FAIpQLSeTTV_KJLZLyE61Vx61dfY-J4bRLgYOP2EaQeAKtc0S0CrSLA/viewform?usp=sf_link");
                 Navigator.pop(

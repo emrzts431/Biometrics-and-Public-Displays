@@ -95,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sureToEndSession": MessageLookupByLibrary.simpleMessage(
             "Sicher, dass Sie Ihre Session verfrüht beenden wollen?"),
         "susForm":
-            MessageLookupByLibrary.simpleMessage("System-Usability-Skala"),
+            MessageLookupByLibrary.simpleMessage("Post-Study-Fragebogen"),
         "threeInitialsYourName": MessageLookupByLibrary.simpleMessage(
             "Erste drei Buchstaben Ihres Nachnamamens"),
         "thursday": MessageLookupByLibrary.simpleMessage("Donnerstag"),

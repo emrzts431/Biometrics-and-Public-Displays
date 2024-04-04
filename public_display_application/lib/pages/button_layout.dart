@@ -39,7 +39,7 @@ class ButtonLayout extends StatefulWidget {
 }
 
 class ButtonLayoutState extends State<ButtonLayout> {
-  String? contentString = null;
+  String? contentString;
   Elements selectedElement = Elements.none;
   var data;
   final _controller = PageController();
@@ -86,7 +86,7 @@ class ButtonLayoutState extends State<ButtonLayout> {
               )
             : Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 400,
                     height: 550,
                     child: PageView.builder(
@@ -156,18 +156,28 @@ class ButtonLayoutState extends State<ButtonLayout> {
                 style: ElevatedButton.styleFrom(
                   shape: const RoundedRectangleBorder(),
                 ),
-                onPressed: () => setState(() {
-                  selectedElement = Elements.none;
-                  data = null;
-                  context.read<UserViewModel>().updateTransportLines = false;
+                onPressed: () async {
                   if (!visitedContents.any((element) => element == false)) {
-                    showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) => SUSForm(),
-                    );
+                    int numberOfVisitsForUser = await context
+                        .read<UserViewModel>()
+                        .getNumberOfVisits(context);
+                    if (numberOfVisitsForUser == 1.0 ||
+                        numberOfVisitsForUser == 5.0) {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: locator<NavigationService>()
+                            .navigatorKey
+                            .currentContext!,
+                        builder: (context) => SUSForm(),
+                      );
+                    }
                   }
-                }),
+                  setState(() {
+                    selectedElement = Elements.none;
+                    data = null;
+                    context.read<UserViewModel>().updateTransportLines = false;
+                  });
+                },
                 child: Text(
                   S.of(context).goBack,
                   style: const TextStyle(
