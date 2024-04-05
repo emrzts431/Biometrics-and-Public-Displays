@@ -108,6 +108,10 @@ for frame in frames:
         for person in people_list:
             log_string = f"{frame_components[1]}\t{person_index}"
             for joint, coordinates in person.joint_coordinates.items():
+                if coordinates[0] > 480:
+                    coordinates[0] = 480
+                if coordinates[1] > 640:
+                    coordinates[1] = 640
                 z = max(corresponding_depth_frame[int(coordinates[1]), int(coordinates[0])])
                 log_string += '\t'+ str(coordinates[0])+','+str(coordinates[1])+','+str(z)+','+str(coordinates[2])
             log_string += '\n'
