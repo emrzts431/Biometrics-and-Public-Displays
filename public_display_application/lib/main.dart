@@ -32,7 +32,8 @@ void main() async {
   migrations.migrate(db);
   File file = File(
       "${folder.path}/logs_${DateTime.now().toString().replaceAll(' ', '').replaceAll(':', '_')}.tsv");
-  await file.writeAsString("timestamp\tx\ty\tpointer\tdown\tmove\tup\n");
+  await file
+      .writeAsString("timestamp\tx\ty\tpointer\tdown\tmove\tup\tbuttonid\n");
   setupLocator();
   runZonedGuarded(
       () => runApp(

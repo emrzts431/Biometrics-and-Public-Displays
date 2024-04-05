@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/snackbar_holder.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
@@ -39,14 +41,21 @@ class LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => setState(() => returningUser = true),
+                onPressed: () {
+                  PDEventBus()
+                      .fire(ButtonClickedEvent(Buttons.returningUser.index));
+                  setState(() => returningUser = true);
+                },
                 child: Text(S.of(context).yes),
               ),
               const SizedBox(
                 width: 80,
               ),
               ElevatedButton(
-                onPressed: () => setState(() => returningUser = false),
+                onPressed: () {
+                  PDEventBus().fire(ButtonClickedEvent(Buttons.newUser.index));
+                  setState(() => returningUser = false);
+                },
                 child: Text(S.of(context).no),
               ),
             ],
@@ -110,6 +119,19 @@ class LoginPageState extends State<LoginPage> {
             setState(() {
               selectedGender = newValue;
             });
+            switch (newValue) {
+              case Genders.male:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
+              case Genders.female:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.female.index));
+              case Genders.nonbinary:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.nonBinary.index));
+              case Genders.nan:
+                PDEventBus()
+                    .fire(ButtonClickedEvent(Buttons.preferNotToSay.index));
+              default:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
+            }
           },
           items: [
             DropdownMenuItem<Genders>(
@@ -142,6 +164,7 @@ class LoginPageState extends State<LoginPage> {
         if (!context.watch<UserViewModel>().isLoading)
           ElevatedButton(
             onPressed: () async {
+              PDEventBus().fire(ButtonClickedEvent(Buttons.login.index));
               if (_ageInputController.text.isEmpty ||
                   _lastnameInputController.text.isEmpty ||
                   selectedGender == null) {
@@ -168,14 +191,18 @@ class LoginPageState extends State<LoginPage> {
           height: 20,
         ),
         ElevatedButton(
-          onPressed: () => setState(
-            () {
-              _ageInputController.text = "";
-              _lastnameInputController.text = "";
-              returningUser = null;
-              openKeyboard = false;
-            },
-          ),
+          onPressed: () {
+            PDEventBus()
+                .fire(ButtonClickedEvent(Buttons.goBackRegisterPage.index));
+            setState(
+              () {
+                _ageInputController.text = "";
+                _lastnameInputController.text = "";
+                returningUser = null;
+                openKeyboard = false;
+              },
+            );
+          },
           child: Text(S.of(context).goBack),
         ),
       ],
@@ -210,17 +237,17 @@ class LoginPageState extends State<LoginPage> {
               child: TextField(
                 onTap: () => setState(() {
                   keyBoardType = VirtualKeyboardType.Alphanumeric;
-                  _firstName = false;
+                  _firstName = true;
                   openKeyboard = true;
                 }),
                 onEditingComplete: () => setState(() {
                   openKeyboard = false;
                 }),
                 style: const TextStyle(fontSize: 25),
-                controller: _lastnameInputController,
+                controller: _firstnameInputController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-                  hintText: S.of(context).lastName,
+                  hintText: S.of(context).firstName,
                   hintStyle: const TextStyle(fontSize: 25),
                 ),
               ),
@@ -233,17 +260,17 @@ class LoginPageState extends State<LoginPage> {
               child: TextField(
                 onTap: () => setState(() {
                   keyBoardType = VirtualKeyboardType.Alphanumeric;
-                  _firstName = true;
+                  _firstName = false;
                   openKeyboard = true;
                 }),
                 onEditingComplete: () => setState(() {
                   openKeyboard = false;
                 }),
                 style: const TextStyle(fontSize: 25),
-                controller: _firstnameInputController,
+                controller: _lastnameInputController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-                  hintText: S.of(context).firstName,
+                  hintText: S.of(context).lastName,
                   hintStyle: const TextStyle(fontSize: 25),
                 ),
               ),
@@ -261,6 +288,19 @@ class LoginPageState extends State<LoginPage> {
             setState(() {
               selectedGender = newValue;
             });
+            switch (newValue) {
+              case Genders.male:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
+              case Genders.female:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.female.index));
+              case Genders.nonbinary:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.nonBinary.index));
+              case Genders.nan:
+                PDEventBus()
+                    .fire(ButtonClickedEvent(Buttons.preferNotToSay.index));
+              default:
+                PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
+            }
           },
           items: [
             DropdownMenuItem<Genders>(
@@ -293,6 +333,7 @@ class LoginPageState extends State<LoginPage> {
         if (!context.watch<UserViewModel>().isLoading)
           ElevatedButton(
             onPressed: () async {
+              PDEventBus().fire(ButtonClickedEvent(Buttons.register.index));
               if (_ageInputController.text.isEmpty ||
                   _lastnameInputController.text.isEmpty ||
                   selectedGender == null) {

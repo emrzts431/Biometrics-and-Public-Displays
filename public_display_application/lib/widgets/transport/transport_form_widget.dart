@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/services/navigation_service.dart';
 import 'package:public_display_application/services/service_locator.dart';
@@ -90,14 +92,20 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
                   (element) => element == viehoferPlatzLines[index],
                 );
                 return GestureDetector(
-                  onTap: () => setState(() {
-                    if (itemSelected) {
-                      viehoferPlatzSelectedLines
-                          .remove(viehoferPlatzLines[index]);
-                    } else {
-                      viehoferPlatzSelectedLines.add(viehoferPlatzLines[index]);
-                    }
-                  }),
+                  onTap: () {
+                    PDEventBus().fire(
+                      ButtonClickedEvent(Buttons.lineSelection.index),
+                    );
+                    setState(() {
+                      if (itemSelected) {
+                        viehoferPlatzSelectedLines
+                            .remove(viehoferPlatzLines[index]);
+                      } else {
+                        viehoferPlatzSelectedLines
+                            .add(viehoferPlatzLines[index]);
+                      }
+                    });
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     height: 15,
@@ -140,15 +148,20 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
                   (element) => element == rheinischerPlatzLines[index],
                 );
                 return GestureDetector(
-                  onTap: () => setState(() {
-                    if (itemSelected) {
-                      rheinischerPlatzSelectedLines
-                          .remove(rheinischerPlatzLines[index]);
-                    } else {
-                      rheinischerPlatzSelectedLines
-                          .add(rheinischerPlatzLines[index]);
-                    }
-                  }),
+                  onTap: () {
+                    PDEventBus().fire(
+                      ButtonClickedEvent(Buttons.lineSelection.index),
+                    );
+                    setState(() {
+                      if (itemSelected) {
+                        rheinischerPlatzSelectedLines
+                            .remove(rheinischerPlatzLines[index]);
+                      } else {
+                        rheinischerPlatzSelectedLines
+                            .add(rheinischerPlatzLines[index]);
+                      }
+                    });
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     height: 15,
@@ -174,7 +187,10 @@ class TransportFormWidgetState extends State<TransportFormWidget> {
           ),
           ElevatedButton(
             onPressed: () async {
-              if (rheinischerPlatzSelectedLines.isEmpty ||
+              PDEventBus().fire(
+                ButtonClickedEvent(Buttons.save.index),
+              );
+              if (rheinischerPlatzSelectedLines.isEmpty &&
                   viehoferPlatzSelectedLines.isEmpty) {
                 SnackbarHolder.showFailureSnackbar(
                   S.of(context).pleaseGiveALineForBothStops,

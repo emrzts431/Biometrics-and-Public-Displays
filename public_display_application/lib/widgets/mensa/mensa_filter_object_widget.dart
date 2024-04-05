@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
@@ -28,6 +30,9 @@ class MensaFilterObject extends StatelessWidget {
           Text(setUpFilterName(context)),
           IconButton(
             onPressed: () async {
+              PDEventBus().fire(
+                ButtonClickedEvent(Buttons.deleteMensaFilter.index),
+              );
               await context
                   .read<UserViewModel>()
                   .removePreference(PreferenceTypes.mensa, filter, context);

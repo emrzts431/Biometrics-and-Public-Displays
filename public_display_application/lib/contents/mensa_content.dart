@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
@@ -23,6 +27,7 @@ class MensaContent extends StatefulWidget {
 class _MensaContentState extends State<MensaContent> {
   String? selectedCategory;
   TextEditingController searchController = TextEditingController();
+  Encoding encoding = Encoding.getByName('latin1')!;
   int day = DateTime.now().weekday - 1;
   late List<int> timestamps;
   String veganIconUrl =
@@ -70,16 +75,43 @@ class _MensaContentState extends State<MensaContent> {
                       final itemIconsList = item.kennz_icons!.split(',');
                       if (userViewModel.mensaPreference!.values
                           .any((element) => itemIconsList.contains(element))) {
+                        return const SizedBox.shrink();
+                      } else {
                         return ListTile(
                           leading: setUpItemIcon(item.kennz_icons!),
-                          onTap: () => essenDialog(item),
-                          title: Text(item.title!),
-                          trailing: Container(
+                          onTap: () {
+                            PDEventBus().fire(
+                              ButtonClickedEvent(Buttons.mensaListTile.index),
+                            );
+                            essenDialog(item);
+                          },
+                          title: Text(
+                            utf8.decode(item.title!.codeUnits),
+                          ),
+                          trailing: SizedBox(
                             width: 100,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.touch_app),
+                                Container(
+                                  width: 60,
+                                  height: 20,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  child: Center(
+                                    child: Text(
+                                      S.of(context).show,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       "${item.preis1!}€",
@@ -96,35 +128,61 @@ class _MensaContentState extends State<MensaContent> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "${item.preis3!}€",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
+                                    // const SizedBox(
+                                    //   width: 5,
+                                    // ),
+                                    // Text(
+                                    //   "${item.preis3!}€",
+                                    //   style: const TextStyle(
+                                    //     fontWeight: FontWeight.bold,
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                               ],
                             ),
                           ),
                         );
-                      } else {
-                        return SizedBox.shrink();
                       }
                     } else {
                       return ListTile(
                         leading: setUpItemIcon(item.kennz_icons!),
-                        onTap: () => essenDialog(item),
-                        title: Text(item.title!),
-                        trailing: Container(
+                        onTap: () {
+                          PDEventBus().fire(
+                            ButtonClickedEvent(Buttons.mensaListTile.index),
+                          );
+                          essenDialog(item);
+                        },
+                        title: Text(
+                          utf8.decode(item.title!.codeUnits),
+                        ),
+                        trailing: SizedBox(
                           width: 100,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(Icons.touch_app),
+                              Container(
+                                width: 70,
+                                height: 35,
+                                decoration: const BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                                child: Center(
+                                  child: Text(
+                                    S.of(context).show,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "${item.preis1!}€",
@@ -141,15 +199,15 @@ class _MensaContentState extends State<MensaContent> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "${item.preis3!}€",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
+                                  // const SizedBox(
+                                  //   width: 5,
+                                  // ),
+                                  // Text(
+                                  //   "${item.preis3!}€",
+                                  //   style: const TextStyle(
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // )
                                 ],
                               ),
                             ],
@@ -176,11 +234,16 @@ class _MensaContentState extends State<MensaContent> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          onPressed: () => setState(() {
-            if (day > 0) {
-              day--;
-            }
-          }),
+          onPressed: () {
+            PDEventBus().fire(
+              ButtonClickedEvent(Buttons.datePrevDay.index),
+            );
+            setState(() {
+              if (day > 0) {
+                day--;
+              }
+            });
+          },
           icon: const Icon(
             Icons.arrow_left,
             size: 30,
@@ -193,12 +256,17 @@ class _MensaContentState extends State<MensaContent> {
               fontSize: 20,
             )),
         IconButton(
-          onPressed: () => setState(() {
-            if (day < 6) {
-              day++;
-              print(day);
-            }
-          }),
+          onPressed: () {
+            PDEventBus().fire(
+              ButtonClickedEvent(Buttons.dateNextDay.index),
+            );
+            setState(() {
+              if (day < 6) {
+                day++;
+                print(day);
+              }
+            });
+          },
           icon: const Icon(
             Icons.arrow_right,
             size: 30,
@@ -295,7 +363,7 @@ class _MensaContentState extends State<MensaContent> {
                   height: 50,
                 ),
                 Text(
-                  item.title!,
+                  utf8.decode(item.title!.codeUnits),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20,
@@ -384,7 +452,8 @@ class _MensaContentState extends State<MensaContent> {
             children: [
               Text(
                 "${S.of(context).per} Portion",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
               Text(
                 "${item.nutritionScores?.kj ?? S.of(context).unknown} kJ",
@@ -453,7 +522,7 @@ class _MensaContentState extends State<MensaContent> {
   }
 
   Widget preisWidget(SpeisePlanItem item) {
-    return Container(
+    return SizedBox(
       width: 400,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -480,17 +549,17 @@ class _MensaContentState extends State<MensaContent> {
               Text('${item.preis2 ?? S.of(context).unknown}€')
             ],
           ),
-          Column(
-            children: [
-              Text(
-                S.of(context).guests,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text('${item.preis3 ?? S.of(context).unknown}€')
-            ],
-          )
+          // Column(
+          //   children: [
+          //     Text(
+          //       S.of(context).guests,
+          //       style: const TextStyle(
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //     ),
+          //     Text('${item.preis3 ?? S.of(context).unknown}€')
+          //   ],
+          // )
         ],
       ),
     );
@@ -499,11 +568,11 @@ class _MensaContentState extends State<MensaContent> {
   Color setNutriScoreColor(String? score) {
     switch (score) {
       case 'A':
-        return Color.fromARGB(200, 3, 90, 6);
+        return const Color.fromARGB(200, 3, 90, 6);
       case 'B':
         return const Color.fromARGB(200, 76, 175, 79);
       case 'C':
-        return Color.fromARGB(200, 251, 234, 85);
+        return const Color.fromARGB(200, 251, 234, 85);
       case 'D':
         return const Color.fromARGB(200, 255, 153, 0);
       case 'E':
@@ -512,12 +581,4 @@ class _MensaContentState extends State<MensaContent> {
         return const Color.fromARGB(200, 0, 0, 0);
     }
   }
-
-  // Widget setUpFilterListener(String filter, SpeisePlanItem item){
-
-  // }
-
-  // Widget setUpFilterListenerNot(String filter, SpeisePlanItem item){
-
-  // }
 }

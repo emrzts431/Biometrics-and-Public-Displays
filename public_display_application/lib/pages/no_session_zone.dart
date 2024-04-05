@@ -15,7 +15,10 @@ class NoSessionZoneState extends State<NoSessionZone> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (ModalRoute.of(context)?.isCurrent != true) {
-        Navigator.pop(context);
+        Navigator.popUntil(
+          context,
+          (route) => route.isFirst,
+        );
       }
       debugPrint("Currently at NoSessionZone");
       context.read<UserViewModel>().setHomePageContext(context);

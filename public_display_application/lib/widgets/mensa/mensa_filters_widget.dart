@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:public_display_application/widgets/mensa/mensa_filter_object_widget.dart';
@@ -35,6 +37,9 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
               ),
               IconButton(
                 onPressed: () {
+                  PDEventBus().fire(
+                    ButtonClickedEvent(Buttons.mensaAddFilter.index),
+                  );
                   showDialog(
                     context: context,
                     builder: (context) => Dialog(
@@ -59,6 +64,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).withPork),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
@@ -74,6 +81,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).vegan),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
@@ -89,6 +98,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).withAlcohol),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
@@ -104,6 +115,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).withBeef),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
@@ -119,6 +132,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).withPoultry),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
@@ -134,6 +149,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).withFish),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values
@@ -149,6 +166,8 @@ class MensaFiltersWidgetState extends State<MensaFiltersWidget> {
                                   ListTile(
                                     title: Text(S.of(context).vegetarien),
                                     onTap: () async {
+                                      PDEventBus().fire(ButtonClickedEvent(
+                                          Buttons.mensaFilter.index));
                                       if (userViewModel.mensaPreference ==
                                               null ||
                                           userViewModel.mensaPreference?.values

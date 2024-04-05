@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/transportline_item.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
@@ -96,8 +98,14 @@ class TransportContentState extends State<TransportContent> {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () => setState(() =>
-                                userViewModel.updateTransportLines = true),
+                            onPressed: () {
+                              PDEventBus().fire(
+                                ButtonClickedEvent(
+                                    Buttons.changeLinePrefs.index),
+                              );
+                              setState(() =>
+                                  userViewModel.updateTransportLines = true);
+                            },
                             child: Text(S.of(context).changeLinePreference),
                           ),
                           const SizedBox(
@@ -151,8 +159,14 @@ class TransportContentState extends State<TransportContent> {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () => setState(() =>
-                                userViewModel.updateTransportLines = true),
+                            onPressed: () {
+                              PDEventBus().fire(
+                                ButtonClickedEvent(
+                                    Buttons.changeLinePrefs.index),
+                              );
+                              setState(() =>
+                                  userViewModel.updateTransportLines = true);
+                            },
                             child: Text(S.of(context).changeLinePreference),
                           ),
                           const SizedBox(

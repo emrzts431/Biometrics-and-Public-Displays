@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Session ended successfully"),
         "sessionSuccessfullyStarted": MessageLookupByLibrary.simpleMessage(
             "Session has successfully started. Welcome"),
+        "show": MessageLookupByLibrary.simpleMessage("Show"),
         "somethingWentWrong":
             MessageLookupByLibrary.simpleMessage("Something went wrong"),
         "sonday": MessageLookupByLibrary.simpleMessage("Sonday"),
@@ -95,7 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "susForm":
             MessageLookupByLibrary.simpleMessage("Post-Study Questionnaire"),
         "threeInitialsYourName": MessageLookupByLibrary.simpleMessage(
-            "First three initials of your name"),
+            "First three initials of your lastname"),
         "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
         "transport": MessageLookupByLibrary.simpleMessage("Transport"),
         "transportation":
@@ -104,19 +105,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("unknown"),
         "userDoesntExist":
             MessageLookupByLibrary.simpleMessage("User doen\'t exist"),
-        "vegan": MessageLookupByLibrary.simpleMessage("Vegan"),
-        "vegetarien": MessageLookupByLibrary.simpleMessage("Vegetarian"),
+        "vegan": MessageLookupByLibrary.simpleMessage("without Vegan"),
+        "vegetarien":
+            MessageLookupByLibrary.simpleMessage("without Vegetarian"),
         "weather": MessageLookupByLibrary.simpleMessage("Weather"),
         "weatherForecast":
             MessageLookupByLibrary.simpleMessage("Weather Forecast"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
         "whatIsYourDiet":
             MessageLookupByLibrary.simpleMessage("What is your diet?"),
-        "withAlcohol": MessageLookupByLibrary.simpleMessage("with Alcohol"),
-        "withBeef": MessageLookupByLibrary.simpleMessage("with Beef"),
-        "withFish": MessageLookupByLibrary.simpleMessage("with Fish"),
-        "withPork": MessageLookupByLibrary.simpleMessage("with Pork"),
-        "withPoultry": MessageLookupByLibrary.simpleMessage("with Poultry"),
+        "withAlcohol": MessageLookupByLibrary.simpleMessage("without Alcohol"),
+        "withBeef": MessageLookupByLibrary.simpleMessage("without Beef"),
+        "withFish": MessageLookupByLibrary.simpleMessage("without Fish"),
+        "withPork": MessageLookupByLibrary.simpleMessage("without Pork"),
+        "withPoultry": MessageLookupByLibrary.simpleMessage("without Poultry"),
         "workConducted": MessageLookupByLibrary.simpleMessage(
             "This work is conducted by the HCI Team supervised by Prof. Dr. Stefan Schneegaß"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),

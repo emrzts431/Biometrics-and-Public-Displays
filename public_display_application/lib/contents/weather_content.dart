@@ -36,7 +36,7 @@ class WeatherContentState extends State<WeatherContent> {
             height: 60,
           ),
           SizedBox(
-            width: 400,
+            width: 700,
             height: 170,
             child: Scrollbar(
               thumbVisibility: true,

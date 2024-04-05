@@ -90,10 +90,10 @@ class S {
     );
   }
 
-  /// `First three initials of your name`
+  /// `First three initials of your lastname`
   String get threeInitialsYourName {
     return Intl.message(
-      'First three initials of your name',
+      'First three initials of your lastname',
       name: 'threeInitialsYourName',
       desc: '',
       args: [],
@@ -260,70 +260,70 @@ class S {
     );
   }
 
-  /// `with Pork`
+  /// `without Pork`
   String get withPork {
     return Intl.message(
-      'with Pork',
+      'without Pork',
       name: 'withPork',
       desc: '',
       args: [],
     );
   }
 
-  /// `with Beef`
+  /// `without Beef`
   String get withBeef {
     return Intl.message(
-      'with Beef',
+      'without Beef',
       name: 'withBeef',
       desc: '',
       args: [],
     );
   }
 
-  /// `Vegan`
+  /// `without Vegan`
   String get vegan {
     return Intl.message(
-      'Vegan',
+      'without Vegan',
       name: 'vegan',
       desc: '',
       args: [],
     );
   }
 
-  /// `with Alcohol`
+  /// `without Alcohol`
   String get withAlcohol {
     return Intl.message(
-      'with Alcohol',
+      'without Alcohol',
       name: 'withAlcohol',
       desc: '',
       args: [],
     );
   }
 
-  /// `with Poultry`
+  /// `without Poultry`
   String get withPoultry {
     return Intl.message(
-      'with Poultry',
+      'without Poultry',
       name: 'withPoultry',
       desc: '',
       args: [],
     );
   }
 
-  /// `with Fish`
+  /// `without Fish`
   String get withFish {
     return Intl.message(
-      'with Fish',
+      'without Fish',
       name: 'withFish',
       desc: '',
       args: [],
     );
   }
 
-  /// `Vegetarian`
+  /// `without Vegetarian`
   String get vegetarien {
     return Intl.message(
-      'Vegetarian',
+      'without Vegetarian',
       name: 'vegetarien',
       desc: '',
       args: [],
@@ -745,6 +745,16 @@ class S {
     return Intl.message(
       'Go to SUS form',
       name: 'gotoSusForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show`
+  String get show {
+    return Intl.message(
+      'Show',
+      name: 'show',
       desc: '',
       args: [],
     );

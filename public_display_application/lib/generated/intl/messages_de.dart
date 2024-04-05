@@ -86,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nutzung (Session) wurde erfolgreich beendet"),
         "sessionSuccessfullyStarted": MessageLookupByLibrary.simpleMessage(
             "Nutzung (Session) wurde erfolgreich gestartet. Herzlich Wilkommen."),
+        "show": MessageLookupByLibrary.simpleMessage("Anzeigen"),
         "somethingWentWrong": MessageLookupByLibrary.simpleMessage(
             "Irgendwas ist schiefgelaufen"),
         "sonday": MessageLookupByLibrary.simpleMessage("Sonntag"),
@@ -106,19 +107,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "unknown": MessageLookupByLibrary.simpleMessage("unbekannt"),
         "userDoesntExist":
             MessageLookupByLibrary.simpleMessage("Nutzer existiert nicht"),
-        "vegan": MessageLookupByLibrary.simpleMessage("Vegan"),
-        "vegetarien": MessageLookupByLibrary.simpleMessage("Vegetarisch"),
+        "vegan": MessageLookupByLibrary.simpleMessage("ohne Vegan"),
+        "vegetarien": MessageLookupByLibrary.simpleMessage("ohne Vegetarisch"),
         "weather": MessageLookupByLibrary.simpleMessage("Wetter"),
         "weatherForecast":
             MessageLookupByLibrary.simpleMessage("Wettervorhersage"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Mittwoch"),
         "whatIsYourDiet":
             MessageLookupByLibrary.simpleMessage("Wie ist Ihre Ernährung?"),
-        "withAlcohol": MessageLookupByLibrary.simpleMessage("mit Alkohol"),
-        "withBeef": MessageLookupByLibrary.simpleMessage("mit Rindfleisch"),
-        "withFish": MessageLookupByLibrary.simpleMessage("mit Fisch"),
-        "withPork": MessageLookupByLibrary.simpleMessage("mit Schweinefleisch"),
-        "withPoultry": MessageLookupByLibrary.simpleMessage("mit Geflügel"),
+        "withAlcohol": MessageLookupByLibrary.simpleMessage("ohne Alkohol"),
+        "withBeef": MessageLookupByLibrary.simpleMessage("ohne Rindfleisch"),
+        "withFish": MessageLookupByLibrary.simpleMessage("ohne Fisch"),
+        "withPork":
+            MessageLookupByLibrary.simpleMessage("ohne Schweinefleisch"),
+        "withPoultry": MessageLookupByLibrary.simpleMessage("ohne Geflügel"),
         "workConducted": MessageLookupByLibrary.simpleMessage(
             "Diese Arbeit wird vom HCI-Team unter der Leitung von Prof. Dr. Stefan Schneegaß durchgeführt"),
         "yes": MessageLookupByLibrary.simpleMessage("Ja"),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
+import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 
@@ -61,6 +64,10 @@ class SessionViewModel extends ChangeNotifier {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              PDEventBus().fire(
+                                ButtonClickedEvent(
+                                    Buttons.areYouStillThere.index),
+                              );
                               updateLastTouch();
                               _dialogOpen = false;
                               Navigator.of(context).pop();

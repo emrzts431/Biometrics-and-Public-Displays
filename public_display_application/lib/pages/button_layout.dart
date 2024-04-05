@@ -9,6 +9,9 @@ import 'package:public_display_application/contents/mensa_content.dart';
 import 'package:public_display_application/contents/transport_content.dart';
 import 'package:public_display_application/contents/weather_content.dart';
 import 'package:public_display_application/dialogs/sus_form.dart';
+import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/models/address_item.dart';
 import 'package:public_display_application/models/speiseplan_item.dart';
@@ -157,6 +160,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
                   shape: const RoundedRectangleBorder(),
                 ),
                 onPressed: () async {
+                  PDEventBus().fire(
+                    ButtonClickedEvent(Buttons.goBackHomePage.index),
+                  );
                   if (!visitedContents.any((element) => element == false)) {
                     int numberOfVisitsForUser = await context
                         .read<UserViewModel>()
@@ -171,12 +177,20 @@ class ButtonLayoutState extends State<ButtonLayout> {
                         builder: (context) => SUSForm(),
                       );
                     }
+                    setState(() {
+                      selectedElement = Elements.none;
+                      data = null;
+                      context.read<UserViewModel>().updateTransportLines =
+                          false;
+                    });
+                  } else {
+                    setState(() {
+                      selectedElement = Elements.none;
+                      data = null;
+                      context.read<UserViewModel>().updateTransportLines =
+                          false;
+                    });
                   }
-                  setState(() {
-                    selectedElement = Elements.none;
-                    data = null;
-                    context.read<UserViewModel>().updateTransportLines = false;
-                  });
                 },
                 child: Text(
                   S.of(context).goBack,
@@ -224,6 +238,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
   }
 
   Future getMensaData() async {
+    PDEventBus().fire(
+      ButtonClickedEvent(Buttons.canteen.index),
+    );
     showDialog(
       context: context,
       builder: (context) => const Center(
@@ -356,6 +373,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
   }
 
   Future getDataViehoferPlatz() async {
+    PDEventBus().fire(
+      ButtonClickedEvent(Buttons.transport.index),
+    );
     showDialog(
         context: context,
         builder: (context) => const Center(
@@ -421,6 +441,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
   }
 
   Future getWeatherInfo() async {
+    PDEventBus().fire(
+      ButtonClickedEvent(Buttons.weather.index),
+    );
     showDialog(
       context: context,
       builder: (context) => const Center(
@@ -468,6 +491,9 @@ class ButtonLayoutState extends State<ButtonLayout> {
   }
 
   Future getMapData() async {
+    PDEventBus().fire(
+      ButtonClickedEvent(Buttons.map.index),
+    );
     String fileData = await DefaultAssetBundle.of(context)
         .loadString("assets/address_list.json");
     final jsonResult = jsonDecode(fileData);

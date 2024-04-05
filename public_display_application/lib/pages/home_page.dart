@@ -8,6 +8,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:public_display_application/dialogs/sure_to_end_session.dart';
 import 'package:public_display_application/dialogs/sus_form.dart';
+import 'package:public_display_application/enums.dart';
+import 'package:public_display_application/events/button_click_event.dart';
+import 'package:public_display_application/events/pd_event_bus.dart';
 import 'package:public_display_application/generated/l10n.dart';
 import 'package:public_display_application/log_file.dart';
 import 'package:public_display_application/pages/button_layout.dart';
@@ -40,9 +43,14 @@ class _HomePageState extends State<HomePage> {
   int version = 2;
   List<String> languages = ['de', 'en'];
   String? selectedLanguage;
+  int interactionField = -1;
   @override
   void initState() {
     selectedLanguage = languages[0];
+    PDEventBus().on<ButtonClickedEvent>().listen((event) {
+      debugPrint('Button clicked with id ${event.buttonid}');
+      LogFile.of(context).updateLastBlockForButtonId(event.buttonid);
+    });
     super.initState();
   }
 
@@ -56,10 +64,15 @@ class _HomePageState extends State<HomePage> {
         actions: [
           context.watch<UserViewModel>().user != null
               ? ElevatedButton(
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (context) => SureToEndSessionDialog(),
-                  ),
+                  onPressed: () {
+                    PDEventBus().fire(
+                      ButtonClickedEvent(Buttons.endSession.index),
+                    );
+                    showDialog(
+                      context: context,
+                      builder: (context) => SureToEndSessionDialog(),
+                    );
+                  },
                   child: Text(S.of(context).endSession),
                 )
               : const SizedBox.shrink(),
@@ -86,28 +99,27 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Listener(
         onPointerDown: (e) async {
-          // print(e.pressure);
           int x = e.position.dx.round();
           int y = (e.position.dy).round();
 
           context.read<SessionViewModel>().updateLastTouch();
-          await LogFile.of(context).logInput(x, y, e.pointer, DOWN);
+          await LogFile.of(context)
+              .logInput(x, y, e.pointer, DOWN, interactionField);
         },
         onPointerMove: (e) async {
-          // print(e.pressure);
-          // print(e.pressureMax);
-          // print(e.pressureMin);
           int x = e.position.dx.round();
           int y = (e.position.dy).round();
 
-          await LogFile.of(context).logInput(x, y, e.pointer, MOVE);
+          await LogFile.of(context)
+              .logInput(x, y, e.pointer, MOVE, interactionField);
         },
         onPointerUp: (e) async {
-          // print(e.pressure);
           int x = e.position.dx.round();
           int y = (e.position.dy).round();
 
-          await LogFile.of(context).logInput(x, y, e.pointer, UP);
+          await LogFile.of(context)
+              .logInput(x, y, e.pointer, UP, interactionField);
+          interactionField = -1;
         },
         child: FooterView(
           flex: 10,
@@ -115,7 +127,7 @@ class _HomePageState extends State<HomePage> {
             alignment: Alignment.bottomCenter,
             backgroundColor: Colors.white,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 25),
+              padding: const EdgeInsets.only(bottom: 25),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -143,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
               ),
               child: Center(
-                child: Container(
+                child: SizedBox(
                   height: 700,
                   width: 570,
                   child: context.watch<UserViewModel>().user != null

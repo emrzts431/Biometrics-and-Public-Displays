@@ -16,10 +16,10 @@ class LogFile extends InheritedWidget {
   static LogFile of(BuildContext context) =>
       context.getInheritedWidgetOfExactType<LogFile>() as LogFile;
 
-  Future logInput(int x, int y, int pointer, String type) async {
+  Future logInput(int x, int y, int pointer, String type, int buttonid) async {
     List<String> typeVals = type.split(',');
     String logString =
-        "${DateTime.now().microsecondsSinceEpoch}\t$x\t$y\t$pointer\t${typeVals[0]}\t${typeVals[1]}\t${typeVals[2]}\n";
+        "${DateTime.now().microsecondsSinceEpoch}\t$x\t$y\t$pointer\t${typeVals[0]}\t${typeVals[1]}\t${typeVals[2]}\t$buttonid\n";
     _inputList.add(logString);
     debugPrint(logString);
     if (_inputList.length > 100) {
@@ -50,6 +50,30 @@ class LogFile extends InheritedWidget {
       );
     } else {
       debugPrint("no inputs in list");
+    }
+  }
+
+  void updateLastBlockForButtonId(int interactionId) {
+    for (int i = _inputList.length - 1; i >= 0; i--) {
+      final lineBlocks = _inputList[i].split('\t');
+      final down = lineBlocks[4];
+      final move = lineBlocks[5];
+      final up = lineBlocks[6];
+      lineBlocks.last = interactionId.toString();
+      String lineCurrent = "";
+      for (final block in lineBlocks) {
+        lineCurrent += "$block\t";
+      }
+      lineCurrent = lineCurrent.substring(0, lineCurrent.length - 1);
+      lineCurrent += '\n';
+      if (down == '1') {
+        _inputList[i] = lineCurrent;
+        print('updated line');
+        break;
+      } else {
+        _inputList[i] = lineCurrent;
+        print('updated line');
+      }
     }
   }
 
