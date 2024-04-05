@@ -163,7 +163,7 @@ class _MensaContentState extends State<MensaContent> {
                             children: [
                               Container(
                                 width: 70,
-                                height: 35,
+                                height: 20,
                                 decoration: const BoxDecoration(
                                     color: Colors.green,
                                     borderRadius:
