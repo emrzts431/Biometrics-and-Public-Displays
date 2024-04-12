@@ -6,6 +6,7 @@ import datetime
 import os
 import msvcrt
 import sys
+import imageio
 
 documents_path = os.path.join(os.path.expanduser("~"), "Documents")
 if not os.path.exists(rf"{documents_path}\CameraLogs"):
@@ -69,7 +70,15 @@ def start_record():
     global pipeline
     create_folders()
     try:
-        pipeline.start(config)
+        profile = pipeline.start(config)
+        depth_sensor = profile.get_device().first_depth_sensor()
+        depth_sensor.set_option(
+            rs.option.visual_preset, 3
+        )  # Set high accuracy for depth sensor
+        depth_scale = depth_sensor.get_depth_scale()
+        align_to = rs.stream.color
+        align = rs.align(align_to)
+        print("Depth Scale is: " , depth_scale)
         i = 0
         print("Hasn't started recording...")
         while True:
@@ -90,8 +99,10 @@ def start_record():
             if not stop and not restart:
                 # Wait for a coherent pair of frames: depth and color
                 frames = pipeline.wait_for_frames()
-                depth_frame = frames.get_depth_frame()
-                color_frame = frames.get_color_frame()
+                #aligned_frames = align.process(frames)
+                #aligned_depth_frame = aligned_frames.get_depth_frame()
+                depth_frame = frames.get_depth_frame()#aligned_frames.get_depth_frame()
+                color_frame = frames.get_color_frame()#aligned_frames.get_color_frame()
                 if not depth_frame or not color_frame:
                     continue
 
@@ -103,8 +114,8 @@ def start_record():
                 now_frame = datetime.datetime.now().timestamp()
                 #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
                 if not pause:
-                    cv2.imwrite(camerafilename_depth + f'_{str(now_frame)}.png', depth_image, [cv2.IMWRITE_PNG_COMPRESSION, 5] )
-                    cv2.imwrite(camerafilename_color + f'_{str(now_frame)}.jpg',color_image, [cv2.IMWRITE_JPEG_QUALITY, 90] )
+                    imageio.imwrite(camerafilename_depth + f'_{str(now_frame)}.png', depth_image)
+                    imageio.imwrite(camerafilename_color + f'_{str(now_frame)}.jpg',color_image)
                 # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
