@@ -1,4 +1,5 @@
 import os
+import log_filterer
 
 data_path = "/Volumes/Mac External SSD/Emre Private/Uni/Biometrics/Alia/PDLogs/"
 
@@ -34,4 +35,6 @@ with open('data_list/list.txt', 'w') as f:
             f.write(f"{data_folder}/logs.tsv {labels[2]}\n")
 #endregion
 
-#TODO: Preprocess the actual log.tsv files
+log_filterer.createPreprocessedFolder()
+
+#TODO: Select important joints, check the confidence (should be >= 70), fine tune the z value, create a new folder named final folder and update data_list
