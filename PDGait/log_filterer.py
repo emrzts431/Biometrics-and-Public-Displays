@@ -18,7 +18,6 @@ def createPreprocessedFolder():
         label = components[1]
         log_path = components[0]
         folder_name = log_path.split('/')[0]
-        print(folder_name)
         with open(rf'{data_path}{log_path}', 'r') as log_file:
             rows = log_file.readlines()
             if len(rows) < 100:
@@ -31,46 +30,63 @@ def createPreprocessedFolder():
                 for row in rows:
                     inputs = row.split('\t')
                     
-                    if inputs[RANKLE_INDEX] != '0,0,0,0' or inputs[LANKLE_INDEX] != '0,0,0,0':
+                    if (inputs[RANKLE_INDEX] != '0,0,0,0' or inputs[LANKLE_INDEX] != '0,0,0,0') and inputs[RANKLE_INDEX] != 'rankle':
+                        joint_list = []
                         #region HEAD SECTION
                         neck_values = inputs[NECK_INDEX].split(',')
+                        joint_list.append(neck_values)
                         nose_values = inputs[NOSE_INDEX].split(',')
+                        joint_list.append(nose_values)
                         #endregion
 
                         #region HIP SECTION
                         mid_hip_values = inputs[MIDHIP_INDEX].split(',')
+                        joint_list.append(mid_hip_values)
                         l_hip_values = inputs[LHIP_INDEX].split(',')
+                        joint_list.append(l_hip_values)
                         r_hip_values = inputs[RHIP_INDEX].split(',')
+                        joint_list.append(r_hip_values)
                         #endregion
 
                         #region SHOULDER SECTION
                         rshoulder_values = inputs[RSHOULDER_INDEX].split(',')
+                        joint_list.append(rshoulder_values)
                         lshoulder_values = inputs[LSHOULDER_INDEX].split(',')
+                        joint_list.append(lshoulder_values)
                         #endregion
 
                         #region ELBOW SECTION
                         relbow_values = inputs[RELBOW_INDEX].split(',')
-                        lelbow_values = frame[LELBOW_INDEX].split(',')
+                        joint_list.append(relbow_values)
+                        lelbow_values = inputs[LELBOW_INDEX].split(',')
+                        joint_list.append(lelbow_values)
                         #endregion
 
                         #region WRIST SECTION
                         rwrist_values = inputs[RWRIST_INDEX].split(',')
+                        joint_list.append(rwrist_values)
                         lwrist_values = inputs[LWRIST_INDEX].split(',')
+                        joint_list.append(lwrist_values)
                         #endregion
 
                         #region KNEE SECTION
                         rknee_values = inputs[RKNEE_INDEX].split(',')
+                        joint_list.append(rknee_values)
                         lknee_values = inputs[LKNEE_INDEX].split(',')
+                        joint_list.append(lknee_values)
                         #endregion
 
                         #region ANKLE SECTION
                         lankle_values = inputs[LANKLE_INDEX].split(',')
+                        joint_list.append(lankle_values)
                         rankle_values = inputs[RANKLE_INDEX].split(',')
+                        joint_list.append(rankle_values)
                         #endregion
 
-                        
-                        filtered_rows.append(row)
+                        if any(float(x[-1]) < 0.6 for x in joint_list):
+                            continue
 
+                        filtered_rows.append(row)
 
                 with open(new_path, 'w') as new_file:
                     new_file.writelines(filtered_rows)
@@ -79,7 +95,7 @@ def createPreprocessedFolder():
 
 
 #get feature limb length for training or testing
-def getLimbLengths(data_list) -> list[dict]:
+def getLimbLengths(data_list) -> dict:
     preprocessed_data_folder = './preprocessed_data/'
     global data_list_lines
     data_list_lines = []
@@ -167,9 +183,10 @@ def getLimbLengths(data_list) -> list[dict]:
                 current_file.append(frame_values)
             
             labeled_data[data_comps[1]].append(current_file)
-    print(labeled_data)
+    return labeled_data
 
-    
+
+
         
 
 
@@ -182,4 +199,4 @@ def calculate_distance(joint1, joint2):
     
     return int(( (x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2 )**(1/2))
 
-getLimbLengths(['0/logs.tsv 0'])
+print(getLimbLengths(['0/logs.tsv 0']))

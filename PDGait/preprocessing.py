@@ -35,6 +35,6 @@ with open('data_list/list.txt', 'w') as f:
             f.write(f"{data_folder}/logs.tsv {labels[2]}\n")
 #endregion
 
-log_filterer.createPreprocessedFolder()
+#log_filterer.createPreprocessedFolder()
 
 #TODO: Select important joints, check the confidence (should be >= 70), fine tune the z value, create a new folder named final folder and update data_list
