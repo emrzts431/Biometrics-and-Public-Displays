@@ -1,12 +1,9 @@
 import os
-import pickle
 import helpers
 import pandas as pd
 import numpy as np
 from joint_indexes import *
-from sklearn.svm import SVC
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score
+
 
 
 def get_feature_and_label_list():

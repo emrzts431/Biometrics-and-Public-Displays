@@ -1,37 +1,11 @@
 import os
 import pandas as pd
+from joint_indexes import body_parts
 
 
 data_path = "/Volumes/Mac External SSD/Emre Private/Uni/Biometrics/Alia/PDLogs/"
 write_folder = './preprocessed_data/'
-body_parts = [
-    "nose",
-    "neck",
-    "rshoulder",
-    "relbow",
-    "rwrist",
-    "lshoulder",
-    "lelbow",
-    "lwrist",
-    "midhip",
-    "rhip",
-    "rknee",
-    "rankle",
-    "lhip",
-    "lknee",
-    "lankle",
-    "reye",
-    "leye",
-    "rear",
-    "lear",
-    "lbigtoe",
-    "lsmalltoe",
-    "lheel",
-    "rbigtoe",
-    "rsmalltoe",
-    "rheel",
-    "background"
-]
+
 
 user_list = os.listdir(data_path)
 tmp = []
