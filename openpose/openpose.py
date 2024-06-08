@@ -113,7 +113,7 @@ with open(logfile, 'w') as f:
                     if coordinates[1] > 640:
                         coordinates[1] = 640
                     z = max(corresponding_depth_frame[int(coordinates[1]), int(coordinates[0])])
-                    log_string += '\t'+ str(coordinates[0])+','+str(coordinates[1])+','+str(z)+','+str(coordinates[2])
+                    log_string += '\t'+ str(coordinates[0])+'\t'+str(coordinates[1])+'\t'+str(z)+','+str(coordinates[2])
                 log_string += '\n'
                 person_index += 1
                 f.write(log_string)
