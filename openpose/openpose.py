@@ -44,11 +44,10 @@ body_parts = [
     "LHeel",
     "RBigToe",
     "RSmallToe",
-    "RHeel",
-    "Background"
+    "RHeel"
 ]
 
-#region important files
+#region create important folders
 openpose_program = r'bin\OpenPoseDemo.exe'
 
 image_folder_list = os.listdir(rf"{documents_path}\CameraLogs")
@@ -68,11 +67,12 @@ for f in image_folder_list:
         os.mkdir(rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\openpose\json')
         os.mkdir(rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\openpose\image')
 
-    subprocess.run([openpose_program, '--image_dir', rf'{image_folder}\color', '--net_resolution', '-1x128', '--write_json' , rf'{openpose_path}\json', '--write_images', rf'{openpose_path}\image'])
-    #endregion
-    logfile = rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\logs.tsv'
-    with open(logfile, 'w') as f:
-        f.write('timestamp\tperson_id\tnose\tneck\trshoulder\trelbow\trwrist\tlshoulder\tlelbow\tlwrist\tmidhip\trhip\trknee\trankle\tlhip\tlknee\tlankle\treye\tleye\trear\tlear\tlbigtoe\tlsmalltoe\tlheel\trbigtoe\trsmalltoe\trheel\tbackground\n')
+subprocess.run([openpose_program, '--image_dir', rf'{image_folder}\color', '--net_resolution', '-1x128', '--write_json' , rf'{openpose_path}\json']) #'--write_images', rf'{openpose_path}\image'])
+#endregion
+logfile = rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\logs.tsv'
+with open(logfile, 'w') as f:
+    #TODO: Seperate the x, y, z of the joints
+    f.write('timestamp\tperson_id\tnose_x\tnose_y\tnose_z\tneck_x\tneck_y\tneck_z\trshoulder_x\trshoulder_y\trshoulder_z\trelbow_x\trelbow_y\trelbow_z\trwrist_x\trwrist_y\trwrist_z\tlshoulder_x\tlshoulder_y\tlshoulder_z\tlelbow_x\tlelbow_y\tlelbow_z\tlwrist_x\tlwrist_y\tlwrist_z\tmidhip_x\tmidhip_y\tmidhip_z\trhip_x\trhip_y\trhip_z\trknee_x\trknee_y\trknee_z\trankle_x\trankle_y\trankle_z\tlhip_x\tlhip_y\tlhip_z\tlknee_x\tlknee_y\tlknee_z\tlankle_x\tlankle_y\tlankle_z\treye_x\treye_y\treye_z\tleye_x\tleye_y\tleye_z\trear_x\trear_y\trear_z\tlear_x\tlear_y\tlear_z\tlbigtoe_x\tlbigtoe_y\tlbigtoe_z\tlsmalltoe_x\tlsmalltoe_y\tlsmalltoe_z\tlheel_x\tlheel_y\tlheel_z\trbigtoe_x\trbigtoe_y\trbigtoe_z\trsmalltoe_x\trmsalltoe_y\trsmalltoe_z\trheel_x\trheel_y\trheel_z\n')
 
 
     frames = os.listdir(rf"{openpose_path}\json")

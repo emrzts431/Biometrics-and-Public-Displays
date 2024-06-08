@@ -24,3 +24,31 @@ RBIGTOE_INDEX = 24
 RSMALLTOE_INDEX = 25
 RHEEL_INDEX = 26
 BACKGROUND_INDEX = 27
+
+body_parts = [
+    "nose",
+    "neck",
+    "rshoulder",
+    "relbow",
+    "rwrist",
+    "lshoulder",
+    "lelbow",
+    "lwrist",
+    "midhip",
+    "rhip",
+    "rknee",
+    "rankle",
+    "lhip",
+    "lknee",
+    "lankle",
+    "reye",
+    "leye",
+    "rear",
+    "lear",
+    "lbigtoe",
+    "lsmalltoe",
+    "lheel",
+    "rbigtoe",
+    "rsmalltoe",
+    "rheel",
+]
