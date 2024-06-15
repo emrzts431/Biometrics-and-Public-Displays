@@ -72,7 +72,7 @@ subprocess.run([openpose_program, '--image_dir', rf'{image_folder}\color', '--ne
 logfile = rf'{logs_write_folder}\{0 if num_folders == 0 else num_folders}\logs.tsv'
 with open(logfile, 'w') as f:
     #TODO: Seperate the x, y, z of the joints
-    f.write('timestamp\tperson_id\tnose_x\tnose_y\tnose_z\tneck_x\tneck_y\tneck_z\trshoulder_x\trshoulder_y\trshoulder_z\trelbow_x\trelbow_y\trelbow_z\trwrist_x\trwrist_y\trwrist_z\tlshoulder_x\tlshoulder_y\tlshoulder_z\tlelbow_x\tlelbow_y\tlelbow_z\tlwrist_x\tlwrist_y\tlwrist_z\tmidhip_x\tmidhip_y\tmidhip_z\trhip_x\trhip_y\trhip_z\trknee_x\trknee_y\trknee_z\trankle_x\trankle_y\trankle_z\tlhip_x\tlhip_y\tlhip_z\tlknee_x\tlknee_y\tlknee_z\tlankle_x\tlankle_y\tlankle_z\treye_x\treye_y\treye_z\tleye_x\tleye_y\tleye_z\trear_x\trear_y\trear_z\tlear_x\tlear_y\tlear_z\tlbigtoe_x\tlbigtoe_y\tlbigtoe_z\tlsmalltoe_x\tlsmalltoe_y\tlsmalltoe_z\tlheel_x\tlheel_y\tlheel_z\trbigtoe_x\trbigtoe_y\trbigtoe_z\trsmalltoe_x\trmsalltoe_y\trsmalltoe_z\trheel_x\trheel_y\trheel_z\n')
+    f.write('timestamp\tperson_id\tnose_x\tnose_y\tnose_z\tnose_c\tneck_x\tneck_y\tneck_z\tneck_c\trshoulder_x\trshoulder_y\trshoulder_z\trshoulder_c\trelbow_x\trelbow_y\trelbow_z\trelbow_c\trwrist_x\trwrist_y\trwrist_z\trwrist_c\tlshoulder_x\tlshoulder_y\tlshoulder_z\tlshoulder_c\tlelbow_x\tlelbow_y\tlelbow_z\tlelbow_c\tlwrist_x\tlwrist_y\tlwrist_z\tlwrist_c\tmidhip_x\tmidhip_y\tmidhip_z\tmidhip_C\trhip_x\trhip_y\trhip_z\trhip_c\trknee_x\trknee_y\trknee_z\trknee_c\trankle_x\trankle_y\trankle_z\trankle_c\tlhip_x\tlhip_y\tlhip_z\tlhip_c\tlknee_x\tlknee_y\tlknee_z\tlknee_c\tlankle_x\tlankle_y\tlankle_z\tlankle_c\treye_x\treye_y\treye_z\treye_c\tleye_x\tleye_y\tleye_z\tleye_c\trear_x\trear_y\trear_z\trear_c\tlear_x\tlear_y\tlear_z\tlear_c\tlbigtoe_x\tlbigtoe_y\tlbigtoe_z\tlbigtoe_c\tlsmalltoe_x\tlsmalltoe_y\tlsmalltoe_z\tlsmalltoe_c\tlheel_x\tlheel_y\tlheel_z\tlheel_c\trbigtoe_x\trbigtoe_y\trbigtoe_z\trbigtoe_c\trsmalltoe_x\trmsalltoe_y\trsmalltoe_z\trsmalltoe_c\trheel_x\trheel_y\trheel_z\trheel_c\n')
 
 
     frames = os.listdir(rf"{openpose_path}\json")
@@ -113,7 +113,7 @@ with open(logfile, 'w') as f:
                     if coordinates[1] > 640:
                         coordinates[1] = 640
                     z = max(corresponding_depth_frame[int(coordinates[1]), int(coordinates[0])])
-                    log_string += '\t'+ str(coordinates[0])+'\t'+str(coordinates[1])+'\t'+str(z)+','+str(coordinates[2])
+                    log_string += '\t'+ str(coordinates[0])+'\t'+str(coordinates[1])+'\t'+str(z)+'\t'+str(coordinates[2])
                 log_string += '\n'
                 person_index += 1
                 f.write(log_string)
