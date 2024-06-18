@@ -99,10 +99,10 @@ def start_record():
             if not stop and not restart:
                 # Wait for a coherent pair of frames: depth and color
                 frames = pipeline.wait_for_frames()
-                #aligned_frames = align.process(frames)
-                #aligned_depth_frame = aligned_frames.get_depth_frame()
-                depth_frame = frames.get_depth_frame()#aligned_frames.get_depth_frame()
-                color_frame = frames.get_color_frame()#aligned_frames.get_color_frame()
+                aligned_frames = align.process(frames)
+                aligned_depth_frame = aligned_frames.get_depth_frame()
+                depth_frame = aligned_frames.get_depth_frame()#depth_frame = frames.get_depth_frame()#
+                color_frame = aligned_frames.get_color_frame()#color_frame = frames.get_color_frame()#
                 if not depth_frame or not color_frame:
                     continue
 
