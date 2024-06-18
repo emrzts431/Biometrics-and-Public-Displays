@@ -114,8 +114,8 @@ def start_record():
                 now_frame = datetime.datetime.now().timestamp()
                 #np.savez_compressed(camerafilename + f'_{str(now)}', depth=depth_image, color=color_image)
                 if not pause:
-                    imageio.imwrite(camerafilename_depth + f'_{str(now_frame)}.png', depth_image)
-                    imageio.imwrite(camerafilename_color + f'_{str(now_frame)}.jpg',color_image)
+                    cv2.imwrite(camerafilename_color + f'_{str(now_frame)}.jpg',np.rot90(color_image))
+                    cv2.imwrite(camerafilename_depth + f'_{str(now_frame)}.png', np.rot90(depth_image))
                 # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
                 depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
 
@@ -127,7 +127,9 @@ def start_record():
                     resized_color_image = cv2.resize(color_image, dsize=(depth_colormap_dim[1], depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
                     images = np.hstack((resized_color_image, depth_colormap))
                 else:
-                    images = np.hstack((color_image, depth_colormap))
+                    color_image_dsp = np.rot90(color_image)
+                    depth_colormap_dsp = np.rot90(depth_colormap)
+                    images = np.hstack((color_image_dsp, depth_colormap_dsp))
 
                 # Show images
                 cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
