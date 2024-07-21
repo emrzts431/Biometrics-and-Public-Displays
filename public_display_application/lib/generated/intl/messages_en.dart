@@ -48,7 +48,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "female": MessageLookupByLibrary.simpleMessage("Female"),
         "fiber": MessageLookupByLibrary.simpleMessage("Fiber"),
         "firstName": MessageLookupByLibrary.simpleMessage("Your first name"),
-        "freeCoffee": MessageLookupByLibrary.simpleMessage("FREE COFFEE"),
         "friday": MessageLookupByLibrary.simpleMessage("Friday"),
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
             "Please give all necessary Information"),
@@ -112,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "weatherForecast":
             MessageLookupByLibrary.simpleMessage("Weather Forecast"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
+        "welcome": MessageLookupByLibrary.simpleMessage("WELCOME!"),
         "whatIsYourDiet":
             MessageLookupByLibrary.simpleMessage("What is your diet?"),
         "withAlcohol": MessageLookupByLibrary.simpleMessage("without Alcohol"),

@@ -49,7 +49,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "female": MessageLookupByLibrary.simpleMessage("Weiblich"),
         "fiber": MessageLookupByLibrary.simpleMessage("Ballast­stoffe"),
         "firstName": MessageLookupByLibrary.simpleMessage("Ihr Vorname"),
-        "freeCoffee": MessageLookupByLibrary.simpleMessage("GRATIS KAFFEE"),
         "friday": MessageLookupByLibrary.simpleMessage("Freitag"),
         "giveAllNecessaryInfo": MessageLookupByLibrary.simpleMessage(
             "Bitte alle nötigen Informationen eingeben"),
@@ -113,6 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "weatherForecast":
             MessageLookupByLibrary.simpleMessage("Wettervorhersage"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Mittwoch"),
+        "welcome": MessageLookupByLibrary.simpleMessage("WILKOMMEN!"),
         "whatIsYourDiet":
             MessageLookupByLibrary.simpleMessage("Wie ist Ihre Ernährung?"),
         "withAlcohol": MessageLookupByLibrary.simpleMessage("ohne Alkohol"),

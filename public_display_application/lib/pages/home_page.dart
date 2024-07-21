@@ -36,7 +36,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+ 
   String DOWN = "1,0,0";
   String MOVE = "0,1,0";
   String UP = "0,0,1";

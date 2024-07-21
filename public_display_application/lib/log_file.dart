@@ -77,10 +77,10 @@ class LogFile extends InheritedWidget {
     }
   }
 
-  Future<User?> selectUser(String surname, int age, Genders gender) async {
+  Future<User?> selectUser(String surname, int age) async {
     try {
       final result = await db.get(
-          "Select * from Users where substr(surname, 1, 3) = '$surname' and age = $age and gender = ${gender.index}");
+          "Select * from Users where substr(surname, 1, 3) = '$surname' and age = $age");
       if (result.isNotEmpty) {
         //gender == 1 ? male : female
         return User(

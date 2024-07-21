@@ -13,6 +13,9 @@ import 'package:public_display_application/services/service_locator.dart';
 import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
 import 'package:sqlite_async/sqlite_async.dart';
+import 'dart:io';
+
+import 'package:window_manager/window_manager.dart';
 
 final migrations = SqliteMigrations()
   ..add(SqliteMigration(1, (tx) async {
@@ -24,8 +27,16 @@ final migrations = SqliteMigrations()
         'CREATE TABLE Session(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, type INTEGER, userid INTEGER, time INTEGER, FOREIGN KEY (userid) REFERENCES Users(userid));');
   }));
 
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
   var folder = await getApplicationDocumentsDirectory();
   debugPrint(folder.path);
   final db = SqliteDatabase(path: '${folder.path}/pd.db');
@@ -35,6 +46,7 @@ void main() async {
   await file
       .writeAsString("timestamp\tx\ty\tpointer\tdown\tmove\tup\tbuttonid\n");
   setupLocator();
+  HttpOverrides.global = MyHttpOverrides();
   runZonedGuarded(
       () => runApp(
             MultiProvider(
@@ -55,6 +67,9 @@ void main() async {
     print(error);
     print(stack);
   });
+  windowManager.waitUntilReadyToShow().then((_) async {
+    await windowManager.setFullScreen(true);
+  }); 
 }
 
 class MyApp extends StatefulWidget {
@@ -70,7 +85,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final NavigationService navigationService = NavigationService();
+    
     return LogFile(
       db: widget.db,
       logFile: widget.file,

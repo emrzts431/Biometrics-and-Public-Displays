@@ -33,12 +33,12 @@ class UserViewModel extends ChangeNotifier {
   void setHomePageContext(BuildContext context) => _homePageContext = context;
 
   Future login(
-      int age, String lastname, Genders gender, BuildContext context) async {
+      int age, String lastname, BuildContext context) async {
     try {
       _isLoading = true;
       notifyListeners();
       User? localUser =
-          await LogFile.of(context).selectUser(lastname, age, gender);
+          await LogFile.of(context).selectUser(lastname, age);
       if (localUser != null) {
         if (await LogFile.of(context).insertSession(
           SessionActionType.start,
@@ -77,7 +77,7 @@ class UserViewModel extends ChangeNotifier {
         await LogFile.of(context).insertUser(name, surname, age, gender);
     if (registered) {
       try {
-        await login(age, surname.substring(0, 3), gender, context);
+        await login(age, surname.substring(0, 3), context);
       } on Exception catch (e) {
         SnackbarHolder.showFailureSnackbar(S.current.errorAtRegister, context);
         print(e);

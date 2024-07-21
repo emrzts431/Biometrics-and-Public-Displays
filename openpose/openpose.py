@@ -20,8 +20,10 @@ class Frame:
         self.version = version
         self.people = people
 
-documents_path = os.path.join(os.path.expanduser("~"), "Documents")
-desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+#documents_path = os.path.join(os.path.expanduser("~"), "Documents")
+#desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+desktop_path = r'D:\\Emre'
+documents_path = r'D:\\Emre'
 if not os.path.exists(rf"{desktop_path}\PDLogs"):
     os.mkdir(rf"{desktop_path}\PDLogs")
 body_parts = [

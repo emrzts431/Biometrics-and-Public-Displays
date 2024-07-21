@@ -108,52 +108,52 @@ class LoginPageState extends State<LoginPage> {
             hintStyle: const TextStyle(fontSize: 25),
           ),
         ),
-        DropdownButton<Genders>(
-          hint: Text(S.of(context).chooseYourGender),
-          value: selectedGender,
-          icon: const Icon(Icons.arrow_drop_down),
-          iconSize: 24,
-          elevation: 16,
-          style: const TextStyle(color: Colors.black),
-          onChanged: (Genders? newValue) {
-            setState(() {
-              selectedGender = newValue;
-            });
-            switch (newValue) {
-              case Genders.male:
-                PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
-              case Genders.female:
-                PDEventBus().fire(ButtonClickedEvent(Buttons.female.index));
-              case Genders.nonbinary:
-                PDEventBus().fire(ButtonClickedEvent(Buttons.nonBinary.index));
-              case Genders.nan:
-                PDEventBus()
-                    .fire(ButtonClickedEvent(Buttons.preferNotToSay.index));
-              default:
-                PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
-            }
-          },
-          items: [
-            DropdownMenuItem<Genders>(
-              value: Genders.male,
-              child: Text(S.of(context).male),
-            ),
-            DropdownMenuItem<Genders>(
-              value: Genders.female,
-              child: Text(S.of(context).female),
-            ),
-            DropdownMenuItem<Genders>(
-              value: Genders.nonbinary,
-              child: Text(S.of(context).nonBinary),
-            ),
-            DropdownMenuItem<Genders>(
-              value: Genders.nan,
-              child: Text(
-                S.of(context).preferNotToSay,
-              ),
-            )
-          ],
-        ),
+        // DropdownButton<Genders>(
+        //   hint: Text(S.of(context).chooseYourGender),
+        //   value: selectedGender,
+        //   icon: const Icon(Icons.arrow_drop_down),
+        //   iconSize: 24,
+        //   elevation: 16,
+        //   style: const TextStyle(color: Colors.black),
+        //   onChanged: (Genders? newValue) {
+        //     setState(() {
+        //       selectedGender = newValue;
+        //     });
+        //     switch (newValue) {
+        //       case Genders.male:
+        //         PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
+        //       case Genders.female:
+        //         PDEventBus().fire(ButtonClickedEvent(Buttons.female.index));
+        //       case Genders.nonbinary:
+        //         PDEventBus().fire(ButtonClickedEvent(Buttons.nonBinary.index));
+        //       case Genders.nan:
+        //         PDEventBus()
+        //             .fire(ButtonClickedEvent(Buttons.preferNotToSay.index));
+        //       default:
+        //         PDEventBus().fire(ButtonClickedEvent(Buttons.male.index));
+        //     }
+        //   },
+        //   items: [
+        //     DropdownMenuItem<Genders>(
+        //       value: Genders.male,
+        //       child: Text(S.of(context).male),
+        //     ),
+        //     DropdownMenuItem<Genders>(
+        //       value: Genders.female,
+        //       child: Text(S.of(context).female),
+        //     ),
+        //     DropdownMenuItem<Genders>(
+        //       value: Genders.nonbinary,
+        //       child: Text(S.of(context).nonBinary),
+        //     ),
+        //     DropdownMenuItem<Genders>(
+        //       value: Genders.nan,
+        //       child: Text(
+        //         S.of(context).preferNotToSay,
+        //       ),
+        //     )
+        //   ],
+        // ),
         const SizedBox(
           height: 20,
         ),
@@ -166,15 +166,15 @@ class LoginPageState extends State<LoginPage> {
             onPressed: () async {
               PDEventBus().fire(ButtonClickedEvent(Buttons.login.index));
               if (_ageInputController.text.isEmpty ||
-                  _lastnameInputController.text.isEmpty ||
-                  selectedGender == null) {
+                  _lastnameInputController.text.isEmpty 
+                  ) {
                 SnackbarHolder.showFailureSnackbar(
                     S.of(context).giveAllNecessaryInfo, context);
               } else {
                 await context.read<UserViewModel>().login(
                       int.parse(_ageInputController.text),
                       _lastnameInputController.text,
-                      selectedGender!,
+                      //selectedGender!,
                       context,
                     );
               }

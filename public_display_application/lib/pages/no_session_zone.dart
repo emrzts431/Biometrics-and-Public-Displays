@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:public_display_application/pages/free_coffee_page.dart';
+import 'package:public_display_application/pages/welcome_page.dart';
 import 'package:public_display_application/pages/login_page.dart';
 import 'package:public_display_application/viewmodels/sessionviewmodel.dart';
 import 'package:public_display_application/viewmodels/userviewmodel.dart';
@@ -30,7 +30,7 @@ class NoSessionZoneState extends State<NoSessionZone> {
   @override
   Widget build(BuildContext context) {
     if (context.watch<SessionViewModel>().coffeScreen) {
-      return FreeCoffeePage();
+      return const WelcomePage();
     } else {
       return LoginPage();
     }

@@ -200,11 +200,11 @@ class S {
     );
   }
 
-  /// `FREE COFFEE`
-  String get freeCoffee {
+  /// `WELCOME!`
+  String get welcome {
     return Intl.message(
-      'FREE COFFEE',
-      name: 'freeCoffee',
+      'WELCOME!',
+      name: 'welcome',
       desc: '',
       args: [],
     );
