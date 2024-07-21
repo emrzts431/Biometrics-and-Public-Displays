@@ -37,7 +37,7 @@ for participant in participant_list:
         #region create important folders
             image_folder_name = f#str(input("Enter the image folder name: "))
             print(f"loading images from {image_folder_name}")
-            image_folder = rf'{documents_path}\\Session\\{participant}\\{session}\\CameraLogs\\{image_folder_name}'
+            image_folder = rf'{documents_path}\\Sessions\\{participant}\\{session}\\CameraLogs\\{image_folder_name}'
             pd_logs_folder = rf'{desktop_path}\\PDLogs'
             if not os.path.exists(rf'{pd_logs_folder}\\PID_{participant}'):
                 os.mkdir(rf'{pd_logs_folder}\\PID_{participant}')
@@ -46,12 +46,12 @@ for participant in participant_list:
             
             logs_write_folder = rf'{pd_logs_folder}\\PID_{participant}\\S_{session}'
             num_folders = len(os.listdir(logs_write_folder))
-            openpose_path = rf'{logs_write_folder}\\{0 if num_folders == 0 else num_folders}\openpose'
-            if not os.path.exists(rf'{logs_write_folder}\\{0 if num_folders == 0 else num_folders}'):
-                os.mkdir( rf'{logs_write_folder}\\{0 if num_folders == 0 else num_folders}')
-                os.mkdir(rf'{logs_write_folder}\\{0 if num_folders == 0 else num_folders}\openpose')
-                os.mkdir(rf'{logs_write_folder}\\{0 if num_folders == 0 else num_folders}\openpose\json')
-                os.mkdir(rf'{logs_write_folder}\\{0 if num_folders == 0 else num_folders}\openpose\image')
+            openpose_path = rf'{logs_write_folder}\\R_{0 if num_folders == 0 else num_folders}\openpose'
+            if not os.path.exists(rf'{logs_write_folder}\\R_{num_folders + 1}'):
+                os.mkdir( rf'{logs_write_folder}\\R_{num_folders + 1}')
+                os.mkdir(rf'{logs_write_folder}\\R_{num_folders + 1}\\openpose')
+                os.mkdir(rf'{logs_write_folder}\\R_{num_folders + 1}\\openpose\\json')
+                os.mkdir(rf'{logs_write_folder}\\R_{num_folders + 1}\\openpose\\image')
 
             subprocess.run([openpose_program, '--image_dir', rf'{image_folder}\color', '--net_resolution', '-1x128', '--write_json' , rf'{openpose_path}\json']) #'--write_images', rf'{openpose_path}\image'])
             #endregion
