@@ -7,6 +7,7 @@ import seaborn as sns
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 import random
+from body_parts import body_parts
 
 POSE_DATA_FOLDER = '/Users/emreoztas/Desktop/DUE/Biometrics and Public Displays/PublicDisplayOpenposeData'
 
@@ -125,11 +126,28 @@ class PDBiometrics:
         plt.show()
     
     def setUpXMatrix(self, data: pd.DataFrame, set_name: str, data_idx, columns_to_exclude: list = []) -> pd.DataFrame:
-        return data.loc[data.set == set_name].iloc[:, data_idx:].drop(columns=data.columns[data.columns.str.endswith('_c')]).drop(columns=sum([['set', 'rep_id', 'session_id'], columns_to_exclude], []))
+        return data.loc[data.set == set_name].iloc[:, data_idx:].drop(columns=data.columns[(data.columns.str.endswith('_c')) | (data.columns.str.endswith('_C'))]).drop(columns=sum([['set', 'rep_id', 'session_id'], columns_to_exclude], []))
 
     def setUpYVector(self, data: pd.DataFrame, set_name: str) -> pd.DataFrame:
         return data.loc[data.set == set_name]['person_id']
 
+    def plotFeatureImportance(self, feature_importance_list: list):
+        x_values = feature_importance_list[::3]
+        y_values = feature_importance_list[1::3]
+        z_values = feature_importance_list[2::3]
+
+        x_axis = np.arange(len(x_values))
+        width = 0.2
+
+        #plot the data in a grouped manner
+        plt.bar(x_axis-0.2, x_values, width=width, color='cyan')
+        plt.bar(x_axis, y_values, width=width, color='orange')
+        plt.bar(x_axis+0.2, z_values, width=width, color='green')
+        plt.xticks(x_axis, [x.split('_')[0] for x in body_parts[:len(x_values)]])
+        plt.xlabel('Features')
+        plt.ylabel('Mean Decrease in Impurity (MDI) Score')
+        plt.legend(['x', 'y', 'z'])
+        plt.show()
 
     def trainAndTestKNeighboursClassifier(self, approach: str, session_id: int = 1) -> KNeighborsClassifier:
         
@@ -186,6 +204,7 @@ class PDBiometrics:
                                                        'rsmalltoe_x', 'rmsalltoe_y', 'rsmalltoe_z', 
                                                        'lheel_x', 'lheel_y', 'lheel_z',
                                                        'rheel_x', 'rheel_y', 'rheel_z'])
+        
         y_train = self.setUpYVector(data, 'train')
 
         model.fit(x_train, y_train)
@@ -201,14 +220,14 @@ class PDBiometrics:
         y_test = self.setUpYVector(data, 'test')
 
         feature_importances = model.feature_importances_
-
-        print("Feature importances: ")
+        
+        importances = []
         for i, importance in enumerate(feature_importances):
-            print(f"Feature {i}: {importance:.3f}")
+            importances.append(importance)
 
+        self.plotFeatureImportance(importances)
 
         pred = model.predict(x_test)
-        model.feature_importances_
         self.plot_confusion_matrix(y_test, pred)
 
 
