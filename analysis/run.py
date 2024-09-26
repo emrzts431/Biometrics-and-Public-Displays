@@ -3,4 +3,5 @@ import random
 
 
 pdbmtrcs = PDBiometrics()
-pdbmtrcs.trainAndTestMulticlassRandomForest(approach='multi', randomize=True)
+# pdbmtrcs.plotOpenPoseAverageConfidence()
+pdbmtrcs.trainAndTestMulticlassRandomForest('multi', randomize=True)
